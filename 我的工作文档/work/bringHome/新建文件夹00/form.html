@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="./jquery.js"></script>
+  <script src="js/jquery.formCheck.js"></script>
+  <script>
+  $(function()
+  {
+	$("form").check(
+	{
+		nameLen:3,//姓名长度的最小值
+		passLen:0,//密码长度的最小值
+		tiph:100,//提示框的height
+		tipw:300,//提示框的width
+		tipbg:"#eeeeee"//提示框的背景
+		//使用次插件须知，用户必须按照以下顺序来编写字段
+	});
+	(function()
+	{
+		var timer,timer2;
+		var oUl=document.getElementsByTagName("ul")[0];
+		var frag=document.createDocumentFragment();
+		for (var i=0;i<100 ;i++ )
+		{
+			var li=document.createElement("li");
+			li.innerHTML=i+"ooooooooooooooooooooooo";
+			frag.appendChild(li);
+		}
+		oUl.appendChild(frag);
+		oLi=oUl.getElementsByTagName("li");
+		$("ul:first li").click(function()
+		{
+			clearInterval(timer);
+			var top=$(this).offset().top;
+			var sTop=$(document).scrollTop();
+			doMove($(document),top);
+		});
+		function createLi(obj)
+		{
+			obj.style["position"]="relative";
+			var div=document.createElement("div");
+			div.className="active";
+			obj.appendChild(div);
+			return div;
+		}
+		var oli=createLi(oUl);
+		for (var i=0;i<oLi.length ;i++ )
+		{
+			(function(_i)
+			{
+				oLi[_i].onmouseover=function()
+				{
+					var top=this.offsetTop;
+					move(top,oli,this,oLi,callBack(this,oLi));
+				}
+			})(i);
+		}
+		function callBack(obj,liarr)
+		{
+			for (var i=0;i<liarr.length ;i++ )
+			{
+				liarr[i].style["color"]="black";
+				liarr[i].style["fontWeight"]="normal";
+			}
+			obj.style["color"]="red";
+			obj.style["fontWeight"]="bold";
+		}
+		function move(t,li,obj,liarr,callBack)
+		{
+			clearInterval(timer2);
+			timer2=setInterval(function()
+			{
+				var s=(t-li.offsetTop)/5;
+				s = s>0 ? Math.ceil(s) : Math.floor(s);
+				li.offsetTop==t ? (clearInterval(timer2),callBack && (callBack(obj,liarr))) : li.style["top"]=s+li.offsetTop+"px";
+			},20);
+		}
+		function doMove(obj,target)
+		{
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var s=(target-obj.scrollTop())/5;
+				s=s >0 ? Math.ceil(s) : Math.floor(s);
+				obj.scrollTop()==target ? clearInterval(timer) : obj.scrollTop(s+obj.scrollTop());
+				obj.scrollTop()>=document.documentElement.scrollHeight-$(window).height() && (clearInterval(timer));
+			},20);
+		}
+	})();
+
+	(function()
+	{
+		var timer=500;
+		var ul=$("#photo").find("ul");
+		var li=$("#photo").find("li");
+		var img=$("#photo").find("img");
+		var arr=[
+		{width:100,height:100,left:100,top:50},
+		{width:150,height:150,left:25,top:25},
+		{width:200,height:200,left:0,top:0},
+		{width:150,height:150,left:25,top:25},
+		{width:100,height:100,left:0,top:50}
+
+		];
+		function css()
+		{
+			ul.css({"width":li.length*li.eq(0).width()});
+			for (var i=0;i<arr.length ;i++ )
+			{
+				img.eq(i).css({"opacity":"0.5"});
+				img.eq(2).css("opacity","1");
+				img.eq(i).css({"width":arr[i].width,"height":arr[i].height,"left":arr[i].left,"top":arr[i].top});
+			}
+		}
+		css();
+		function opacity(index)
+		{
+			for (var i=0;i<img.length ;i++ )
+			{
+				img.eq(i).css({"opacity":"0.5"});
+			}
+			img.eq(index).css("opacity","1");
+		}
+		li.click(function()
+		{
+			var tmp=li.index(this);
+			var array=[-2,-1,0,1,2]
+			opacity(tmp);
+			$(this).find("img").height()==$(this).height() && (alert("已跳转"));
+			var left=li.eq(tmp).offset().left-li.eq(2).offset().left;
+			ul.stop(true,false).animate({"left":-left},timer);
+
+			for (var i=0;i<array.length ;i++ )
+			{
+				img.eq(tmp+array[i]).stop(true,false).animate({left:arr[i].left,top:arr[i].top,width:arr[i].width,height:arr[i].height},timer);
+			}
+		});
+	})();
+
+	(function()
+	{
+		$(".sidebar").slideToggle(1500,function()
+		{
+			var timer=setTimeout(function()
+			{
+				$(".sidebar").slideToggle(1500);
+				clearTimeout(timer);
+			},2000);
+
+		});
+	})();
+
+
+  });
+  </script>
+  <style>
+	body{_background-image:url(about:blank); _background-attachment:fixed;}
+	.sidebar{display:none;position:fixed;left:0px; bottom:0px;height:300px; width:300px; background:#333;_position:absolute; _left:0px;_top:expression(eval(document.documentElement.scrollTop+document.body.clientHeight+20))}
+	.border li{line-height:30px;}
+	.border .active{background:black;position:absolute; top:0px; left:0px;height:30px;width:300px;filter:alpha(opacity=10); opacity:0.1;z-index:-1;}
+	#photo{width:1000px;height:200px; background:#bbbbbb;}
+	#photo ul{left:0px;}
+	#photo ul li{height:200px;width:200px;position:relative; float:left; display:inline;}
+	#photo ul li img{position:absolute;left:25px; top:25px; cursor:pointer;}
+  </style>
+ </head>
+
+ <body style="overflow-x:hidden;">
+
+  <form enctype="multipart-formdata" >
+	姓名：<input type="text" name="name"><br>
+	年龄：<input type="text" name="age"><br>
+	性别：<input type="radio" name="sex">男　<input type="radio" name="sex">女<br>
+	密码：<input type="password" name="password"></br>
+	确认密码：<input type="password" name="repassword"></br>
+	Email：<input type="text" name="email">
+	<input type="submit" value="提交"><br>
+	爱好：<input type="checkbox" name="fav">篮球 | <input type="checkbox" name="fav">足球 | <input type="checkbox" name="fav">唱歌
+  </form>
+
+	<div class="cb"></div>
+	<ul style="width:300px; cursor:pointer;" class="fr border ulList"></ul>
+	<br/>
+	<div id="photo" class="pr bc oh">
+		<ul class="pa">
+			<li><img src="images/cool.jpg"></li>
+			<li><img src="images/n1.jpg"></li>
+			<li><img src="images/n2.jpg"></li>
+			<li><img src="images/n3.jpg"></li>
+			<li><img src="images/n4.jpg"></li>
+			<li><img src="images/n5.jpg"></li>
+			<li><img src="images/n1.jpg"></li>
+			<li><img src="images/n2.jpg"></li>
+			<li><img src="images/n3.jpg"></li>
+			<li><img src="images/n4.jpg"></li>
+			<li><img src="images/n5.jpg"></li>
+			<li><img src="images/n1.jpg"></li>
+			<li><img src="images/n2.jpg"></li>
+			<li><img src="images/n3.jpg"></li>
+			<li><img src="images/n4.jpg"></li>
+			<li><img src="images/n5.jpg"></li>
+		</ul>
+	</div>
+	<div class="sidebar" style=""></div>
+ </body>
+ <script>
+	(function()
+	{
+		function getClass(cName)
+		{
+			var arr=[];
+			var ele=document.getElementsByTagName("*");
+			var patt="(^|\\s)"+cName+"(\\s|$)";
+			var reg=new RegExp(patt);
+			for (var i=0;i<ele.length ;i++ )
+			{
+				if (reg.test(ele[i].className))
+				{
+					arr[arr.length]=ele[i];
+				}
+			}
+			return arr;
+		}
+		var ul=getClass("ulList")[0];
+		var li=ul.getElementsByTagName("li");
+	})();
+	/*
+	(function()
+	{
+		var timer,timer2;
+		function $(id)
+		{
+			return typeof id==="string" ? document.getElementById(id) : id;
+		}
+		function $$(parent,tagName)
+		{
+			return (parent || document).getElementsByTagName(tagName);
+		}
+		var obj=$("photo");
+		var ul=$$(obj,"ul")[0];
+		//alert(ul);
+		var li=$$(obj,"li");
+		var img=$$(obj,"img");
+		var arr=[
+		{width:100,height:100,left:100,top:50},
+		{width:150,height:150,left:25,top:25},
+		{width:200,height:200,left:0,top:0},
+		{width:150,height:150,left:25,top:25},
+		{width:100,height:100,left:0,top:50}
+
+		];
+		function css()
+		{
+			var arr2=["width","height","left","top"];
+			ul.style.width=li.length*li[0].offsetWidth+"px";
+			for (var i=0;i<arr.length ;i++ )
+			{
+				img[i].style.width=arr[i].width+"px";
+				img[i].style.height=arr[i].height+"px";
+				img[i].style.left=arr[i].left+"px";
+				img[i].style.top=arr[i].top+"px";
+				//img[i].css({"width":arr[i].width,"height":arr[i].height,"left":arr[i].left,"top":arr[i].top});
+			}
+		}
+		css();
+		var ttime;
+		for (var i=0;i<li.length ;i++ )
+		{
+			(function(_i)
+			{
+				li[_i].onclick=function()
+				{
+					var array=[-2,-1,0,1,2];
+					var tmp=_i;
+					var left=this.offsetLeft-li[2].offsetLeft;
+					//alert(left);
+					uldoMove(ul,-left);
+					//alert(tmp);
+					ttime=setInterval(function()
+					{
+						for (var index in array )
+						{
+							lidoMove(img[(tmp+array[index])],arr[index]);
+						}
+					},20);
+				}
+			})(i);
+		}
+
+		function uldoMove(obj,target)
+		{
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var s=(target-obj.offsetLeft)/5;
+				s = s>0 ? Math.ceil(s) : Math.floor(s);
+				if (obj.offsetLeft==target)
+				{
+					clearInterval(timer);
+					clearInterval(timer2);
+				}else
+				{
+					obj.style.left=s+obj.offsetLeft+"px";
+				}
+			},20);
+		}
+		function css2(obj,attr,value)
+		{
+			if (arguments.length==2)
+			{
+				return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr]);
+			}else if (arguments.length==3)
+			{
+				attr=="opacity" ? (obj.style.filter="alpha(opacity="+value+")",obj.style.opacity=(value/100)) : obj.style[attr]=value+"px";
+			}
+		}
+		function lidoMove(liArr,attrArr)
+		{
+
+				for (var index in attrArr )
+				{
+					var cur=index == "opacity" ? parseInt(css2(liArr,index).toFixed(2)*100) : css2(liArr,index);
+					var s=(attrArr[index]-cur)/5;
+					s =s > 0 ? Math.ceil(s) : Math.floor(s);
+					cur==attrArr[index] ? clearInterval(ttime) : css2(liArr,index,s+cur);
+				}
+
+		}
+	})();
+	*/
+ </script>
+</html>

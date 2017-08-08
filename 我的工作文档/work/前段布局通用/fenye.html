@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	a{margin:5px;}
+
+	#parent{position:absolute;bottom:200px;left:50%;}
+	#div{display:inline;margin-left:-50%;float:left;}
+	#div a{color:#cc0000;}
+	#table{width:455px;margin:0 auto;}
+	#table table{position:absolute;left:0;}
+	table tr td{width:150px; height:150px;}
+	ul li{height:150px; width:150px; background:gray;position:absolute;text-align:center;line-height:150px;color:white;opacity:0;left:700px;top:700px;
+	filter:alpha(opacity=0);display:none;}
+  </style>
+ </head>
+
+ <body>
+	<ul id="ul">
+	</ul>
+	<div id="table">
+		<table>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+	<div id="parent">
+		<div id="div"></div>
+	</div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+
+	createLi();
+	var page=function(opt){
+
+		var div=document.getElementById(opt.id);
+
+		if(opt.total<=5){
+			for(var i=1;i<=opt.total;i++){
+				var a=document.createElement("a");
+				a.href="#"+i;
+				if(i==opt.now){
+					a.innerHTML=i;
+				}else{
+					a.innerHTML="["+i+"]";
+				}
+
+				div.appendChild(a);
+			}
+		}else{
+
+			if(opt.now>=4){
+				var a=document.createElement("a");
+				a.href="#"+1;
+				a.innerHTML="首页";
+				div.appendChild(a);
+			}
+			if(opt.now>1){
+				var a=document.createElement("a");
+				a.href="#"+(opt.now-1);
+				a.innerHTML="上一页";
+				div.appendChild(a);
+			}
+			if(opt.now==1 || opt.now==2){
+				for(var i=1;i<=5;i++){
+					var a=document.createElement("a");
+					a.href="#"+i;
+					if(i==opt.now){
+						a.innerHTML=opt.now;
+					}else{
+						a.innerHTML="["+i+"]";
+					}
+					div.appendChild(a);
+				}
+				if(opt.now!=opt.total){
+					var a=document.createElement("a");
+					a.href="#"+(opt.now+1);
+					a.innerHTML="下一页";
+					div.appendChild(a);
+				}
+				if(opt.now<=opt.total-3){
+					var a=document.createElement("a");
+					a.href="#"+(opt.total);
+					a.innerHTML="尾页";
+					div.appendChild(a);
+				}
+			}else if(opt.total-opt.now==1 || opt.total-opt.now==0){
+
+				for(var i=1;i<=5;i++){
+					var a=document.createElement("a");
+					a.href="#"+(opt.total-5+i);
+					if(opt.total-opt.now==1 && i==4){
+						a.innerHTML=opt.total-5+i;
+					}else if(opt.total-opt.now==0 && i==5){
+						a.innerHTML=opt.total-5+i;
+					}else{
+						a.innerHTML="["+(opt.total-5+i)+"]";
+					}
+
+					div.appendChild(a);
+				}
+				if(opt.now!=opt.total){
+					var a=document.createElement("a");
+					a.href="#"+(opt.now+1);
+					a.innerHTML="下一页";
+					div.appendChild(a);
+				}
+			}
+			else{
+				for(var i=1;i<=5;i++){
+
+					var a=document.createElement("a");
+					a.href="#"+(opt.now-3+i);
+					if(i==3){
+						a.innerHTML=opt.now-3+i;
+					}else{
+						a.innerHTML="["+(opt.now-3+i)+"]";
+					}
+
+					div.appendChild(a);
+				}
+				if(opt.now!=opt.total){
+					var a=document.createElement("a");
+					a.href="#"+(opt.now+1);
+					a.innerHTML="下一页";
+					div.appendChild(a);
+				}
+				if(opt.now<=opt.total-3){
+					var a=document.createElement("a");
+					a.href="#"+(opt.total);
+					a.innerHTML="尾页";
+					div.appendChild(a);
+				}
+			}
+
+		}
+		if(opt.callBack){
+			opt.callBack(opt.now,opt.total);
+		}
+
+		var oA=div.getElementsByTagName("a");
+		for(var i=0;i<oA.length;i++){
+			oA[i].onclick=function(){
+				var href=parseInt(this.getAttribute("href").substring(1));
+				div.innerHTML="";
+				page({
+					id:"div",
+					now:href,
+					total:Math.ceil(layout().length/9),
+					callBack:function(){
+						var li=layout();
+						var arr=[],arr2=[];
+						var td=document.getElementsByTagName("td");
+						var tab=document.getElementById("table");
+
+						if(href==opt.total){
+							for(var j=(href-1)*9;j<li.length;j++){
+								arr.push(li[j]);
+							}
+						}else{
+							for(var j=(href-1)*9;j<9*href;j++){
+								arr.push(li[j]);
+							}
+
+						}
+						if(opt.now==opt.total){
+							for(var j=(opt.now-1)*9;j<li.length;j++){
+								arr2.push(li[j]);
+							}
+						}else{
+							for(var j=(opt.now-1)*9;j<9*opt.now;j++){
+								arr2.push(li[j]);
+							}
+						}
+
+						//alert(opt.now+"---"+href);
+						move(arr2,arr);
+					}
+				});
+				return false;
+			}
+		}
+
+	}
+	move.time=0,move.done=false,tmp=0;
+	function move(arr2,arr){
+
+		var td=document.getElementsByTagName("td");
+		var tab=document.getElementById("table");
+		move.timer=setInterval(function(){
+
+			zzs.doMove(arr2[move.time],{left:700,top:700,opacity:0},10,function(){
+
+				tmp++;
+				if(tmp==arr2.length){
+					for(var i=0;i<arr2.length;i++){
+						zzs.css(arr2[i],{left:700,top:700,opacity:0,display:"none"});
+					}
+					clearInterval(move.timer);
+					move.time=0;
+					tmp=0;
+					up(arr);
+
+				}
+			});
+			if(move.time==arr2.length){return;}
+			move.time++;
+		},50);
+
+		function up(arr){
+			zzs.each(arr,function(){
+				zzs.css(this,"display","block");
+			});
+			move.timer=setInterval(function(){
+				if(move.time==arr.length){
+					clearInterval(move.timer);
+					move.time=0;
+					return;
+				}
+				zzs.doMove(arr[move.time],{left:td[move.time].offsetLeft+tab.offsetLeft,top:td[move.time].offsetTop,opacity:100},10);
+
+				move.time++;
+			},50);
+
+	}
+
+}
+	page({
+		id:"div",
+		now:1,
+		total:Math.ceil(layout().length/9),
+		callBack:function(now,total){
+			var li=layout();
+			var td=document.getElementsByTagName("td");
+			var tab=document.getElementById("table");
+			for(var i=(now-1)*9;i<now*9;i++){
+				if(!li[i]){return;}
+				zzs.css(li[i],{display:"block",left:td[i].offsetLeft+tab.offsetLeft,top:td[i].offsetTop,opacity:100});
+			}
+		}
+	});
+
+	function layout(){
+		var li=document.getElementsByTagName("li");
+		for(var i=0;i<li.length;i++){
+			li[i].innerHTML="我是第"+(i+1)+"条数据";
+		}
+		return li;
+	}
+
+	function createLi(){
+		var ul=document.getElementById("ul");
+		for(var i=0;i<88;i++){
+			ul.appendChild(document.createElement("li"));
+		}
+	}
+ </script>
+</html>

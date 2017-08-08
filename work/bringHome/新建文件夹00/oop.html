@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script src="jquery.js">
+	
+  </script>
+ </head>
+<script>
+window.onload=function()
+{
+	var method=
+	{
+		bind:function(ele,type,func)
+		{
+			if (ele.addEventListener)
+			{
+				ele.addEventListener(type,func,false);
+			}else if (ele.attachEvent)
+			{
+				ele.attachEvent("on"+type,func);
+			}else
+			{
+				ele["on"+type]=func;
+			}
+		},
+		random:function(max,min)
+		{
+			return Math.floor(Math.random()*(max-min+1)+min);
+		},
+		color:function()
+		{
+			var color=this.random(0,0xFFFFFF,0);
+			color=color.toString(16);
+			return color;
+		},
+		height:function()
+		{
+			return document.documentElement.clientHeight;
+		},
+		width:function()
+		{
+			return document.documentElement.clientWidth;
+		},
+		add:function(obj,method)
+		{
+			return function()
+			{
+				method.apply(obj,arguments);
+			}
+		}
+	}
+	method.bind(document,"click",fire);
+
+	function fire(event)
+	{
+		var e=event || window.event;
+		var x=e.clientX;
+		var y=e.clientY;
+		var obj=document.createElement("div");
+		var body=document.getElementsByTagName("body")[0];
+		body.appendChild(obj);
+		var color=method.color();
+		var top=document.documentElement.clientHeight;
+		
+		with(obj)
+		{
+			style.height=30+"px";
+			style.width=10+"px";
+			style.position="absolute";
+			style.background="#"+color;
+			style.top=top+"px";
+			style.left=x+"px";
+			style.borderRadius=8+"px";
+		}
+		(function()
+		{
+			var ok=document.getElementById("ok");
+			if (obj.offsetTop<=100)
+			{
+				alert();
+			}
+			obj.timer=setInterval(function()
+			{
+				top-=5;
+
+				obj.style.top=top+"px";
+				//obj.innerHTML=parseInt(obj.style.top);
+				if (top<=y)
+				{
+					clearInterval(obj.timer);
+					body.removeChild(obj);
+					var img=document.createElement("img");
+					document.body.appendChild(img);
+					img.setAttribute("src","images/flower3.gif");
+					img.style.position="absolute";
+					img.style.left=x-60+"px";
+					img.style.top=top-60+"px";
+					setTimeout(function()
+					{
+						document.body.removeChild(img);
+					},2000);
+				}
+			},3);
+		})()
+	}
+function getDiff()
+{
+	var arr=[];
+		while(true)
+	{
+		var has=false;
+		if (arr.length==15)
+		{
+			break;
+		}
+		tmp=method.random(15,1);
+		for (index in arr )
+		{
+			if (tmp==arr[index])
+			{
+				has=true;
+			}
+		}
+		if (has==false)
+		{
+			arr.push(tmp);
+		}
+		has=false;
+	}
+	alert(arr);
+}
+//getDiff();
+
+
+//js广告移动，面向对象版（start）
+function Run()
+{
+	this.timer=null;
+	this.time=0;
+	this.top=10;
+	this.timer2=null;
+	this.right=0;
+	this.height=100;
+	this.width=100;
+	this.h=method.height();
+	this.w=method.width();
+	this.id="";
+}
+Run.prototype=
+{
+	down:function()
+	{
+		obj=document.getElementById(this.id);
+		with(obj.style)
+		{
+			position="absolute";
+			height=this.height+"px";
+			width=this.width+"px";
+		}
+		var that=this;
+		that.timer=setInterval(function()
+		{
+			that.top+=1;
+			obj.style.top=that.top+"px";
+			if (that.top>=that.h-that.height)
+			{
+				clearInterval(that.timer);
+				that.up();
+			}
+		},this.time);
+	},
+	up:function()
+	{
+		obj=document.getElementById(this.id);
+		var that=this;
+		that.timer=setInterval(function()
+		{
+			that.top-=1;
+			obj.style.top=that.top+"px";
+			if (that.top<=0)
+			{
+				clearInterval(that.timer);
+				that.down();
+			}
+		},this.time);
+	},
+	left:function()
+	{
+		obj=document.getElementById(this.id);
+		var that=this;
+		that.timer2=setInterval(function()
+		{
+			that.right+=1;
+			obj.style.left=that.right+"px";
+			if (that.right>=that.w-that.width)
+			{
+				clearInterval(that.timer2);
+				that.toLeft();
+			}
+		},this.time);
+	},
+	toLeft:function()
+	{
+		obj=document.getElementById(this.id);
+		var that=this;
+		that.timer2=setInterval(function()
+		{
+			that.right-=1;
+			obj.style.left=that.right+"px";
+			if (that.right<=0)
+			{
+				clearInterval(that.timer2);
+				that.left();
+			}
+		},this.time);
+	}
+}
+
+
+var ok=new Run();
+	ok.time=10;
+	ok.top=50;
+	ok.timer2=null;
+	ok.right=50;
+	ok.height=100;
+	ok.width=150;
+	ok.id="ok";
+	ok.down();
+	ok.left();
+
+	
+}
+</script>
+<style>
+	td{height:150px;width:150px;border:1px solid red;}
+</style>
+<script>
+$(function()
+{
+	function random(max,min)
+	{
+		var arr=[];
+		while(true)
+		{
+			var isHave=false;
+			if(arr.length==max)
+			{
+				break;
+			}
+			num=Math.floor(Math.random()*(max-min+1)+min);
+			for(index in arr)
+			{
+				if (num==arr[index])
+				{
+					isHave=true;
+				}
+			}
+			if (isHave==false)
+			{
+				arr.push(num);
+			}
+			isHave=false;
+		}
+		return arr;
+	}
+	function draw()
+	{
+		var tdNum=$(".img tr td");
+		var img=$("img");
+		var array=random(tdNum.length-1,0);
+		$(".img").css("position","relative");
+		var a=[];
+		for ( var j=0;j<tdNum.length;j++ )
+		{	
+			//num=tdNum.eq(j).children().remove();
+			//a.push(num);
+			//a[j].appendTo(tdNum.eq(0));
+			//a[j].css({"position":"absolute","left":"0px","top":"0px"});
+			img.eq(array[j-1]).stop(true,false).animate({top:tdNum.eq(j).offset().top+10,left:tdNum.eq(j).offset().left+30},500);
+		}
+		tdNum.children("img").css({"position":"absolute","top":"0px","left":"0px"});
+		tdNum.mousedown(function()
+		{
+			var index=tdNum.index(this);
+			$(document).mousemove(function(e)
+			{
+				var x=e.clientX;
+				var y=e.clientY;
+				tdNum.eq(index).find("img").css({"top":y-(tdNum.height()/2)+$(document).scrollTop(),"left":x-(tdNum.width()/2),"zIndex":999});
+			});
+			tdNum.mouseup(function(e)
+			{
+				$(document).unbind("mousemove");
+				var x=e.clientX;
+				var y=e.clientY;
+			});
+		});
+	}
+	//timer=setInterval(draw,1000)
+	draw();
+	$("#sort").click(function()
+	{
+		draw();
+	});
+	var ttimer=null;
+	$("body").find("img").hover(function()
+	{
+		
+		var copy,timer,timer2,that=this;
+		ttimer=setTimeout(function()
+		{
+			copy=$(that).clone(false);
+			var x=$(that).offset().left;
+			var y=$(that).offset().top;
+			copy.appendTo("body");
+			copy.css({"left":x,"top":y,"cursor":"pointer"}).stop(false,true).animate({width:$(that).width()*2,height:$(that).height()*2,left:x-($(that).width()/2),top:y-($(that).height()/2)},100,function()
+			{
+				if (parseInt(copy.css("top"))-$(document).scrollTop()<0)
+				{
+					copy.css({"top":$(document).scrollTop()});
+				}
+			});
+			copy.mouseout(function()
+			{
+				copy.remove();
+			});
+		},250);
+		/*
+		$("table").mouseout(function()
+		{
+			timer2=setTimeout(function()
+			{
+				copy.css("display","none").remove();
+				clearTimeout(timer2);
+			},500);
+		});
+		*/
+	},function()
+	{
+		clearTimeout(ttimer);
+		ttimer=null;
+	});
+	
+});
+</script>
+ <body style="height:1500px;">
+  <div id="ok" class="border"></div>
+  <table class="img pr">
+	<tr>
+		<td><img src="images/boy1.png"></td>
+		<td><img src="images/boy2.png"></td>
+		<td><img src="images/boy3.png"></td>
+		<td><img src="images/boy4.png"></td>
+		<td><img src="images/boy5.png"></td>
+		<td><img src="images/boy6.png"></td>
+		<td><img src="images/boy7.png"></td>
+		<td><img src="images/boy8.png"></td>
+	</tr>
+	<tr>
+		<td><img src="images/boy9.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy12.png"></td>
+		<td><img src="images/boy13.png"></td>
+		<td><img src="images/boy14.png"></td>
+		<td><img src="images/boy15.png"></td>
+		<td><img src="images/boy16.png"></td>
+	</tr>
+	<tr>
+		<td><img src="images/boy9.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy12.png"></td>
+		<td><img src="images/boy13.png"></td>
+		<td><img src="images/boy14.png"></td>
+		<td><img src="images/boy15.png"></td>
+		<td><img src="images/boy16.png"></td>
+	</tr>
+  </table>
+  <input type="button" value="随机排序" id="sort" class="fr pa" style="right:0px;top:0px;">
+ </body>
+</html>

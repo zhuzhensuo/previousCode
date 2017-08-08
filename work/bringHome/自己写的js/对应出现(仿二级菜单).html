@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <style>
+	.ul ul{}
+	.ul ul li{height:30px; line-height:30px;width:70px;}
+	.ul ul li.active{background:#cc0000;color:white; cursor:pointer;}
+	.option{position:absolute;left:100px;top:0; background:pink; display:none;height:300px;width:300px;overflow:hidden;}
+  </style>
+ </head>
+
+ <body>
+	<div class="clearfix pr" id="all">
+		<div class="ul fl">
+			<ul>
+				<li>111111111</li>
+				<li>222222222</li>
+				<li>333333333</li>
+				<li>444444444</li>
+				<li>55555555</li>
+			</ul>
+		</div>
+		<div>
+			<div class="option">1111111111111111111</div>
+			<div class="option">2222222222222222222</div>
+			<div class="option">3333333333333333333</div>
+			<div class="option">444444444444444444</div>
+			<div class="option">555555555555555555</div>
+		</div>
+	</div>
+ </body>
+ <script type="text/javascript" src="js/basic.js"></script>
+ <script type="text/javascript">
+	function Display(id,ul,opt){
+		this.id=zzs.$(id);
+		this.ul=zzs.$$$(ul,id)[0].getElementsByTagName("ul")[0];
+		this.li=zzs.$$$(ul,id)[0].getElementsByTagName("li");
+		this.opt=zzs.$$$(opt,id);
+		this.timeout=null;
+		this.init.apply(this,arguments);
+	}
+	Display.prototype.init=function(){
+		var _this=this;
+		zzs.each(this.li,function(i){
+			this.onmouseover=function(){
+				clearTimeout(_this.timeout);
+				zzs.each(_this.li,function(){this.className=""});
+				this.className="active";
+				zzs.each(_this.opt,function(){this.style["display"]="none";});
+				_this.opt[i].style["display"]="block";
+			}
+		});
+		zzs.each(this.opt,function(i){
+			this.onmouseover=function(){
+				clearTimeout(_this.timeout);
+			}
+			this.onmouseout=function(){
+				var that=this;
+				_this.timeout=setTimeout(function(){
+					zzs.each(_this.li,function(){this.className="";})
+					that.style["display"]="none";
+				},100);
+			}
+		});
+		this.ul.onmouseout=function(){
+			_this.timeout=setTimeout(function(){
+				zzs.each(_this.li,function(){this.className="";})
+				zzs.each(_this.opt,function(){this.style["display"]="none";})
+			},500);
+		}
+	}
+	new Display("all","ul","option");
+ </script>
+</html>

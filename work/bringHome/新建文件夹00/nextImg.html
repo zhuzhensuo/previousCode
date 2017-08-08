@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title></title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="js/jquery.clickToNext.js"></script>
+  <script>
+	$(function()
+	{
+		$(".next").clickToNext(
+		{
+			name:".next",//调用层的class或者id
+			leftBtn:"url(./images/left.cur),auto",//左边的按钮样式(格式必须是光标(.cur)，不然无效)
+			rightBtn:"url(./images/right.cur),auto",//右边的按钮样式(格式必须是光标(.cur)，不然无效)
+			timer:500,//完成动画的时间
+			color:"#C9E500"//动画的颜色
+		});
+	});
+
+	$(function()
+	{
+		$("#next").clickToNext(
+		{
+			name:"#next",//调用层的class或者id
+			leftBtn:"url(./images/left.cur),auto",//左边的按钮样式(格式必须是光标(.cur)，不然无效)
+			rightBtn:"url(./images/right.cur),auto",//右边的按钮样式(格式必须是光标(.cur)，不然无效)
+			timer:500,//完成动画的时间
+			color:"purple"//动画的颜色
+		});
+	});
+  </script>
+  <style>
+  .next{height:250px; width:720px;}
+  #next{height:250px; width:720px;}
+  .follow{position:absolute;}
+	body{background:#EFF1EF;}
+  .active{position:absolute; font-weight:bold; font-size:30px;}
+  </style>
+ </head>
+
+ <body class="oh">
+	<div class="next bc mt100">
+		<ul>
+			<li><img src="./images/bannner_pic.jpg"></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+		    <li> <img src="./images/img04.jpg" ></li> 
+			<li><img src="./images/bannner_pic.jpg"></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+		    <li> <img src="./images/img04.jpg" ></li> 
+		</ul>
+	</div>
+	<div class="bc mt100" id="next" style="display:none;">
+		<ul>
+			<li><img src="./images/bannner_pic.jpg"></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+		    <li> <img src="./images/img04.jpg" ></li> 
+			<li><img src="./images/bannner_pic.jpg"></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+		    <li> <img src="./images/img04.jpg" ></li> 
+		</ul>
+	</div>
+	<img src="images/money.jpg" class="pa" id="pen">
+ </body>
+ <script>
+	(function()
+		{
+			function getId(id)
+			{
+				return typeof id=="string" ? document.getElementById(id) : id;
+			}
+			function getTag(id,tag)
+			{
+				if (arguments.length==2)
+				{
+					return getId(id).getElementsByTagName(tag);
+				}else
+				{
+					return document.getElementsByTagName(arguments[0]);
+				}
+			}
+			function css(ele,attr,value)
+			{
+				if (arguments.length==2)
+				{
+					var style= ele.currentStyle ? ele.currentStyle[attr] : getComputedStyle(ele,null)[attr];
+					if (isNaN(parseFloat(style)))
+					{
+						return style;
+					}else
+					{
+						return parseFloat(style);
+					}
+				}
+				else if (arguments.length==3)
+				{
+					switch (attr)
+					{
+					case "width":
+					case "height":
+					case "left":
+					case "top":
+						ele.style[attr]=value+"px";
+						break;
+					case "opacity":
+						ele.style.opacity=value/100;
+						ele.style.filter="alpha(opacity="+value+")";
+						break;
+					default:
+						ele.style[attr]=value;
+						break;
+					}
+				}
+			}
+			function doMove(obj,attr,callBack)
+			{
+				var timer;
+				clearInterval(timer);
+				timer=setInterval(function()
+				{
+					var c=true;
+					for (var index in attr )
+					{
+						var opt= index=="opacity" ? parseInt(css(obj,index).toFixed(2)*100) : parseInt(css(obj,index));
+						var s=(attr[index]-opt)/5;
+						s =s>0 ? Math.ceil(s) : Math.floor(s);
+						if (opt!=attr[index])
+						{
+							css(obj,index,opt+s);
+							c=false;
+						}
+					}
+					if (c==true)
+					{
+						clearInterval(timer);
+						callBack && (callBack());
+					}
+				},20);
+			}
+			
+			function rand(max,min)
+			{
+				return Math.floor(Math.random()*(max-min+1)+min);
+			}
+			var pen=getId("pen");		
+			css(pen,"top",515);css(pen,"left",0);
+			document.onkeydown=function(event)
+			{
+				var e=event||window.event;
+				switch (e.keyCode)
+				{
+				case 68:
+					moveR(pen);
+						break;
+				case 65:
+					moveL(pen);
+						break;
+				
+				}
+			}
+			function moveR(obj)
+			{
+				
+				if (obj.offsetLeft>=document.body.offsetWidth-obj.offsetWidth-20)
+				{
+					return;
+				}
+				obj.style["left"]=(obj.offsetLeft+20)+"px";
+			}
+			function moveL(obj)
+			{
+				if (obj.offsetLeft<=0)
+				{
+					return;
+				}
+				obj.style["left"]=(obj.offsetLeft-20)+"px";
+				
+			}
+			function create()
+			{
+				var arr=["gold.jpg","rmb.jpg","my.jpg","coin.jpg","bomb.jpg","bomb2.jpg"];
+
+				var num=rand(arr.length-1,0);
+				var img=new Image();
+				img.src="./images/"+arr[num];
+				img.style.cssText="height:100px; width:100px;";
+				document.body.appendChild(img);
+				fall(img);
+				
+				var timer=setTimeout(arguments.callee,2000);
+
+			}
+			create();
+			function fall(obj)
+			{
+				obj.style["position"]="absolute";
+				obj.style["left"]=rand(document.body.offsetWidth-obj.offsetWidth-20,0)+"px";
+				obj.style["top"]=rand(-(obj.offsetHeight)*2,-obj.offsetHeight)+"px";
+				var timer=setInterval(function()
+				{
+					obj.style["top"]=(obj.offsetTop+5)+"px";
+					noDistance(obj,pen);
+					if (obj.offsetTop>=515+obj.offsetHeight)
+					{
+						document.body.removeChild(obj);
+					}
+				},20)
+			}
+			function noDistance(o1,o2)
+			{
+				var tmp=0;
+				o1left=o1.offsetLeft;
+				o1top=o1.offsetTop;
+				o2left=o2.offsetLeft;
+				o2top=o2.offsetTop;
+				if ((o1left>=o2left && o1left<=o2left+o2.offsetWidth-o1.offsetWidth) && (o1top>=o2top && o1top<=o2top+o2.offsetHeight-o1.offsetHeight))
+				{
+					css(o1,"opacity",100);
+					doMove(o1,{opacity:0},function()
+					{
+						score(o2left,o2top);
+					});
+				}
+			}
+			function score(l,t)
+			{
+				var div=document.createElement("div");
+				document.body.appendChild(div);
+				div.className="active";
+				div.innerHTML="+100";
+				div.style["left"]=l+"px";
+				div.style["top"]=t+"px";
+				css(div,"opacity",100);
+				css(div,"left",l+100);
+				doMove(div,{top:t-100});
+				doMove(div,{opacity:0},function()
+				{
+					document.body.removeChild(div);
+				});
+			}
+		})();
+ </script>
+</html>

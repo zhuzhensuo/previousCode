@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="./jquery.js"></script>
+ <script src="./js/jquery.move.js"></script>
+  <script>
+  $(function()
+  {
+	$(".clock").move();
+	$("#range").change(function()
+	{
+		var tmp=$(this).val();
+		$("#number").val(tmp);
+	});
+
+	val=$("circle").attr("r");
+
+	var t,s;
+
+	function timeGo()
+	{
+		t=new Date();
+		 s=t.getSeconds();
+		 m=t.getMinutes();
+		 h=t.getHours();
+		 ms=t.getMilliseconds();
+		 $("#range").attr("value",s);
+		 $("#number").val(s);
+		$(".sec").css("-webkitTransform","rotate("+s*6+"deg)");
+		$(".min").css("-webkitTransform","rotate("+m*6+"deg)");
+		if (h<=12)
+		{
+			$(".hour").css("-webkitTransform","rotate("+h*30+"deg)");
+		}
+		$(".hour").css("-webkitTransform","rotate("+(h-12)*30+"deg)");
+
+		$(".sec").css("-mozTransform","rotate("+s*6+"deg)");
+		$(".min").css("-mozTransform","rotate("+m*6+"deg)");
+		if (h<=12)
+		{
+			$(".hour").css("-mozTransform","rotate("+h*6+"deg)");
+		}
+		$(".hour").css("-mozTransform","rotate("+(h-12)*6+"deg)");
+	}
+	setInterval(timeGo,1000);
+
+
+		//-webkit-transform:rotate(90deg);
+	$("#range2").change(function()
+	{
+		 v=$("#range2").val();
+		//alert(val);
+		$(".circle").css("borderRadius",parseInt(v));
+		$(".clock").css("borderRadius",parseInt(v));
+	});
+	$(".circle").move();
+
+	function Person(name,age,job)
+	{
+		this.name=name;
+		this.age=age;
+		this.job=job;
+		this.say=say;
+	}
+	function say()
+	{
+		alert(this.age);
+	}
+
+	var p=new Person("007","IT");
+	//p.say();
+
+
+	$(".color li").hover(function()
+	{
+		$(this).css({"background":"white","border":"1px solid black","borderRight":"none","color":"black"}).siblings().css({"border":"none","background":""});
+	},function()
+	{
+		$(".color li").css({"background":"","border":"none","color":""});
+	});
+	$(".transform").dblclick(function(e)
+	{
+		alert("btn clicked");
+
+		e.stopPropagation();
+	});
+	var deg=0;
+	$("#speed").keyup(function()
+	{
+		clearInterval(value);
+		value=setInterval(function()
+		{
+			deg+=1;
+			$(".circle").css("-webkitTransform","rotate("+deg+"deg)");
+			if (deg>=360)
+			{
+				deg=0;
+				clearInterval(value);
+			}
+
+		},$("#speed").val());
+
+
+	});
+	//$(".clock").css({"borderRadius":"10px"});
+
+
+	/*
+	$("body").mousemove(function(e)
+	{
+
+		var	left=$(".clock").offset().left;
+		var top=$(".clock").offset().top;
+		var h=$(".clock").height();
+		var w=$(".clock").width();
+		var x=e.clientX;
+		var y=e.clientY;
+		$(".circle").html(x);
+		if (x<=left+(w/2))
+		{
+			$(".clock").css("cursor","url(./images/left.cur),auto");
+			$(this).click(function(e)
+			{
+				$(".circle").html("one");
+				e.stopPropagation();
+			});
+		}else if(x>left+(w/2))
+		{
+			$(".clock").css("cursor","");
+			$(this).click(function(e)
+			{
+				$(".circle").html("two");
+				e.stopPropagation();
+			});
+		}
+
+
+		if (x>=left+($(this).width()-10) && y>=top+($(this).height()-10))
+		{
+			//alert();
+			$(this).css({"cursor":"se-resize"});
+		}
+
+		if ($(this).css("cursor")=="se-resize")
+		{
+			var x2,y2;var x3,y3;
+			var h=$(this).height();
+			var w=$(this).width();
+			//alert(h);
+			$(document).mousedown(function(e)
+			{
+				 x2=e.clientX;
+				 y2=e.clientY;
+				 //alert(x2);
+				// alert(h);
+				e.stopPropagation();
+			});
+			$(document).mouseup(function(e)
+			{
+
+				x3=e.clientX;
+				y3=e.clientY;
+				//alert(x3-x2);
+				$(".circle").html((x3-x2)+","+(y3-y2));
+				$(".clock").css({"height":h+(y3-y2),"width":w+(x3-x2)});
+				//$(".clock").width()=$(".clock").width()+(x3-x2);
+				e.stopPropagation();
+			});
+		}else
+		{
+			$(".clock").unbind("mousemove");
+		}
+		e.stopPropagation();
+	});
+
+	$(".circle").mousemove(function(e)
+	{
+		var xx=e.clientX;
+		$(this).html(xx);
+		e.stopPropagation();
+	});
+*/
+$("body").dblclick(function()
+{
+	$(".circle").animate({left:$(document).width()},10000,function()
+	{
+		$(".circle").animate({left:0},10000);
+	});
+	$(".clock").animate({webkitTransform:rotate(45)},500);
+});
+var arr=[];
+$("body").keydown(function(e)
+{
+	var code=e.which;
+	arr.push(code);
+	for (var i=0;i<arr.length ;i++ )
+	{
+		if (arr[i]==101 && arr[i+1]==98 && arr[i+2]==96)
+		{
+			alert("我爱你！！！");
+			arr=[];
+		}
+	}
+});
+ var zzs=
+ {
+	random:function(max,min)
+	{
+		return Math.floor(Math.random()*(max-min+1)+min);
+	},
+	bind:function(obj,method)
+	{
+		return function()
+		{
+			method.apply(obj,arguments);
+		}
+	}
+ }
+
+function Kill(id)
+{
+	this.obj=$("#"+id);
+	this.beat=zzs.bind(this,this.shot);
+	this.beat2=zzs.bind(this,this.shit);
+	this.timer=null;
+	this.time=100;
+	this.jian="1";
+}
+Kill.prototype=
+{
+	shot:function()
+	{
+
+		this.obj.css({"position":"absolute","display":"none"});
+
+		var that=this;
+
+		that.timer=setInterval(function()
+		{
+			//that.obj.html()=="哦看" ? that.obj.html("看哦") :that.obj.html("哦看");
+			that.x=zzs.random($(document).width()-that.obj.width(),0);
+			that.y=zzs.random($(document).height()-that.obj.height(),0);
+			that.obj.css({"display":"block","left":that.x,"top":that.y});
+		},this.time);
+	},
+	shit:function()
+	{
+		var oThis=this;
+		oThis.obj.click(function()
+		{
+			alert(oThis.obj.width());
+		});
+	}
+}
+
+var j=new Kill("japan");
+	//j.beat();
+	//j.beat2();
+	//j.jian=1;
+	//j.shot();
+});
+  </script>
+  <style>
+  circle{ background:red;}
+  .clock{height:400px; width:400px; border:2px solid #333333;}
+  .sec{height:400px;width:14px; left:193px; background:#333333;}
+  .hide{height:50%; width:100%;bottom:0px;background:white;border:none;}
+  .min{height:340px;width:14px; left:193px; background:#333333;top:20px;}
+  .hour{height:280px; width:14px;left:193px;background:#333333;top:60px;}
+  .zhuan{left:300px;}
+  .radius{height:100px; width:150px;border-radius:10px;}
+  .circle{width:300px; height:300px;position:absolute;top:0px; right:0px;border-radius:150px;}
+  .div{width:700px;height:250px;}
+  .caton{top:0px;left:0px;width:0px;height:0px;background:white;}
+  .color{width:100px; background:pink;color:white;}
+  .color li{margin-top:10px;font-size:20px;}
+  .one{height:410px; width:410px;top:0px; left:0px;}
+  .two{height:410px;width:410px; left:0px;-webkit-transform:rotatex(90deg);}
+  #japan{height:180px; width:300px;}
+  .japan{width:100px; height:100px; background:red; border-radius:50px;top:40px;left:85px;}
+  .blur{-webkit-filter:blur(10px);position:absolute;top:0;left:50%;-webkit-transition:all 1s ease-in-out;}
+  .blur:hover{-webkit-filter:blur(0);-webkit-transition:all 1s ease-in-out;}
+  #css3{width:150px;height:150px;border:1px solid red;-webkit-transition:1s all ease-in-out;-webkit-transform:rotate(0deg);
+  }
+  #css3:hover{-webkit-transition:all 1s ease-in-out;width:500px;-webkit-transform:rotate(180deg);background:#cc0000;
+  }
+
+  p.html5{font-family:微软雅黑;position:absolute;right:100px;top:200px; cursor:pointer;font-size:30px;-webkit-transition:all 1s ease-in-out;color:black;
+  background:white;height:30px; line-height:30px;}
+  p.html5:hover{-webkit-transition:all 0.5s ease-in-out;color:#cc0000;background:#ccc;}
+  #eye{height:30px; width:80px;border:5px solid #333; float:right;margin:0 100px 100px 0px; border-radius:50px 50px 150px -150px;}
+  </style>
+ </head>
+
+ <body style="overflow-x:hidden;">
+ <ul class="color fb">
+	<li>1111</li>
+	<li>2222</li>
+	<li>3333</li>
+</ul>
+  <style> :invalid { background-color: pink; } </style>
+ <input type="range" id="range" class="range" min="0" max="200">
+ <input type="number" id="number">
+ <input type="search" results="10" placeHolder="请输入查找内容...">
+
+ <input type="Email">
+ <input type="tel" value="110"/>
+ <progress style="height:20px;"></progress>
+ <meter>dfdfd</meter>
+ <output type="text">
+<canvas id="canvas" width="838" height="220"></canvas>
+
+
+<div class="clock bc pr">
+	<div class="pa sec">
+		<div class="hide pa"></div>
+	</div>
+	<div class="pa min">
+		<div class="hide pa"></div>
+	</div>
+	<div class="pa hour">
+		<div class="hide pa"></div>
+	</div>
+</div>
+<img src="./images/2page-img1.jpg" class="zhuan">
+<input type="button" value="转" class="transform">
+<div class="border radius"></div>
+<div class=" circle border pr" style="left:0px;"><div class="wheelone pa border" style="height:300px;width:10px;background:red;left:145px;"></div><div class="wheeltwo pa" style="width:300px;height:10px;background:red;top:145px;"></div></div>
+<input type="text" id="speed">
+<input type="range" id="range2" min="0" max="150">
+<div id="japan" class="pr"><div class="japan pa"></div></div>
+<div class="blur"><img src="images/shuye9.png"/></div>
+
+<div id="css3">你好我是css3</div>
+<p class="html5">强大的HTML5，大家都快来学习吧！！！</p>
+ </body>
+</html>

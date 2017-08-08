@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+	<style>
+		*{margin:0;padding:0;}
+		canvas{border:1px solid #ccc;margin:-250px 0 0 -250px; position:absolute;left:50%;TOP:50%;}
+	</style>
+ </head>
+
+ <body>
+	<canvas width="700" height="500" id="canvas">
+		亲，你的浏览器不支持HTML5！！！
+	</canvas>
+ </body>
+ <script>
+	void function(){
+		var canvas=document.getElementById("canvas");
+		try{
+			var context=canvas.getContext("2d");
+	var img=new Image();
+	var h=30,w=30,x=0,y=0,width=canvas.width,height=canvas.height,arr=false,arr2=false;
+	img.src="images/heart.jpg";
+
+	img.onload=function(){
+		draw();
+	}
+	function draw(a,b){
+		context.clearRect(0,0,width,height);
+		context.drawImage(img,a,b,h,w);
+	}
+	draw();
+	function interval(){
+		interval.timer=setInterval(function(){
+			if(x>=width-w){arr=true;}
+			if(x<=0){arr=false;}
+			arr==true ? x-=5 : x+=5;
+
+			if(y>=height-h){arr2=true;}
+			if(y<=0){arr2=false;}
+			arr2==true ? y-=5 : y+=5;
+			draw(x,y);
+		},20);
+	}
+	interval();
+	canvas.onmouseover=function(){
+		clearInterval(interval.timer);
+	}
+	canvas.onmouseout=interval;
+
+		}
+		catch (e){
+			alert("亲，你的浏览器不支持HTML5！！！");
+		}
+
+	}()
+
+ </script>
+</html>

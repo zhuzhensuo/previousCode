@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	body{height:2000px;}
+	*{MARGIN:0;PADDING:0; font-family:微软雅黑;}
+	.ok{height:100px; width:100px; position:relative;left:0;top:0; background:#cc0000; display:none;}
+	h6{position:absolute;bottom:0;width:150px; height:150px; line-height:150px; text-align:center; font-size:50px;font-weight:bold;left:-150px;
+	font-size:200px;}
+	.heart{height:300px; width:300px;position:absolute;margin:-150px 0 0 -150px;left:60%;top:60%;text-align:center;line-height:300px;
+	font-weight:bold;font-size:30px;}
+
+	.heart img{width:100px; height:100px;position:relative;top:50px;opacity:0.2;filter:alpha(opacity=20);}
+	.heart select{position:absolute;left:0;top:0; }
+	#ok{width:300px; height:300px; position:absolute; left:0;top:300px;opacity:1;}
+	#game{margin:0 auto; width:460px;height:200px;position:absolute;top:200px; left:500px;}
+	#game div{position:absolute;left:230px;top:100px;height:0;width:0; text-align:center;line-height:100%;color:white; font-weight:bold; font-size:40px;
+	overflow:hidden; cursor:pointer;z-index:0;}
+	#game a{display:block;width:100%;height:100%;}
+	p{position:absolute;height:50px; width:50px; text-align:center; line-height:50px; font-weight:bold; cursor:pointer;top:80px;}
+	p.left{left:50px;}
+	p.right{right:50px;}
+	#a{height:100px;width:100px;left:0;top:50px;}
+	#b{height:120px;width:120px;left:120px;top:40px;}
+	#c{height:140px;width:140px;left:260px;top:30px;}
+	#d{height:120px;width:120px;left:420px;top:40px;}
+	#e{height:100px;width:100px;left:560px;top:50px;}
+	#fixed{height:30px; width:100%;position:fixed;top:0;left:0; background:#cc0000; z-index:10000;}
+
+	#game p{position:absolute;left:0;top:200px;height:50px; background:black;width:100%;color:white;font-size:14px;_font-size:0;}
+  </style>
+ </head>
+
+ <body>
+	<div id="fixed"></div>
+	<div class="heart"><img src="images/heart.png"/>
+		<select>
+			<option>请选择心动程度</option>
+			<option value=50>不喜欢</option>
+			<option value=30>喜欢</option>
+			<option value=10>非常喜欢</option>
+			<option value=1>愿意为TA死</option>
+		</select>
+	</div>
+
+	<p class="left">向左</p>
+	<p class="right">向右</p>
+	<div id="game">
+		<div style="background:#cc0000;"><p>短你粮草，乱你军心</p></div>
+		<div style="background:orange;"><p>出其不意，攻其不备</p></div>
+		<div style="background:gray;"><p>兵者，鬼道也</p></div>
+		<div style="background:green;"><p>人若烦我，我必烦人</p></div>
+		<div style="background:indigo;"><p>无中生有</p></div>
+		<div style="background:blue;"><p>探囊取物</p></div>
+		<div style="background:purple;"><p>釜底抽薪</p></div>
+	</div>
+	<div></div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+	(function(){
+		var obj=zzs.$(".ok");
+		zzs.each(obj,function(a,b){
+			zzs.fadeIn(this,20,function(){
+				zzs.doMove(b,{width:300,zIndex:360},20,function(){
+					zzs.slideNone(b,20,function(){
+						zzs.removeClass(b,"ok");
+						zzs.addClass(b,"ok2");
+						zzs.addClass(b,"ok3");
+						zzs.addClass(b,"ok7");
+					});
+
+				});
+			});
+		});
+	})();
+	(function(){
+		var str="临兵斗者阵列在前。。。";
+		str=str.split("");
+		var frag=document.createDocumentFragment();
+		for(var i=0;i<str.length;i++){
+			var p=document.createElement("h6");
+			p.innerHTML=str[i];
+			frag.appendChild(p);
+		}
+		document.body.appendChild(frag);
+		var _index=0;
+		var el=zzs.$("h6"),width=zzs.css(el[0],"width");
+		function go(){
+
+			clearInterval(el[_index].timer);
+			el[_index].timer=zzs.doMove(el[_index],{left:_index*width,zIndex:360,fontSize:50},_index*_index);
+			_index++;
+			if(_index>=el.length){
+				clearInterval(go.timer);
+
+				return;
+			}
+			go.timer=setTimeout(arguments.callee,200);
+		}
+		go();
+	})();
+
+	(function(){
+		var time=30,timer,obj=zzs.$(".heart")[0];
+		var size=zzs.css(obj.children[0],"width");
+		var h=zzs.css(obj.children[0],"height");
+		var heartMove=function(t){
+			var fn=arguments.callee;
+			clearInterval(heartMove.timer);
+			heartMove.timer=zzs.doMove(zzs.$(".heart")[0].children[0],{width:250,height:250},t,function(){
+				zzs.css(zzs.$(".heart")[0].children[0],{height:h,width:size});
+				clearInterval(heartMove.timer);
+				fn(t);
+			});
+		}
+		heartMove(time);
+		zzs.$("select")[0].onchange=function(){
+			this.blur();
+			var v=this.value;
+			if(!isNaN(v)){
+				clearInterval(heartMove.timer);
+				heartMove(v);
+			}
+		}
+	})();
+
+
+
+	(function(){
+		var arr=[{height:80,width:100,left:50,top:60,zIndex:2},{height:120,width:120,left:80,top:40,zIndex:3},{height:200,width:200,left:130,top:0,zIndex:4}
+		,{height:120,width:120,left:260,top:40,zIndex:3},{height:80,width:100,left:310,top:60,zIndex:2}];
+
+		var div=zzs.$("#game","div"),left=zzs.$(".left")[0],right=zzs.$(".right")[0],container=zzs.$("#game"),p=zzs.$("#game","p");
+
+		var animate=function(){
+			var fn=arguments.callee;
+			/*
+			zzs.each(div,function(_i){
+			clearInterval(this.timer);
+			this.timer=zzs.doMove(this,arr[_i]);
+			});
+			*/
+			for(var i=0;i<div.length;i++){
+				if(i<arr.length){
+					div[i].index=i;
+					clearInterval(div[i].timer);
+					div[i].timer=zzs.doMove(div[i],arr[i]);
+				}else{
+					clearInterval(div[i].timer);
+					div[i].index=0;
+					div[i].timer=zzs.doMove(div[i],{height:100,width:100,left:160,top:50,zIndex:-20+i});
+				}
+			}
+		}
+		animate();
+
+		var append=function(){
+			container.appendChild(div[0]);
+		}
+		left.onclick=function(){
+			append();
+			animate();
+			event();
+		}
+		var insert=function(){
+			container.insertBefore(div[div.length-1],div[0]);
+		}
+		right.onclick=function(){
+			insert();
+			animate();
+			event();
+		}
+		left.onmouseover=right.onmouseover=function(){
+			clearInterval(auto.timer);
+		}
+		var auto=function(){
+			auto.timer=setInterval(function(){
+				container.appendChild(div[0]);
+				animate();
+				event();
+			},3000);
+		}
+		auto();
+		left.onmouseout=right.onmouseout=function(){
+			auto();
+		}
+		var event=function(){
+				zzs.each(div,function(i){
+				this.onmouseover=function(){
+					if(this.offsetHeight==arr[2]["height"]){
+						clearInterval(this.timer);
+						this.timer=zzs.doMove(p[i],{top:this.offsetHeight-p[i].offsetHeight})
+					}
+				}
+				this.onmouseout=function(){
+					if(this.offsetHeight==arr[2]["height"]){
+						clearInterval(this.timer);
+						this.timer=zzs.doMove(p[i],{top:this.offsetHeight+p[i].offsetHeight})
+					}
+				}
+			});
+		}
+		event();
+		zzs.each(div,function(i){
+				this.onclick=function(){
+					var tmp=this.index-2;
+					if(tmp>0){
+						switch (parseInt(tmp))
+						{
+						case 1:
+							append();
+							animate();
+							event();
+							break;
+						case 2:
+							append();
+							animate();
+							append();
+							animate();
+							break;
+						}
+					}else if(tmp<0){
+						switch (Math.abs(tmp))
+						{
+							case 1:
+								insert();
+								animate();
+								event();
+								break;
+							case 2:
+								insert();
+								animate();
+								insert();
+								animate();
+								break;
+						}
+					}
+				}
+		});
+		zzs.$("#game").onmouseover=function(){
+			clearInterval(auto.timer);
+		}
+		zzs.$("#game").onmouseout=function(){
+			auto();
+		}
+
+
+
+	})();
+
+
+
+
+
+	(function(){
+		/*
+		var top=0,id=document.getElementById("nav");
+		window.onscroll=function(){
+			var stop=document.documentElement.scrollTop||document.body.scrollTop;
+			if(stop>top){
+
+				top=stop;
+				id.style["display"]="none";
+				//alert("向下");
+
+			}else if(stop<top){
+				top=stop;
+				id.style["display"]="block";
+				//alert("向上");
+			}else{
+				return;
+			}
+		}
+		*/
+	})();
+
+
+ </script>
+</html>

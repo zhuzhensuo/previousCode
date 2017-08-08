@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+		*{margin:0;padding:0;}
+		div{position:absolute;height:5px; width:5px;}
+  </style>
+ </head>
+
+ <body>
+
+ </body>
+ <script>
+	(function(){
+		var zzs={x:0,y:0},num=0;
+		var random=function(max,min){
+			return Math.floor(Math.random()*(max-min+1)+min);
+		}
+
+		var createColor=function(){
+			var color=random(0xFFFFFF,0).toString(16);
+			while (color.length<6)
+			{
+				color+="0";
+			}
+			return "#"+color;
+		}
+		document.onmousedown=function(){
+			clearInterval(this.timer);
+			this.onmousemove=function(e){
+				var e=e||window.event;
+				zzs.x=e.clientX;
+				zzs["y"]=e.clientY;
+				var div=document.createElement("div");
+				document.body.appendChild(div);
+				div.style["left"]=zzs.x+"px";
+				div.style["top"]=zzs.y+"px";
+				div.style["background"]=createColor();
+			}
+
+		}
+
+		var div2=document.getElementsByTagName("div");
+		var shine=function(){
+			for(var i=0,len=div2.length-1;i<len;i++){
+				div2[i].style["background"]=createColor();
+			}
+		}
+
+		document.onmouseup=function(){
+			this.onmousemove=null;
+			clearInterval(this.timer);
+			var div2=document.getElementsByTagName("div");
+			this.timer=setInterval(function(){
+				div2[num].style["display"]="none";
+				//document.body.removeChild(div2[num]);
+				shine();
+				if(num>=div2.length-1){
+					clearInterval(this.timer);
+					num=div2.length-1;
+					return;
+				}
+				num++;
+			},20);
+		}
+	})();
+ </script>
+</html>

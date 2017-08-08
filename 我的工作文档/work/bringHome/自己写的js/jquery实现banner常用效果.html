@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script src="js/jquery.js"></script>
+  <script src="js/ui.js" type="text/javascript"></script>
+  <script type="text/javascript">
+	$(function()
+	{
+		$("#banner").all({
+			time:4000,
+			hasBtn:{
+				btn:"btn",
+				active:"active",
+				hasText:true
+			},
+			type:"fade"
+		});
+	});
+  </script>
+  <style>
+	#banner{width:500px;height:300px;}
+	.btn{position:absolute;bottom:0px;right:0px;}
+	.btn li{float:left;height:20px; width:20px; background:black;margin-left:10px;cursor:pointer;
+	color:white;line-height:20px;text-align:center;}
+	.banner li{width:500px;height:300px;float:left;font-size:150px;line-height:300px;}
+
+	#banner .active{background:red;color:blue;}
+  </style>
+ </head>
+
+ <body>
+	<div id="banner" class="border bc pr oh">
+		<ul class="banner pa">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+	</div>
+ </body>
+ <script>
+	$(function(){
+		$(document).live("click",function(){
+		});
+		$(document).die("click");
+
+	});
+ </script>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+	#a{height:400px; width:400px; position:absolute; margin:-200px 0 0 -200px; left:50%; top:50%;}
+	#a div{width:200px;height:40px; text-align:center;line-height:40px; background:none;}
+	#b{position:absolute; top:0;left:0;opacity:0.6; filter:alpha(opacity=50);background:white; font-size:20px;}
+	#b a{opacity:0.6; filter:alpha(opacity=50);color:#cc0000;}
+	#b a:hover{color:black;}
+	#c{position:absolute; top:50px;left:100px;background:white;}
+	#c a{color:blue;}
+	#d{position:absolute; top:100px;right:100px;}
+	#d a{color:#008000;}
+	#e,#f,#g{position:absolute;background:white;}
+	#e{right:20px; top:300px;}
+	#e a{color:green;}
+	#f{right:120px; top:200px;}
+	#f a{color:purple;}
+	#g{right:220px; top:300px;}
+	#g a{color:orange;}
+	.test{left:0;top:0; height:50px; width:100px; text-align:center; line-height:50px;font-size:14px;position:relative;}
+	.test a{}
+</style>
+</head>
+
+<body>
+	<div id="a">
+    	<div id="b"><a href="###" title="对不起,没有">房子</a></div>
+        <div id="c"><a href="###" title="没有">车子</a></div>
+        <div id="d"><a href="###" title="也没有">美女</a></div>
+		<div id="e"><a href="###" title="这个真没有">房没有</a></div>
+        <div id="f"><a href="###" title="对不起,没有">车没有</a></div>
+        <div id="g"><a href="###" title="这个也没有">美女没有</a></div>
+    </div>
+
+	<div class="test border cp"><a href="###">首页</a></div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	/*
+		这个类用来实现一个对象在一个指定区域内上下循环走动(仿淘宝),有四个参数：
+		1：需要移动DIV的id；
+		2：开始位置；
+		3：结束位置；
+		4：方向，true向下移动，false向上移动；
+	*/
+	function Move(obj,from,end,direction){
+		this.obj=zzs.$(obj);
+		this.from=from;
+		this.end=end;
+		this.t=null;
+		this.isBack=direction;
+		this.doMove.apply(this,arguments);
+		this.hover.apply(this,arguments);
+	}
+	Move.prototype.doMove=function(){
+		var _this=this;
+		var top=this.obj.offsetTop;
+		this.timer=setInterval(function(){
+			!_this.isBack ? top++ : top--;
+			_this.obj.style["top"]=top+"px";
+			if (top>=_this.end-_this.obj.offsetHeight){
+				_this.isBack=!_this.isBack;
+			}else if(top<=_this.from){
+				_this.isBack=!_this.isBack;
+			}
+		},50);
+	}
+	Move.prototype.hover=function(){
+		var _this=this;
+		this.obj.onmouseover=function(){
+			clearInterval(_this.timer);
+			clearInterval(_this.t);
+			_this.t=zzs.doMove(this,{fontSize:40,zIndex:360});
+		}
+		this.obj.onmouseout=function(){
+			clearInterval(_this.timer);
+			clearInterval(_this.t);
+			_this.t=zzs.doMove(this,{fontSize:20,zIndex:0});
+			_this.doMove();
+		}
+	}
+	new Move("b",0,zzs.$("a").offsetHeight,false);
+	new Move("c",0,zzs.$("a").offsetHeight,true);
+	new Move("d",0,zzs.$("a").offsetHeight,false);
+	new Move("e",0,zzs.$("a").offsetHeight,false);
+	new Move("f",0,zzs.$("a").offsetHeight,true);
+	new Move("g",0,zzs.$("a").offsetHeight,false);
+
+	zzs.$$$("test")[0].onmouseover=function(){
+		clearInterval(this.timer);
+		this.timer=zzs.doMove(this,{fontSize:40,zIndex:360});
+	}
+	zzs.$$$("test")[0].onmouseout=function(){
+		clearInterval(this.timer);
+		this.timer=zzs.doMove(this,{fontSize:14,zIndex:0});
+	}
+
+</script>
+</html>

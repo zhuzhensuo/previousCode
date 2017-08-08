@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+  </style>
+ </head>
+
+ <body>
+	<p></p>
+ </body>
+<script>
+	(function(){
+		document.body.innerHTML="";
+		var mess="一个很好玩的效果...";
+	mess=mess.split("");
+	var frag=document.createDocumentFragment();
+	for (var i=0;i<mess.length ;i++ )
+	{
+		var span=document.createElement("span");
+		span.style["position"]="absolute";
+		span.innerHTML=mess[i];
+		frag.appendChild(span);
+	}
+	document.body.appendChild(frag);
+	var span=document.getElementsByTagName("span");
+	var x=0,y=0,flag=30,xpo=[],ypo=[],is=false;
+
+	function pos(event){
+		var e=event || window.event;
+		x=e.clientX;
+		y=e.clientY;
+		//document.getElementsByTagName("p")[0].innerHTML=x+"-------"+y;
+	}
+	for (var i=0;i<mess.length ;i++ ){
+		xpo[i]=ypo[i]=0;
+	}
+	function random(max,min){
+		return Math.floor(Math.random()*(max-min+1)+min);
+	}
+	function color(){
+		var c=random(0xFFFFFF,0).toString(16);
+		while(c.length<6){
+			c+="0";
+		}
+		return "#"+c;
+	}
+	function move(){
+		for (var i=mess.length-1;i>=1 ;i-- ){
+			xpo[i]=xpo[i-1]+30;
+			ypo[i]=ypo[i-1];
+		}
+		xpo[0]=x+20;
+		ypo[0]=y;
+
+		for (var i=0;i<mess.length ;i++ ){
+			var c=color();
+			span[i].style.left=xpo[i]+"px";
+			span[i].style.top=ypo[i]+"px";
+			span[i].style["color"]=c;
+		}
+		var timer=setTimeout(arguments.callee,20);
+	}
+	move();
+	document.onmousemove=pos;
+	})();
+	
+/*
+	javascript:(function(){document.body.innerHTML="";var mess="一个很好玩的效果...";mess=mess.split("");var frag=document.createDocumentFragment();for(var i=0;i<mess.length;i++){var span=document.createElement("span");span.style["position"]="absolute";span.innerHTML=mess[i];frag.appendChild(span)}document.body.appendChild(frag);var span=document.getElementsByTagName("span");var x=0,y=0,flag=30,xpo=[],ypo=[],is=false;function pos(event){var e=event||window.event;x=e.clientX;y=e.clientY}for(var i=0;i<mess.length;i++){xpo[i]=ypo[i]=0}function random(max,min){return Math.floor(Math.random()*(max-min+1)+min)}function color(){var c=random(16777215,0).toString(16);while(c.length<6){c+="0"}return"#"+c}function move(){for(var i=mess.length-1;i>=1;i--){xpo[i]=xpo[i-1]+30;ypo[i]=ypo[i-1]}xpo[0]=x+20;ypo[0]=y;for(var i=0;i<mess.length;i++){var c=color();span[i].style.left=xpo[i]+"px";span[i].style.top=ypo[i]+"px";span[i].style["color"]=c}var timer=setTimeout(arguments.callee,20)}move();document.onmousemove=pos})();
+*/
+ </script>
+
+</html>

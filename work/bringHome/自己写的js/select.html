@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+	.father{width:200px; height:50px; line-height:50px; text-align:center; cursor:pointer;}
+	.son{width:150px;top:-1px; right:-150px; z-index:-1;}
+</style>
+</head>
+
+<body>
+	<div class="father border pr" id="father">fdfdf
+    	<div class="son pa border dn">
+        	<a href="###">1111111111</a>
+            <a href="###">2222222222</a>
+            <a href="###">3333333333</a>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	function Block(id){
+		this.id=zzs.$(id);
+		this.out=null;
+	}
+	Block.prototype.display=function(){
+		this.id.onmouseover=function(){
+			var _this=this;
+			clearTimeout(_this.out);
+			if(this.children[0]){
+				this.children[0].style.display="block";
+			}
+		}
+		this.id.onmouseout=function(){
+			var son=this.children[0];
+			var _this=this;
+			_this.out=setTimeout(function(){
+				if(son){
+					son.style.display="none";
+				}
+			},400);
+		}
+	}
+	new Block("father").display();
+</script>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	html{overflow-x:hidden;}
+	ul li{list-style:none outside;}
+	#wrap{height:200px; width:100%;position:relative;}
+	#wrap *{margin:0;padding:0;}
+	.wrap{position:relative;height:100%;top:0;left:0;}
+	.wrap ul{height:100%;border:1px solid blue; position:absolute;left:0;top:0;}
+	.wrap ul li{float:left;display:inline;text-align:center;height:100%;}
+	#wrap ul.btnlist{position:absolute;bottom:20px;left:50%;}
+	#wrap ul.btnlist li{float:left;height:10px;width:10px;margin:0 5px;background:#fff; border:2px solid black;cursor:pointer;}
+	#wrap ul.btnlist li.active{background:#000;}
+
+
+
+	#wrap2{width:990px;height:230px;margin:30px auto;border:1px solid red; position:relative;}
+	.father{height:100%;width:928px;margin:0 auto;position:relative;overflow:hidden;}
+	.prev{position:absolute;top:0;left:0;height:100%;line-height:230px;cursor:pointer;}
+	.next{position:absolute;top:0;right:0;height:100%;line-height:230px;cursor:pointer;}
+	.father ul{height:100%;position:absolute;left:0;top:0;}
+	.father ul li{float:left;display:inline;width:221px;margin:0 5px;height:100%;border:1px solid blue;}
+  </style>
+ </head>
+
+ <body>
+	<div id="wrap">
+		<div class="wrap">
+			<ul>
+				<li style="background:#ddd;"></li>
+				<li style="background:#aaa;"></li>
+				<li style="background:#ccc;"></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="wrap2">
+		<div class="prev">left</div>
+		<div class="next">right</div>
+		<div class="father">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+			</ul>
+		</div>
+	</div>
+ </body>
+ <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+ <script>
+	$(function(){
+		function Scroll(id,className){
+			this.id=$("#"+id);
+			this.className=this.id.find("."+className);
+			this.li=this.className.find("li");
+			this.init.apply(this,arguments);
+			this.index=0;
+		}
+		Scroll.prototype={
+			init:function(){
+				this.resize();
+				this.createBtn();
+			},
+			resize:function(){
+				var w=parseInt(this.id.css("width"));
+				this.li.css({"width":w});
+				this.ul=this.className.find("ul");
+				var total=this.li.length*w;
+				this.ul.css({"width":total});
+				var me=this;
+				window.onresize=function(){
+					me.resize();
+					me.ul.css("left",-(me.index*me.id.width()));
+				};
+			},
+			createBtn:function(){
+				var ul=$("<ul class='btnlist'></ul>");
+				for(var i=0;i<this.li.length;i++){
+					var li=$("<li>");
+					ul.append(li);
+				}
+				this.id.append(ul);
+				var uWidth=ul.width();
+				ul.css("marginLeft",-(uWidth/2));
+				ul.find("li:first").addClass("active");
+
+				this.event();
+			},
+			event:function(){
+				this.btn=this.id.find("ul.btnlist>li");
+				var me=this;
+				this.btn.click(function(){
+					me.index=me.btn.index(this);
+					//alert(index);
+					me.run();
+				});
+			},
+			run:function(){
+				var me=this;
+				this.ul.stop(true,false).animate({left:-(this.index*this.id.width())});
+				this.btn.removeClass("active");
+				this.btn.eq(this.index).addClass("active");
+			}
+		}
+		new Scroll("wrap","wrap");
+
+
+
+		function Scroll2(id,l,r,auto){
+		this.id=$("#"+id);
+		this.ul=this.id.find("ul");
+		this.li=this.ul.find("li");
+		this.l=this.id.find("div."+l);
+		this.r=this.id.find("div."+r);
+		this.auto=auto;
+		this.done=true;
+		var _this=this;
+		this.ul.css("width",this.li.width()*this.li.length);
+		this.l.click(function(){
+			doMove();
+		});
+		this.r.click(function(){
+			if(!_this.done){return;}
+			_this.done=false;
+			_this.li=_this.ul.find("li");
+			_this.ul.css({"left":-_this.li.width()});
+			_this.li.eq(_this.li.length-1).insertBefore(_this.li.eq(0));
+			_this.ul.animate({left:0},function(){
+				_this.done=true;
+			});
+		});
+		var doMove=function(){
+			if(!_this.done){return;}
+			_this.done=false;
+			_this.li=_this.ul.find("li");
+			_this.ul.animate({left:-_this.li.width()},function(){
+				_this.ul.append(_this.li.eq(0));
+				_this.ul.css("left",0);
+				_this.done=true;
+			});
+		}
+		var interMove=function(){
+			doMove.timer=setInterval(doMove,4000);
+		}
+		if(this.auto){
+			interMove();
+			this.l.mouseover(function(){
+			clearInterval(doMove.timer);
+			});
+			this.r.mouseover(function(){
+				clearInterval(doMove.timer);
+			});
+			this.l.mouseout(function(){
+				interMove();
+			});
+			this.r.mouseout(function(){
+				interMove();
+			});
+		}
+	}
+
+	new Scroll2("wrap2","prev","next",false);
+
+
+
+
+
+
+
+
+	});
+ </script>
+</html>

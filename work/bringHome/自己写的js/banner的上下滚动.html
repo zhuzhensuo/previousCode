@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <style>
+	.container{height:200px; width:400px;position:absolute;top:0px;}
+	.container li{height:200px; width:400px; border:1px solid red;}
+	#banner{position:relative;height:200px;}
+	 .append{position:absolute;left:30px; bottom:30px;cursor:pointer;z-index:999;}
+	 .append li{float:left;display:inline;margin-left:10px;height:15px; width:30px;background:black;}
+	 li.active2{background:black;}
+	 li.active{background:red;}
+
+	#banner2{position:relative;height:200px;}
+	#banner2 .append{position:absolute;left:30px; bottom:30px;cursor:pointer;}
+	#banner2 .append li{float:left;display:inline;margin-left:10px;height:15px; width:30px;background:black;}
+	#banner2 li.active2{background:black;}
+	#banner2 li.active{background:red;}
+  </style>
+ </head>
+
+ <body>
+	<div id="banner" class="oh">
+		<ul class="container">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+
+	<div id="banner2" class="oh mt100">
+		<ul class="container">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+ </body>
+ <script>
+ 	//这个类用来实现banner的上下滚动，需要传入两个值，第一个是最外层DIV的id，最外层DIV要设置为position：relative；
+	//第二个值是滚动ul列表的className,ul列表要设置成position：absolute；top：0；left:0;使用此类要注意的地方是li里面的内容不能够出现li标签，否则会出错!
+	function Animate(id,cName)
+	{
+		this.id=zzs.$(id);
+		this.scroll=zzs.$$$(cName,id)[0];
+		this.li=this.scroll.getElementsByTagName("li");
+		this.ul=document.createElement("ul");
+		this.index=0;
+		this.t=null;
+		this.timer2=null;
+		this.c=true;
+		this.timer;
+		this.createBtn=function()
+		{
+			this.frag=document.createDocumentFragment();
+			for (var i=0;i<this.li.length ;i++ )
+			{
+				this.frag.appendChild(document.createElement("li"));
+			}
+			this.ul.appendChild(this.frag);
+			this.ul.className="append";
+			this.id.appendChild(this.ul);
+		}
+		this.createBtn();
+		var li=this.ul.getElementsByTagName("li");
+		li[0].className="active"
+		var _this=this;
+		this.fn=zzs.apply(this,zzs.doMove2);
+		
+		this.click=function()
+		{
+			for (var i=0;i<li.length ;i++ )
+			{
+				li[i].index=i;
+				li[i].onclick=function()
+				{
+					//if(!_this.c)return;
+					//_this.c=false;
+					_this.index=this.index;
+					_this.color(_this.index);
+					clearInterval(_this.timer);
+					_this.timer=setInterval(function()
+					{
+						_this.fn(_this.scroll,{top:-(_this.index*_this.li[0].offsetHeight)},function(){clearInterval(_this.timer)});
+					},20);
+					//zzs.doMove(_this.scroll,{top:-(_this.index*_this.li[0].offsetHeight)},function(){_this.c=true});
+				}
+			}
+		}
+		this.color=function(index)
+		{
+			for (var j=0;j<li.length ;j++ )
+			{
+				li[j].className="active2";
+			}
+			li[index].className="active";
+		}
+		this.click();
+	}
+	Animate.prototype=
+	{
+		autoPlay:function()
+		{
+			var _this=this;
+			this.timer2=setInterval(function()
+			{
+				_this.index++;
+				
+				if (_this.index>_this.li.length-1)
+				{
+					_this.index=0;
+				}
+				_this.color(_this.index);
+				zzs.doMove(_this.scroll,{top:-(_this.index*_this.li[0].offsetHeight)},function(){_this.c=true});
+
+			},3000);
+			
+		},
+		hover:function()
+		{
+			var _this=this;
+			for (var i=0;i<_this.li.length ;i++ )
+			{
+				_this.ul.children[i].onmouseover=function()
+				{
+					clearInterval(_this.timer2);
+					_this.timer2=null;
+				}
+				_this.ul.children[i].onmouseout=function()
+				{
+					_this.autoPlay();
+				}
+			}
+		}
+	}
+	
+	var o=new Animate("banner","container");
+	o.autoPlay();
+	o.hover();
+	var o2=new Animate("banner2","container");
+	o2.autoPlay();
+	o2.hover();
+ </script>
+</html>

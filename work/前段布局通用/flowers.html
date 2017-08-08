@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <style>
+	*{margin:0;padding:0;}
+	span{position:absolute;left:50%;height:10px; width:10px;border-radius:50%;margin-left:-5px;}
+	html{overflow:hidden;}
+  </style>
+ </head>
+
+ <body>
+ </body>
+ <script>
+	var zzs={
+		random:function(max,min){
+			return Math.floor(Math.random()*(max-min+1)+min);
+		},
+		colors:function(){
+			var c=this.random(0xFFF,0).toString(16);
+			while(c.length<6){
+				c+="0";
+			}
+			return "#"+c;
+		},
+		init:function(){
+			this.go();
+		},
+		go:function(){
+			var t=document.documentElement.clientHeight,_this=this;
+			this.go.timer=setInterval(function(){
+				var div=document.createElement("span");
+				div.style["top"]=t+"px";
+				document.body.appendChild(div);
+				_this.doMove(div);
+
+
+			},200);
+		},
+		doMove:function(obj){
+			var xspeed=this.random(20,-10);
+			var yspeed=this.random(-20,-25);
+			var max=document.documentElement.clientHeight-obj.offsetHeight;
+			var w=document.documentElement.clientWidth-obj.offsetWidth;
+			obj.tmp=0;
+			obj.style["background"]=zzs.colors();
+			this.doMove.timer=setInterval(function(){
+					if(obj.offsetLeft<=0 || obj.offsetLeft>=w){
+						xspeed*=-0.3;
+					}
+					obj.style["left"]=obj.offsetLeft+xspeed+"px";
+					var top=obj.offsetTop;
+					yspeed++;
+					var total=top+yspeed;
+					if(total>=max){
+						total=max;
+						yspeed*=-0.5;
+						obj.tmp++;
+						if(obj.tmp>1){
+							try{
+								document.body.removeChild(obj);
+							}catch(e){
+								return;
+							}
+						}
+					}else{
+						obj.tmp=0;
+					}
+
+					
+
+					obj.style["top"]=total+"px";
+				
+
+			},20);
+			
+
+
+		}
+
+
+
+	}
+
+	zzs.init();
+ </script>
+</html>

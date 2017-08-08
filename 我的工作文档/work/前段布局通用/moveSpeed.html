@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	#div{height:100px; width:100px; background:#333;position:absolute;left:0;top:0;}
+  </style>
+ </head>
+
+ <body>
+	<div id="div"></div>
+ </body>
+ <script>
+	var div=document.getElementById("div"),xs=0,ys=0,timer,x=0,y=0;
+
+	document.onmousemove=function(ev){
+		var e=ev || window.event;
+		x=e.clientX;y=e.clientY;
+		var xspeed= x-div.offsetLeft,yspeed=y-div.offsetTop;
+		var c=Math.sqrt(xspeed*xspeed+yspeed*yspeed);
+		xs=10*xspeed/c;
+		ys=10*yspeed/c;
+
+	}
+	var pz=function(){
+		var l=div.offsetLeft;
+		var r=div.offsetLeft+div.offsetWidth;
+		var t=div.offsetTop;
+		var b=div.offsetTop+div.offsetHeight;
+
+		if(r<x || l>x ||b<y || t>y){return false}else{return true;}
+	}
+	var move=function(){
+
+
+	}
+		var doMove=function(){
+			timer=setInterval(function(){
+				try{
+					if(pz()){clearInterval(timer);}else{
+
+					}
+					div.style["left"]=div.offsetLeft+xs+"px";
+				}
+				catch (e){
+					return;
+				}
+
+				div.style["top"]=div.offsetTop+ys+"px";
+			},20);
+		}
+	doMove();
+ </script>
+</html>

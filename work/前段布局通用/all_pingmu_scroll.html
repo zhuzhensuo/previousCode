@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0; padding:0;}
+	html{overflow:hidden;}
+	#father{overflow:hidden;position:relative;}
+	#ul{position:absolute;left:0;top:0;width:100%;}
+	#ul li{float:left;width:100%;height:100%; overflow:hidden;}
+	#ul li img{height:100%;width:100%;}
+	.clearfix:after { 
+   content: ".";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+   font-size: 0;
+}
+.clearfix {display: inline-block; }
+*html .clearfix {height:1%;}
+.clearfix {display: block;}
+.clearfix {zoom: 1;}
+  </style>
+ </head>
+
+ <body>
+	<div id="father">
+		<ul class="son clearfix" id="ul">
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+					<li>6</li>
+		</ul>
+	</div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+ //<img src=" http://pic1.win4000.com/wallpaper/1/5099c456cd15a.jpg" />
+	var zzs2={
+		addEventListener:function(obj,type,fn){
+			if(window.addEventListener){
+				obj.addEventListener(type,fn,false);
+			}else if(window.attachEvent){
+				obj.attachEvent("on"+type,fn);
+			}else{
+				obj["on"+type]=fn;
+			}
+		},
+		removeEventListener:function(obj,type,fn){
+			if(window.removeEventListener){
+				obj.removeEventListener(type,false,fn);
+			}else if(window.detachEvent){
+				obj.detachEvent("on"+type,fn);
+			}else{
+				obj["on"+type]=null;
+			}
+		},
+		isff : /firefox/i.test(navigator.userAgent),
+		step:0,
+		done:true
+	}
+
+	function returnDir(evt){
+		var e=evt || window.event;
+		var direction= zzs2.isff ? -e.detail : e.wheelDelta;
+		return direction;
+	}
+	
+	function move(eve){
+		var val=returnDir(eve);
+		if(val<0){
+			if(!zzs2.done || zzs2.step>=returnval.li.length-1){return}
+			zzs2.step++;
+			clearInterval(move.timer);
+			move.timer=zzs.doMove(returnval.son,{top:-returnval.h*zzs2.step},15,function(){
+				zzs2.done=true;
+			});
+			zzs2.done=false;
+		}else if(val>=0){
+			if(!zzs2.done || zzs2.step<=0){return}
+			zzs2.step--;
+			clearInterval(move.timer);
+			move.timer=zzs.doMove(returnval.son,{top:-returnval.h*zzs2.step},15,function(){
+				zzs2.done=true;
+			});
+			zzs2.done=false;
+		}
+	}
+	
+	zzs2.addEventListener(document,zzs2.isff ? "DOMMouseScroll" : "mousewheel",move);
+	function init(){
+			var width=document.documentElement.clientWidth;
+			var height=document.documentElement.clientHeight;
+			var father=zzs.$("#father");
+			zzs.css(father,{width:width,height:height});
+			var li=zzs.$("#ul","li");
+			zzs.each(li,function(){
+				zzs.css(this,{height:height});
+			});
+			return {
+				w:width,
+				h:height,
+				son:zzs.$("#ul"),
+				li:li
+			}
+	}
+	var returnval=init();
+ </script>
+</html>

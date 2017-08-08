@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	#wrap{height:300px; width:300px;position:absolute;left:50%;top:50%;margin:-150px 0 0 -150px; z-index:1;}
+	#wrap p{height:10px;width:10px;float:left;}
+	#heart{height:300px; width:300px;position:absolute;left:50%;top:50%;margin:-150px 0 0 -150px; 
+	background:url(images/heart2.png) no-repeat left top; z-index:2;}
+  </style>
+ </head>
+
+ <body>
+	<div id="heart"></div>
+	<div id="wrap"></div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+	
+	var createEle=function(){
+		var tmp=10,w=300,h=300;
+		var frag=document.createDocumentFragment();
+		for(var i=0,len=(w*h)/(tmp*tmp);i<len;i++){
+			var p=document.createElement("p");
+			frag.appendChild(p);
+		}
+		document.getElementById("wrap").appendChild(frag);
+	}
+	createEle();
+
+	var love=function(){
+		var li=document.getElementsByTagName("p");
+		var arr=[];
+		for(var i=0;i<li.length;i++){
+			arr.push(i);
+		}
+		var random=zzs.diffRandom(li.length-1,0,li.length);
+		for(var i=0;i<random.length;i++){
+			arr[i]=random[i];
+		}
+		return arr;
+	}
+
+	var shine=function(){
+		var arr=love();
+		var index=0;
+		
+		var sunshine=function(ele){
+			try{
+				ele.timer=setInterval(function(){
+					ele.style["background"]=zzs.getColor();
+				},200);
+			}
+			catch (e){
+				return;
+			}
+			
+		}
+
+		var p=document.getElementsByTagName("p");
+		shine.timer=setInterval(function(){
+			sunshine(p[arr[index]]);
+			index++;
+			if(index>=arr.legnth-1){
+				clearInterval(shine.timer);
+			}
+		},20);
+	}
+	shine();
+ </script>
+</html>

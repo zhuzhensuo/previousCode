@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <script src="jquery.js"></script>
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="js/jquery.resize.js"></script>
+  <style>
+	body{background:#FAFAFA;}
+	.size{height:300px;width:300px; background:pink;left:450px; top:150px;}
+	.door{height:634px;width:1024px;}
+	.left{left:0px; top:0px;}
+	.right{right:0px; top:0px;}
+	.close{display:none;}
+	.all{width:250px;}
+	.son{display:none;}
+	.img{width:162px; height:150px;right:100px; top:100px;}
+	.star li{width:50px;height:50px; border-radius:25px; border:1px solid pink;float:left;}
+
+	#banner{width:720px;}
+	#banner2{width:720px;}
+	.small li{float:left;}
+	.small li img{width:150px;height:80px;margin-left:20px; cursor:pointer;}
+	.small2 li{float:left;}
+  </style>
+  <script>
+	$(function()
+	{
+		$(".size").resize(
+		{
+			cursor:"nw-resize"
+		});
+		$(".all div").click(function(e)
+		{
+			$(this).siblings("div").find("ul").css("display","none");
+			$(this).find("ul").stop(false,true).slideToggle();
+			e.stopPropagation();
+		});
+		$(document).click(function()
+		{
+			$(".all div").find("ul").fadeOut();
+		});
+		function run()
+		{
+			var num=1;
+			timer=setInterval(function()
+			{
+				$(".img img").attr("src","images/"+num+".png");
+				num++;
+				if (num>=7)
+				{
+					num=1;
+				}
+			},100);
+		}
+		run();
+		$(".star li").hover(function()
+		{
+			var index=$(".star li").index(this);
+			var pj=["差","一般","满意","很好","非常好"];
+			//$(this).css("background","pink");
+			$(".star li:lt("+(index+1)+")").css({"background":"pink"}).eq(index).css("background","pink");
+			$(".star li:gt("+index+")").css({"background":""});
+			$(".star li").eq(index).attr("title",pj[index]);
+		},function()
+		{
+			$(".star li").css("background","");
+		});
+		var num=0;
+		$(".add").click(function()
+		{
+			var div=$("<div></div>");
+			div.appendTo("body");
+			div.css({"width":"100","height":"50","background":"gray","color":"white","position":"absolute",
+			"left":$(this).offset().left-25
+			,"top":$(this).offset().top-50,"line-height":"50px","text-align":"center","fontSize":"30px"}).html("+1");
+			div.animate({top:$(this).offset().top-100,opacity:0},1000,function()
+			{
+				div.remove();
+			});
+			var w=$(".stand").width();
+			num+=1;
+			var tmp=parseInt($(".parent").width()/100);
+			w+=tmp;
+
+			if (num>100)
+			{
+				return;
+			}
+			$(".stand").css({"width":w,"color":"white"}).html("支持率为"+num+"%");
+		});
+
+
+	});
+  </script>
+ </head>
+
+ <body>
+  <div class="pr size" style="top:0px;">dddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>
+  <div class="all">
+	<div class="border tc">111111
+		<ul class="son">
+			<li>11111111</li>
+			<li>22222222</li>
+			<li>33333333</li>
+			<li>44444444</li>
+		</ul>
+	</div>
+	<div class="border tc">22222
+		<ul class="son">
+			<li>11111111</li>
+			<li>22222222</li>
+			<li>33333333</li>
+			<li>44444444</li>
+		</ul>
+	</div>
+	<div class="border tc">3333333
+		<ul class="son">
+			<li>11111111</li>
+			<li>22222222</li>
+			<li>33333333</li>
+			<li>44444444</li>
+		</ul>
+	</div>
+  </div>
+  <div class="img pa">
+	<img src="images/1.png">
+  </div>
+  <ul class="star">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+  </ul>
+  <div class="border pa parent oh" style="width:200px;height:30px;top:0px;left:0px;">
+	<div class="pa stand" style="height:inherit;background:red;left:0px;"></div>
+  </div>
+  <input type="button" class="add" value="投一票">
+  <br>
+  <div class="bc" id="banner">
+	<div class="pr first">
+		<ul>
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+			<li><img src="./images/img04.jpg" ></li>
+		</ul>
+	</div>
+	<div class="second">
+		<ul class="small mt20 clearfix">
+			<li><img src="./images/img02.jpg" ></li>
+			<li><img src="./images/img01.jpg" ></li>
+			<li><img src="./images/img03.jpg" ></li>
+			<li><img src="./images/img04.jpg" ></li>
+		</ul>
+	</div>
+	
+  </div>
+ </body>
+ <script>
+	$(function()
+	{
+		function Banner(id)
+		{
+			this.id=$("#"+id);
+			this.li=this.id.find("ul:eq(0)").find("li");
+			this.li2=this.id.find("ul:eq(1)").find("li");
+			this.tmp=0;
+			this.div=this.id.find("div");
+			this.init.apply(this,arguments);
+		}
+		Banner.prototype=
+		{
+			init:function()
+			{
+				this.li.eq(this.tmp).css({"display":"block"}).siblings("li").css({"display":"none"});
+				var that=this;
+				this.li2.click(function()
+				{
+					var index=that.li2.index(this);
+					doMove(index,that.li,that.div.eq(0),arr);
+				});
+				function createDiv(obj)
+				{	
+					var arr=[];
+					for (var i=0;i<4 ;i++ )
+					{
+						arr.push("_"+i);
+						arr[i]=$("<div></div>");
+						arr[i].appendTo(obj);
+						arr[i].css({"position":"absolute"});
+					}
+					return arr;
+				}
+				var arr=createDiv(this.div.eq(0));
+				function doMove(tmp,obj,o2,arr)
+				{
+					
+					var src=obj.eq(tmp).find("img").attr("src");
+					for (var i=0;i<arr.length ;i++ )
+					{
+						arr[i].css({"height":0,"width":0}).stop(true,false).animate({height:o2.height()/2,width:o2.width()/2},function()
+						{
+							obj.eq(tmp).css({"display":"block"}).siblings().css({"display":"none"});
+						});
+					}
+					
+					arr[0].css({"top":"0px","left":"0px","background":"url("+src+") no-repeat 0px 0px"});
+					arr[1].css({"bottom":"0px","left":"0px","background":"url("+src+") no-repeat 0px "+(-(o2.height()/2))+"px"});
+					arr[2].css({"top":"0px","right":"0px","background":"url("+src+") no-repeat right 0px"});
+					arr[3].css({"bottom":"0px","right":"0px","background":"url("+src+") no-repeat right "+(-(o2.height()/2))+"px"});
+					
+				}
+			}
+		}
+
+		new Banner("banner");
+	});
+ </script>
+</html>

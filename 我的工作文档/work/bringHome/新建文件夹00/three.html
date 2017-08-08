@@ -1,0 +1,425 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <style>
+  body{overflow-x:hidden;}
+  #model{width:100%;height:140%;z-index:0;background:gray;position:absolute;top:0px;left:0px;}
+  .drag{height:200px;width:200px; background:white; position:absolute;display:block;display:none;z-index:999;}
+  .follow{height:20px; width:20px; background:pink;position:absolute; top:0px; left:0px;}
+  .photo{width:700px; height:249px;}
+  .photo img{position:absolute;}
+  .index{ right:0px; bottom:0px; color:white;}
+  .index li{float:left; width:20px;}
+  #canvas{height:150px; width:150px;}
+  .menu{border:1px solid #333333;line-height:40px;display:none;}
+  .fly{font-weight:bold; font-size:500px;display:none;}
+  .one{bottom:-100px;left:-100px;}
+  .two{bottom:-100px;left:600px;}
+  .three{bottom:-100px;left:1300px;}
+  .btn{height:25px; width:100px; position:absolute; bottom:0px;}
+  .deg{height:300px;width:300px; border:1px solid red;}
+  .good{width:700px; height:250px;}
+  .all{left:0px;top:0px;}
+  .all li{height:100%;position:absolute;}
+  .index li{_zoom:1;}
+  .house{position:absolute;top:0px;right:0px;}
+  </style>
+
+
+  <script src="jquery.js"></script>
+  <script>
+  
+  $(function()
+  {
+	var obj;
+	$(".open").click(function()
+	{
+		var w=$(window).width();
+		var h=$(window).height();
+		obj=$("<div id='model'></div>");
+		
+		obj.appendTo("body");
+		$("#model").css({"opacity":"0.5","width":w,"height":h});
+		$(".drag").fadeIn(1000);
+		//alert(obj.width()+obj.height());
+	});
+		var x,y;
+		$(".drag").mousedown(function()
+		{
+			$(document).mousemove(function(e)
+			{
+				x=e.clientX;
+				y=e.clientY;
+				$("#move").html(x+","+y);
+				$(".drag").css("left",x-75).css("top",y-75).css("cursor","pointer");
+				if ($(".drag").position().left<=0)
+				{
+					$(".drag").css("left","0px")
+				}
+				if ($(".drag").position().top<=0)
+				{
+					$(".drag").css("top","0px")
+				}
+			});
+			
+			});
+		$(".drag").mouseup(function()
+		{
+			$(document).unbind("mousemove");
+		});
+		$(".close").click(function()
+		{
+			$(".drag").fadeOut();
+			$("#model").remove();
+		});
+		
+		
+		$(".content").keyup(function()
+		{
+			
+		   var arr=$(".content").val();
+			arr=arr.replace(/[靠|日]|sb/ig,"*");
+			arr=arr.replace(/　| /g,"");
+			arr=arr.replace("<","&lt");
+			arr=arr.replace(">","&gt");
+			$(".content").val(arr);
+		});
+
+		var arr2;
+		$(".content").focus(function()
+		{
+			arr2=$(".content");
+			if (arr2.val()=="-请输入内容-")
+			{
+				$(".content").val("");
+			}
+		});
+		$(".content").blur(function()
+		{
+			if (arr2.val()=="")
+			{
+				$(".content").val("-请输入内容-");
+			}
+		});
+		
+		var one,two,three;
+		var delay=3000;//间隔时间
+		var speed=5;//速度
+		var interval=10;//频率
+		var ar=$(".photo img");
+		var imgw=$(".photo img").width();
+		var ar2=[];
+		for (var i=0;i<ar.length ;i++ )
+		{
+			ar.eq(i).css("left",-i*imgw+"px");
+			ar2[i]=i*imgw;
+		}
+		var tmpVal=imgw;
+		function auto()
+		{
+				
+				one=setInterval(function()
+				{
+					for (var i=0;i<ar.length ;i++ )
+					{
+						ar2[i]-=speed;
+						ar.eq(i).css("left",-ar2[i]+"px");
+						if (ar.eq(i).position().left>=imgw)
+						{
+							//arr.eq(i).css("left",-imgw*(arr.length-1));
+							ar2[i]=imgw*(ar.length-1);
+							clearInterval(one);
+							two=setTimeout(auto,delay);
+						}
+					}
+					
+				},interval);
+				
+				/*
+				for (var i=0;i<ar.length ;i++ )
+				{
+					ar.eq(i).animate({left:-imgw*i+tmpVal},1000);
+					if (ar.eq(ar.length-1).position().left>=0)
+					{
+						tmpVal=imgw;
+					}
+				}
+				tmpVal+=imgw;
+				two=setTimeout(auto,2000);
+				*/
+		}
+		auto();
+		$(".index li").hover(function()
+		{
+			clearInterval(one);
+			clearTimeout(two);
+		//$(window).unbind("load");
+		var tmp=$(".index li").index(this);
+		for (var i=0;i<ar.length ;i++ )
+		{
+			//ar.eq(i).stop();
+			ar.eq(i).css("display","none");
+		}
+		ar.eq(tmp).fadeIn("fast").css("left",0);
+		},function()
+		{
+			for (var i=0;i<ar.length ;i++ )
+		{
+			//ar.eq(i).stop();
+			ar.eq(i).css("display","block");
+		}
+			auto();
+			//clearTimeout(three);
+		});
+	$(document).bind("contextmenu",function(e){return false;});
+	var xv,yv,xv2,yv2;
+	$(document).mousedown(function(e)
+	{
+		xv=x=e.clientX;
+		yv=y=e.clientY;
+		$(".content").val(x+","+y);
+	});
+	var numIndex=0,box;
+	var array=[];
+	for (var i=0;i<100;i++ )
+	{
+		array.push("_"+i);
+	}
+	//alert(array[99]);
+	$(document).mouseup(function(e)
+	{	
+		var code=e.which;
+		if (code==3)
+		{
+			$(".menu").css("display","block").css("left",xv).css("top",yv);
+		}else if(code!=3)
+		{
+			$(".menu").css("display","none");
+		}
+		xv2=x=e.clientX;
+		yv2=y=e.clientY;
+		$(".content").val(x+","+y);
+		if (xv2-xv>0 &&yv2-yv>0)
+		{
+			array[numIndex]=$("<div class='box'+"+numIndex+"></div>");
+			array[numIndex].appendTo("body");
+			array[numIndex].html(numIndex);
+			array[numIndex].css("width",xv2-xv).css("height",yv2-yv).css("background","pink").css("position","absolute").css("left",xv).css("top",yv);
+			
+			array[numIndex].animate({top:$(document).height()-(yv2-yv)},500)
+					 .animate({top:$(document).height()-(yv2-yv+50)},500)
+					 .animate({top:$(document).height()-(yv2-yv)},500)
+					 .animate({top:$(document).height()-(yv2-yv+20)},500)
+					 .animate({top:$(document).height()-(yv2-yv)},500)
+					 .animate({opacity:"0"},1000,function()
+					 {
+						$("body").remove(array[numIndex]);
+					 });
+		}
+		numIndex+=1;
+		//alert(numIndex+","+$(".box"+numIndex));
+	});
+	
+	
+	$(".btn").click(function()
+	{
+		var flyArr=$(".fly");
+		for (var i=0;i<flyArr.length ;i++ )
+		{
+			flyArr.eq(i).css("display","block").animate({left:600,bottom:500,fontSize:0},1000);
+		}
+	});
+
+	$(document).mousemove(function(e)
+	{
+		mx=e.clientX;
+		my=e.clientY;
+		//$(".btn").stop(true,false).animate({left:mx,top:my},100);
+	});
+
+	function noRepeat()
+	{
+		var array=new Array();
+		var isHas=false;
+		var array2=[];
+		while(true)
+		{
+			if (array.length==10)
+			{
+				
+				alert(array.sort());
+				break;
+				
+			}
+			var random=Math.ceil((Math.random())*10);
+			for (index in array )
+			{
+				if (random==array[index])
+				{
+					isHas=true;
+				}
+			}
+			if (isHas==false)
+			{
+				array.push(random);
+			}
+			isHas=false;
+		}
+			
+		
+	}
+	
+	//noRepeat();
+	var divW=$(".good").width();
+	var imgArr=$(".all li");
+	var allW=divW*imgArr.length;
+	var very;
+	var tmpIndex2=0;
+	$(".all").css("height",$(".good").height()).css("width",allW);
+	for (var i=0;i<imgArr.length ;i++ )
+	{
+		imgArr.eq(i).css("left",i*divW);
+	}
+	function running()
+	{
+		rr();
+		function rr()
+		{
+			$(".index li").eq(tmpIndex2).css("background","white").siblings("li").css("background","");
+			very=setInterval(function()
+			{
+				$(".index li").eq(tmpIndex2).css("background","white").siblings("li").css("background","");
+				$(".all").stop(true,false).animate({left:-(tmpIndex2*divW)},500);
+				if (tmpIndex2==imgArr.length)
+				{
+					tmpIndex2=0;
+					$(".all li:first").clone(true).appendTo($(".all")).insertAfter($(".all li:last"));
+					$(".index li").eq(tmpIndex2).css("background","white").siblings("li").css("background","");
+					$(".all").stop(true,false).animate({left:-(tmpIndex2*divW)},500);
+				}
+				tmpIndex2+=1;
+		},3000);
+		}
+		
+		$(".index li").hover(function()
+		{
+			clearInterval(very);
+			tmpIndex2=$(".index li").index(this);
+			$(".index li").eq(tmpIndex2).css("background","white").siblings("li").css("background","");
+			$(".all").stop(true,false).animate({left:-(tmpIndex2*divW)},500);
+		},function()
+		{
+			rr();
+		});
+	}
+	running();
+	$(".clone").click(function()
+	{
+		$(this).clone(true).insertAfter($(this));
+	});
+	$(".ok").click(function()
+	{
+		$(".ok").attr({"value":"ko","class":"ko"});
+		alert($(".ko").attr("class"));
+		if ($(this).hasClass(".ko")==true)
+		{
+			alert("");
+			$(this).click(function()
+			{
+				$(".ok").attr({"value":"ok","class":"ok"});
+			});
+		}
+	});
+	$(".house").click(function()
+	{
+		 obj=$(this).clone().insertAfter(this);
+		$(document).mousemove(function(e)
+		{
+			xv=e.clientX;
+		    yv=e.clientY;
+			$("p").html(xv+","+yv);
+		obj.css({"left":xv-20+"px","top":yv-20+"px","opacity":"0.3"});
+			//alert(obj.css("left"));
+		});
+		$(document).dblclick(function()
+	{
+		$(document).unbind();
+	});
+	});
+	function html()
+	{
+		
+	}
+
+
+
+  });
+  </script>
+ </head>
+
+ <body>
+  <input type="button" value="弹出模态层" class="open">
+  <div class="drag">
+  白色区域可拖动
+  <input type="button" value="关闭模态层" class="close">
+  </div>
+  <textarea class="content" rows="4" cols="40" >-请输入内容-</textarea>
+  <div class="photo pr bc oh">
+  <img src="./images/bannner_pic.jpg">
+  <img src="./images/img01.jpg" >
+  <img src="./images/img02.jpg" >
+  <img src="./images/img03.jpg" >
+  <img src="./images/img04.jpg" >
+	<ul class="index2 pa fr tc">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+	</ul>
+ </div>
+<ul class="menu pa">
+	<li>这是我的自定义菜单</li>
+	<li>这是我的自定义菜单</li>
+	<li>这是我的自定义菜单</li>
+	<li>这是我的自定义菜单</li>
+</ul>
+
+ <div class="one fly pa">F</div>
+ <div class="two fly pa">L</div>
+ <div class="three fly pa">Y</div>
+ <input type="button" value="fly" class="btn">
+ <div class="good bc pr mt10 oh">
+	<ul class="all pa">
+		<li><img src="./images/img01.jpg" ></li>
+		<li><img src="./images/img02.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+		<li><img src="./images/img04.jpg" ></li>
+		<li><img src="./images/bannner_pic.jpg"></li>
+		<li><img src="./images/img03.jpg" ></li>
+	</ul>
+	<ul class="index pa fr tc">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+ </div>
+ <input type="button" value="clone" class="clone">
+ <img src="./images/2page-img1.jpg" class="house">
+ <p class="position"></p>
+ <div class="code">
+
+ </div>
+
+ </body>
+</html>
+

@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="js/jquery.animate.js"></script>
+  
+ <style>
+ #animate .img{}
+  .img li{position:relative;height:100px; width:100px;z-index:10000;}
+ </style>
+  <script>
+ 
+  $(function()
+  {
+	$("#animate").donghua(
+	{
+		h:"250",//div的高
+		w:"700",//div的宽
+		hz:4000,//更换图片的时间间隔
+		time:500,//更换图片所使用的时间
+		indexW:"30",//下标的宽
+		indexH:"30",//下标的高
+	});
+	(function()
+	{
+		var arr=[];
+		for (var i=0;i<$(".title").length ;i++ )
+		{
+			arr[i]=$(".title").eq(i).offset().top;
+		}
+		$(window).scroll(function()
+		{	
+			var s=$(document).scrollTop();
+			var t=$("#text").offset().top;
+			if (s>=t)
+			{
+				$("#fix").css({"position":"fixed","top":"0"});
+			}else
+			{
+				$("#fix").css({"position":"absolute","top":t});
+			}
+			for (var i=0;i<arr.length ;i++ )
+			{
+				if (s>=arr[i])
+				{
+					$(".title").eq(i).siblings().slideUp(1000).css({"background":"gray","color":"white","width":"100"});
+				}else if (s<arr[i])
+				{
+					$(".title").eq(i).siblings().slideDown(1000).css({"background":"white","color":"black"});
+				}
+			}
+			
+		});
+	})();
+	var s=$("#text").parent("div").find("span");
+	$("#text").keyup(function()
+	{
+		var val=$(this).val();
+		if (val.indexOf("@")>-1)
+		{
+			return;
+		}
+		if (val!="" && val!="　")
+		{
+			$("#text").parent("div").find("ul").css({"display":"block"});
+			s.each(function()
+			{
+				s.html(val);
+			});
+		}else
+		{
+			$("#text").parent("div").find("ul").css({"display":"none"});
+		}
+		
+	});
+	$("#text").parent("div").find("li").hover(function()
+	{
+		$(this).css({"background":"gray","color":"white","cursor":"pointer"});
+	},function()
+	{
+		$(this).css({"background":"","color":"black"})
+	});
+	$("#text").parent("div").find("li").click(function()
+	{
+		$("#text").val($(this).text());
+		$("#text").parent("div").find("ul").css({"display":"none"});
+	});
+
+
+
+
+
+  });
+  </script>
+  <style>
+  	
+  </style>
+ </head>
+
+ <body style="height:2000px;">
+  
+  <div class="bc pr" id="animate">
+	<ul class="pa">
+		<li><img src="./images/img02.jpg" ></li>
+		<li><img src="./images/img01.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+		<li><img src="./images/img04.jpg" ></li>
+		<li><img src="./images/bannner_pic.jpg"></li>
+		<li><img src="./images/img03.jpg" ></li>
+	</ul>
+	<ul class="pa img">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+  </div>
+  <div class=" bc pr mt50" id="scroll" style="width:720px;height:250px;">
+	<div class="left p10 pa" style="top:105px;z-index:999; background:#fff;cursor:pointer" >向左</div>
+	<ul class="pa oh" style="width:720px;height:250px;">
+		<li><img src="./images/img02.jpg" ></li>
+		<li><img src="./images/img01.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+		<li><img src="./images/img04.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+	</ul>
+	<div class="left p10 pa right" style="top:105px; right:0px;background:white;cursor:pointer" >向右</div>
+  </div>
+  <br>
+  <div class=" bc pr mt50" id="click" style="width:720px;height:250px;">
+	<div class="left p10 pa" style="top:105px;z-index:999; background:#fff;cursor:pointer" >向左</div>
+	<ul class="pa oh" style="width:720px;height:250px;">
+		<li><img src="./images/img02.jpg" ></li>
+		<li><img src="./images/img01.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+		<li><img src="./images/img04.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+	</ul>
+	<div class="left p10 pa right" style="top:105px;z-index:999; right:0px;background:white;cursor:pointer" >向右</div>
+  </div>
+  <div id="fix">
+	  <div>
+			<p class="fb title">fdfdfdfdfdddfdf</p>
+			<ul class="mt10">
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+			</ul>
+	  </div>
+	  <div>
+			<p class="fb title">fdfdfdfdfdddfdf</p>
+			<ul class="mt10">
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+			</ul>
+	  </div>
+	  <div>
+			<p class="fb title">fdfdfdfdfdddfdf</p>
+			<ul class="mt10">
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+				<li>dddddddddddd</li>
+			</ul>
+	  </div>
+  </div>
+  <div class="pr fr">
+	<input type="text" id="text"  class="ml10">
+	<ul class="pa" style="left:12px; display:none;">
+		<li><span></span>@qq.com</li>
+		<li><span></span>@sina.com</li>
+		<li><span></span>@soho.com</li>
+		<li><span></span>@renren.com</li>
+	</ul>
+  </div>
+ 
+<!--
+<img src="./images/img02.jpg" >
+<img src="./images/img01.jpg" >
+<img src="./images/img03.jpg" >
+<img src="./images/img02.jpg" >
+<img src="./images/img01.jpg" >
+<img src="./images/img03.jpg" >
+<img src="./images/img02.jpg" >
+<img src="./images/img01.jpg" >
+<img src="./images/img03.jpg" >
+-->
+  
+ </body>
+ <script>
+	$(function()
+	{
+		function Scroll(id,l,r)
+		{
+			this.id=$("#"+id);
+			this.left=this.id.find("div."+l+"").eq(0);
+			this.right=this.id.find("div."+r+"").eq(0);
+			this.img=this.id.find("img");
+			this.li=this.id.find("li");
+			//this.init.apply(this,arguments);
+			this.c=true;
+		}
+		Scroll.prototype=
+		{
+			init:function()
+			{
+				//alert(this.left.length);
+				var arr=[];
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					this.li.eq(i).css({"position":"absolute","left":(i-1)*this.li.width()});
+					arr[i]=this.li.eq(i).position().left;
+				}
+				var that=this;
+				this.right.click(function()
+				{
+					if (that.c==false)
+					{
+						return;
+					}else if(that.c==true)
+					{
+						toRight();
+						that.c=false;
+					}
+				});
+				function toRight(){
+					for (var i=0;i<arr.length ;i++ )
+					{
+						arr[i]=arr[i]-that.li.width();
+						if (arr[i]<-that.li.width())
+						{
+							arr[i]=(that.li.length-2)*that.li.width();
+							that.li.eq(i).css("visibility","hidden");
+						}
+						that.li.eq(i).stop(true,false).animate({left:arr[i]},function()
+						{
+							if (typeof (that.li.eq(i).css("visibility"))=="undefined")
+							{
+								that.li.css("visibility","visible");
+							}
+							that.c=true;
+						});
+					}
+				}
+				this.left.click(function()
+				{
+					if (that.c==false)
+					{
+						return;
+					}
+					for (var i=0;i<that.li.length ;i++ )
+					{
+						arr[i]=arr[i]+that.li.width();
+						if (arr[i]>(that.li.length-2)*that.li.width()+1)
+						{
+							arr[i]=-that.li.width();
+							that.li.eq(i).css("visibility","hidden");
+						}
+						that.li.eq(i).stop(true,false).animate({left:arr[i]},function()
+						{
+							if (typeof (that.li.eq(i).css("visibility"))=="undefined")
+							{
+								that.li.css("visibility","visible");
+							}else
+							{
+								that.li.eq(i).css("visibility","visible");
+							}
+							that.c=true;
+						});
+					}
+					that.c=false;
+				});
+			}
+		}
+		
+		var o=new Scroll("scroll","left","right");
+		o.init();
+		function Click()
+		{
+			Scroll.apply(this,arguments);
+		}
+		Click.prototype=new Scroll();
+		var o1=new Click("click","left","right");
+		o1.init=function()
+		{
+			this.tmp=0;
+			var that=this;
+			this.li.css({"display":"none","position":"absolute"});
+			this.li.eq(this.tmp).css({"display":"block"});
+			this.left.click(function()
+			{
+				that.tmp+=1;
+				if (that.tmp>that.li.length-1)
+				{
+					that.tmp=0;
+				}
+				that.li.eq(that.tmp).css({"zIndex":100,"display":"block","left":-that.li.width()}).stop(true,false).animate({left:0}).siblings().css("zIndex",101).fadeOut(900);
+			});
+			this.right.click(function()
+			{
+				that.tmp-=1;
+				if (that.tmp<0)
+				{
+					that.tmp=that.li.length-1;
+				}
+				that.li.eq(that.tmp).css({"zIndex":100,"display":"block","left":that.li.width()}).stop(true,false).animate({left:0}).siblings().css("zIndex",101).fadeOut(900);
+			});
+		}
+		o1.init();
+		
+	});
+ </script>
+ <script>
+	document.oncontextmenu=function()
+	{
+		return false;
+	}
+ </script>
+ <!--[if IE 6]>
+	 
+	 <script>
+		$(function()
+		{
+			$(window).unbind("scroll");
+		});
+	 </script>
+  <![endif]-->
+
+</html>

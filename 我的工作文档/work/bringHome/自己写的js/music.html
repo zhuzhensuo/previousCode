@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+	.music,.sing{width:300px;}
+	.music ul{float:left;display:inline; margin-left:2px;}
+	.music ul li{width:30px;height:20px;margin-top:1px;}
+	.active{background:#52AB26;}
+</style>
+</head>
+
+<body>
+	<div class="bc sing mt50 tc">一起嗨歌！</div>
+	<div class="bc music clearfix mt50">
+		<ul id="one">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="two">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="three">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="four">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="five">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="six">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="seven">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul id="eight">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	function Music(id){
+		this.li=zzs.$(id).getElementsByTagName("li");
+		this.init.apply(this,arguments);
+	}
+	Music.prototype.init=function(){
+		var _this=this;
+		var move=function(){
+			var random=zzs.createRangeRandom(_this.li.length-1,0);
+			zzs.each(_this.li,function(){
+				zzs.removeClass("active",this);
+			});
+			for(var i=random;i<_this.li.length;i++){
+				zzs.addClass("active",_this.li[i]);
+			}
+			setTimeout(arguments.callee,100);
+		}
+		move();
+	}
+	new Music("one");
+	new Music("two");
+	new Music("three");
+	new Music("four");
+	new Music("five");
+	new Music("six");
+	new Music("seven");
+	new Music("eight");
+</script>
+
+</html>

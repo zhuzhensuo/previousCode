@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+.father{width:300px; height:150px;}
+.container li{float:left; display:inline; border:1px solid blue; height:150px; width:300px;}
+.left,.right{ background:white;top:60px; cursor:pointer;}
+.left{left:0;z-index:1000;}
+.right{right:0; z-index:1000;}
+</style>
+</head>
+
+<body>
+	<div class="father border pr oh" id="father">
+    	<div class="pa left">left</div>
+        <div class="pa right">right</div>
+        <ul class="pa container">
+        	<li>1</li>
+            <li>2</li>
+            <li>3</li>
+			<li>4</li>
+			<li>5</li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	/*
+		这个类适合没有按钮的banner滚动，有4个参数：
+		1：最外层div的id；
+		2：要滚动的ul的className;
+		3：左边箭头；
+		4：右边箭头；
+	*/
+	function Scrolling(id,cName,left,right){
+		this.id=zzs.$(id);
+		this.ul=zzs.$$$(cName,id)[0];
+		this.li=this.ul.getElementsByTagName("li");
+		this.left=zzs.$$$(left,id)[0];
+		this.right=zzs.$$$(right,id)[0];
+		this.done=true;
+		this.index=0;
+		this.init.apply(this,arguments);
+	}
+	Scrolling.prototype.init=function(){
+		this.ul.style["width"]=this.li.length*this.li[0].offsetWidth+"px";
+		var _this=this;
+		this.left.onclick=function(){
+			if(!_this.done) return;
+			_this.index++;
+			if(_this.index>=_this.li.length) _this.index=0;
+			zzs.doMove(_this.ul,{left:-_this.li[0].offsetWidth},function(){
+				_this.ul.appendChild(_this.ul.children[0]);
+				_this.ul.style["left"]=0+"px";
+				_this.done=true;
+			});
+			_this.done=false;
+		}
+		this.right.onclick=function(){
+			if(!_this.done) return;
+			_this.index--;
+			if(_this.index<0){
+				_this.index=_this.li.length-1;
+			}
+			_this.ul.insertBefore(_this.ul.children[_this.li.length-1],_this.ul.children[0]);
+			_this.ul.style["left"]=-_this.li[0].offsetWidth+"px";
+			zzs.doMove(_this.ul,{left:0},function(){_this.done=true});
+			_this.done=false;
+		}
+	}
+	new Scrolling("father","container","left","right",true);
+</script>
+</html>

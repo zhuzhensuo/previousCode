@@ -1,0 +1,13 @@
+.wrap{height:auto;}
+.logo{height:100px; width:200px;}
+.link{height:20px; width:350px;}
+.link ul li{ float:left;line-height:20px;width:87px; color:#333333;}
+.link ul li span{border:1px solid red;height:14px;width:14px;zoom:1;display:inline-block;_margin-top:-2px;}
+.nav{height:40px;}
+.nav ul li{float:left; width:150px; line-height:40px;}
+.banner{height:300px;}
+.main{height:auto;}
+.left{width:250px; height:400px;}
+.right{width:695px;height:400px;}
+.next{height:200px;}
+.footer{height:150px; width:500px;}

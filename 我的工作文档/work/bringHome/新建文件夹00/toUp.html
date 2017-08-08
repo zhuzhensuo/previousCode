@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="./js/jquery.toUp.js"></script>
+  <style>
+   .img li{height:150px; width:300px;}
+
+
+
+   #photo{width:600px;border:1px solid black;height:150px; margin-left:-300px; margin-top:-75px;top:50%; left:50%; background:white;}
+   #photo li{float:left; display:inline; position:absolute; width:200px; height:150px;z-index:1; top:10px;}
+   #photo li img{left:5px;position:absolute;}
+   #photo .left{position:absolute;left:0px;text-align:center;line-height:30px;top:55px;cursor:pointer;z-index:999; display:none;}
+   #photo .right{position:absolute;right:0px;text-align:center;line-height:30px;top:55px;cursor:pointer;z-index:999; display:none;}
+   #photo a{color:white; font-weight:bolder; text-decoration:none;background:#333;}
+   #photo a:hover{background:orange;}
+  </style>
+  <script>
+  $(function()
+  {
+	$("#toUp").toUp(
+	{
+		w:"200px",//div的宽
+		h:"430px",//div的高（高必须要能够整除li的高，不然方向向下时会出现bug）
+		Hz:20,//步长递增的时间间隔
+		step:3,//递增的步长
+		direction:2//方向，奇数向上（默认），偶数向下
+	});
+  });
+  </script>
+ </head>
+
+ <body>
+  <div class="fr pr" id="toUp">
+		<ul class="pa img">
+			<li><img src="images/1page-img1.png"></li>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img13.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+		</ul>
+	</div>
+
+	<div class="pa oh" id="photo">
+		<div><a href="javascript:;" style="padding:6px 11px 7px 11px;">向左</a></div>
+		<ul>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img13.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+			<li><img src="images/1page-img1.png"></li>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img13.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+		</ul>
+		<div><a href="javascript:;" style="padding:5px 10px 6px 10px;">向右</a></div>
+	</div>
+	<p></p>
+ </body>
+ <script>
+	var zzs=
+	{
+		getId:function(id)
+		{
+			return typeof id==="string" ? document.getElementById(id) : id;
+		},
+		getTag:function(id,tagName)
+		{
+			return arguments.length==2 ? this.getId(id).getElementsByTagName(tagName) : document.getElementsByTagName(arguments[0]);
+		},
+		getClass:function(cName)
+		{
+			var arr=[];
+			var ele=this.getTag("*");
+			for (var i=0;i<ele.length ;i++ )
+			{
+				if (ele[i].className==cName)
+				{
+					arr[arr.length]=ele[i];
+				}
+			}
+			return arr;
+		},
+		bind:function(ele,type,method)
+		{
+			ele.addEventListener ? ele.addEventListener(type,method,false) : ele.attachEvent("on"+type,method);
+		},
+		unbind:function(ele,type,method)
+		{
+			ele.removeEventListener ? ele.removeEventListener("on"+type,method,false) : ele.detachEvent(type,method);
+		},
+		getEvent:function(event)
+		{
+			return event|| window.event;
+		},
+		getTarget:function()
+		{
+			return this.getEvent.target||this.getEvent.srcElement;
+		},
+		stopPropagetion:function()
+		{
+			this.getEvent.stopPropagation ? this.getEvent.stopPropagation() : this.getEvent.cancelBubble=true;
+		},
+		preventDefault:function()
+		{	
+			var e=this.getEvent(event);
+			e.preventDefault ? e.preventDefault() : e.returnValue=false;
+		}
+	}
+	zzs.bind(document,"contextmenu",function(){
+		//zzs.preventDefault();
+	});
+	var p=zzs.getTag("p")[0],tmp=0,can=true;
+	
+		var left=zzs.getTag("photo","div")[0];
+		var right=zzs.getTag("photo","div")[1];
+		var obj=zzs.getId("photo");
+		var li=zzs.getTag("photo","li");
+		left.className="left";
+		right.className="right";
+		var arr=[],arr2=[],timer;
+		for (var i=0;i<li.length ;i++ )
+		{
+			arr[i]=(i-1)*li[0].offsetWidth;
+			arr2[i]=(i-1)*li[0].offsetWidth;
+			li[i].style["left"]=arr[i]+"px";
+		}
+		function toLeft()
+		{
+			for (var i=0;i<arr2.length ;i++ )
+			{
+				arr2[i]=arr2[i]-li[0].offsetWidth;
+				if (arr2[i]<-li[0].offsetWidth)
+				{
+					li[i].style["visibility"]="hidden";
+					arr2[i]=(li.length-2)*li[0].offsetWidth;
+				}else
+				{
+					li[i].style["visibility"]="visible";
+				}
+			}
+			doMove(arr2,arr,li);
+			can=false;
+		}
+		zzs.bind(right,"click",toRight2);
+		zzs.bind(left,"click",toLeft2);
+		function toRight2()
+		{
+			if (can==true)
+			{
+				toRight();
+			}
+		}
+		function toLeft2()
+		{
+			if (can==true)
+			{
+				toLeft();
+			}
+		}
+		function toRight()
+		{
+			for (var i=0;i<arr2.length ;i++ )
+			{
+				arr2[i]=arr[i]+li[0].offsetWidth;
+				if (arr2[i]>=(li.length-1)*li[0].offsetWidth)
+				{
+					arr2[i]=-li[0].offsetWidth;
+					li[i].style["visibility"]="hidden";
+				}else
+				{
+					li[i].style["visibility"]="visible";
+				}
+			}
+			doMove(arr2,arr,li);
+			can=false;
+		}
+		zzs.bind(obj,"mouseover",function()
+		{
+			clearInterval(timer);
+			left.style["display"]=right.style["display"]="block";
+		});
+		zzs.bind(obj,"mouseout",function()
+		{
+			interval();
+			left.style["display"]=right.style["display"]="none";
+		});
+		function interval()
+		{
+			timer=setInterval(function()
+			{
+				toLeft();
+			},2000);
+			return timer;
+		}
+		interval();
+	function doMove(two,one,oLi)
+	{
+		var timer;
+		clearInterval(timer);
+		timer=setInterval(function()
+		{
+			var complete=true;
+			for (var index in two )
+			{
+				var s=(two[index]-one[index])/4;
+				s = s>0 ? Math.ceil(s) : Math.floor(s);
+				if (two[index]!=one[index])
+				{
+					complete=false;
+					one[index]=s+one[index];
+					oLi[index].style["left"]=one[index]+"px";
+				}
+			}
+			if (complete==true)
+			{
+				clearInterval(timer);
+				can=true;
+			}
+		},20);
+	}
+ </script>
+</html>

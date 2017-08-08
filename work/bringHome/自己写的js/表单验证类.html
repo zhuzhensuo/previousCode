@@ -1,0 +1,216 @@
+.<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+ </head>
+
+ <body>
+	<input type="text" name="userName" id="name" />
+	<p id="tips"></p>
+
+	<input type="text" id="age" value="请输入年龄"/>
+	<div id="box">
+	<input type="checkbox" class="hobby"/>
+	<input type="checkbox" class="hobby"/>
+	<input type="checkbox" class="hobby"/>
+	<input type="checkbox" class="hobby"/>
+	</div>
+	<input type="password" name="pwd" id="pwd"/>
+ </body>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script>
+	$(function(){
+		function Check(){}
+		Check.prototype.checkName=function(id,num,callBack){
+			var name=$("#"+id);
+			var tips=$("#"+tips);
+			name.focus(function(){
+				callBack && callBack(true);
+			});
+			name.blur(function(){
+				if(name.val().length==0){
+					var a="a";
+					callBack && callBack(a);
+					return false;
+				}
+				else if(name.val().length<num){
+					var a="b";
+					callBack && callBack(a);
+					return false;
+				}else{
+					var a="c";
+					callBack && callBack(a);
+					return true;
+				}
+			});
+
+		}
+
+
+	Check.prototype.checkEmail=function(obj,callBack){
+		var email=$("#"+obj);
+		email.focus(function(){
+			callBack && callBack(true);
+		});
+		email.blur(function(){
+			if(!(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(email.val()))){
+				var a="a";
+				callBack && callBack(a);
+				return false;
+			}else{
+				var a="b";
+				callBack && callBack(a);
+				return true;
+			}
+		});
+	}
+	Check.prototype.checkMobile=function(obj,callBack){
+		var m=$("#"+obj);
+		m.focus(function(){
+			callBack && callBack(true);
+		});
+		m.blur(function(){
+			if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(mobile))){
+				var a="a";
+				callBack && callBack(a);
+				return false;
+			}else{
+				var a="b";
+				callBack && callBack(a);
+				return true;
+			}
+		});
+	}
+	Check.prototype.checkPwd=function(obj,num,callBack){
+		var pwd=$("#"+obj);
+		pwd.focus(function(){
+			callBack && callBack(true);
+		});
+		pwd.blur(function(){
+			if(pwd.val().length==0){
+					var a="a";
+					callBack && callBack(a);
+					return false;
+				}
+				else if(pwd.val().length<num){
+					var a="b";
+					callBack && callBack(a);
+					return false;
+				}else{
+					var a="c";
+					callBack && callBack(a);
+					return true;
+				}
+		});
+	}
+	Check.prototype.checkRepwd=function(obj,obj2,callBack){
+		var pwd=$("#"+obj);
+		var rePwd=$("#"+obj2);
+		rePwd.focus(function(){
+			callBack && callBack(true);
+		});
+		rePwd.blur(function(){
+			if(rePwd.val()!=pwd.val()){
+				var a="a";
+				callBack && callBack(a);
+			}else{
+				var a="b";
+				callBack && callBack(a);
+			}
+		});
+	}
+	Check.prototype.checkCode=function(obj,callBack){
+		var code=$("#"+obj);
+		code.focus(function(){
+			callBack && callBack(true);
+		});
+		code.blur(function(){
+			if(code.val().length==0){
+				var a="a";
+				callBack && callBack(a);
+			}else{
+				var a="b";
+				callBack && callBack(a);
+			}
+		});
+	}
+	Check.prototype.checkAge=function(obj,caser,callBack){
+		var age=$("#"+obj);
+		if(caser){
+			age.blur(function(){
+				if(isNaN(age.val()) || (parseInt(age.val())<=0 || parseInt(age.val())>=100)){
+					var a="a";
+					callBack && callBack(a);
+				}else{
+					var a="b";
+					callBack && callBack(a);
+				}
+			});
+		}else{
+			if(isNaN(parseInt(age.text()))){
+				var a="a";
+				callBack && callBack(a);
+			}else{
+				var a="b";
+				callBack && callBack(a);
+			}
+		}
+	}
+
+	Check.prototype.checkHobby=function(id,num,callBack){
+		var check=function(){
+			var len=$("#"+id).find("input:checkbox:checked").length;
+			if(len<num){
+				var a="a";
+				callBack && callBack(a);
+			}else{
+				var a="b";
+				callBack && callBack(a);
+			}
+		}
+		$("#"+id).find("input:checkbox").click(function(){
+			check();
+		});
+
+	}
+	var o=new Check();
+	o.checkName("name",6,function(value){
+		if(value){
+			$("#tips").html("姓名由6-16个字符构成!");
+		}
+		if(value=="a"){
+			$("#tips").html("姓名不能为空");
+		}
+		if(value=="b"){
+			$("#tips").html("姓名长度不够！");
+		}
+		if(value=="c"){
+			$("#tips").html("");
+		}
+	});
+	o.checkHobby("box",3,function(a){
+		if(a=="a"){
+			$("#tips").html("选项不足!");
+		}
+		if(a=="b"){
+			$("#tips").html("");
+		}
+	});
+	o.checkAge("age",true,function(a){
+		if(a=="a"){
+			$("#tips").html("出现错误!");
+		}
+		if(a=="b"){
+			$("#tips").html("");
+		}
+	});
+
+});
+  </script>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	* li{list-style:outside none;}
+	#wrap{width:300px;height:150px;position:absolute;left:50%;top:30%;margin:-75px 0 0 -150px; background:white;}
+	#wrap .father{width:100%;height:100%;border:1px solid blue; position:relative;overflow:hidden;}
+	#wrap .father ul li{width:300px;height:100%;position:absolute;left:300px;top:0;font-weight:bold; line-height:150px; text-align:center;
+	font-size:50px;}
+	#wrap .father ul li.active{left:0;}
+	#wrap  ul.btn{position:absolute;right:0;bottom:10px;z-index:999;}
+	#wrap  ul.btn li{float:left; display:inline;width:25px; height:8px; _font-size:0;margin-right:5px; background:#7BBEDF;cursor:pointer; }
+	#wrap  ul.btn li.active2{background:#206F96;}
+
+	#wrap2{width:300px;height:150px;position:absolute;left:50%;top:60%;margin:-75px 0 0 -150px; background:white;border:1px solid #0000FF;}
+	#wrap2 .father ul li{position:absolute;left:0px;top:0;z-index:100;width:0;height:0;overflow:hidden;font-weight:bold; line-height:150px; text-align:center;font-size:50px;color:white;_font-size:0;_line-height:0;}
+	#wrap2 .father ul li.one{background:gray;width:300px;height:150px;}
+	#wrap2 .father ul li.two{background:pink;}
+	#wrap2 .father ul li.three{background:#ccc;}
+	#wrap2 .father ul li.four{background:purple;}
+	#wrap2 .father ul li.five{background:green;}
+	#wrap2 ul.btn{position:absolute;right:0;bottom:10px;z-index:999;}
+	#wrap2 ul.btn li{float:left; display:inline;width:25px; height:8px; _font-size:0;margin-right:5px; background:#7BBEDF;cursor:pointer;display:block; }
+	#wrap2 ul.btn li.active2{background:red;}
+  </style>
+ </head>
+
+ <body>
+	<div class="wrap" id="wrap">
+		<div class="father">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="wrap2">
+		<div class="father">
+			<ul>
+				<li class="one"></li>
+				<li class="two"></li>
+				<li class="three"></li>
+				<li class="four"></li>
+				<li class="five"></li>
+
+			</ul>
+		</div>
+	</div>
+ </body>
+ <script type="text/javascript" src="basic.js"></script>
+ <script>
+	(function(){
+		var wrap=zzs.$("#wrap");
+		var oLi=zzs.$("#wrap",".father")[0].getElementsByTagName("li");
+		oLi[0].className="active";
+
+		var createBtn=function(){
+			var frag=document.createDocumentFragment();
+			var oUl=document.createElement("ul");
+			oUl.className="btn";
+			for(var i=0;i<oLi.length;i++){
+				frag.appendChild(document.createElement("li"));
+			}
+			oUl.appendChild(frag);
+			oUl.children[0].className="active2";
+			wrap.appendChild(oUl);
+			return oUl;
+		}
+		var oUl=createBtn();
+		var btn=zzs.$("#wrap","ul")[1].getElementsByTagName("li");
+		var tmp=0;
+		zzs.each(btn,function(i){
+			this.onclick=function(){
+				active(i);
+				if(i>tmp){
+					clearInterval(move3.timer);
+					clearInterval(move4.timer);
+					move(tmp);
+					tmp=i;
+					move2(tmp);
+				}else if(i<tmp){
+					clearInterval(move.timer);
+					clearInterval(move2.timer);
+					move3(tmp);
+					tmp=i;
+					move4(tmp);
+				}
+			}
+		});
+		var active=function(_i){
+			for(var i=0;i<oLi.length;i++){
+				oUl.children[i].className="";
+				//oUl.children[i].style["zIndex"]=1;
+			}
+			oUl.children[_i].className="active2";
+		}
+		var move=function(array){
+			clearInterval(move.timer);
+			oLi[array].style["left"]=0+"px";
+			//oLi[array].style["zIndex"]=2;
+			move.timer=zzs.doMove(oLi[array],{left:-oLi[0].offsetWidth},15);
+		}
+		var move2=function(array){
+			oLi[array].style["left"]=oLi[0].offsetWidth+"px";
+			//oLi[array].style["zIndex"]=3;
+			clearInterval(move2.timer);
+			move2.timer=zzs.doMove(oLi[array],{left:0},15);
+		}
+		var move3=function(_i){
+			oLi[_i].style["left"]=0+"px";
+			clearInterval(move3.timer);
+			move3.timer=zzs.doMove(oLi[_i],{left:oLi[0].offsetWidth},15);
+		}
+		var move4=function(_i){
+			clearInterval(move4.timer);
+			oLi[_i].style["left"]=-oLi[0].offsetWidth+"px";
+			move4.timer=zzs.doMove(oLi[_i],{left:0},15);
+		}
+
+		var auto=function(){
+			try{
+				auto.timer=setInterval(function(){
+					move(tmp);
+					tmp++;
+					tmp>=oLi.length && (tmp=0);
+					active(tmp);
+					move2(tmp);
+				},3000);
+			}
+			catch (e)
+			{
+				clearInterval(auto.timer);
+				return;
+			}
+
+		}
+		//auto();
+		wrap.onmouseover=function(){clearInterval(auto.timer);}
+		//wrap.onmouseout=auto;
+	})();
+
+	(function(){
+		var wrap=zzs.$("#wrap2"),w=wrap.offsetWidth,h=wrap.offsetHeight,index=0,c=true;
+		var oLi=zzs.$("#wrap2",".father")[0].getElementsByTagName("li");
+		var createBtn=function(){
+			var frag=document.createDocumentFragment();
+			var oUl=document.createElement("ul");
+			oUl.className="btn";
+			for(var i=0;i<oLi.length;i++){
+				frag.appendChild(document.createElement("li"));
+			}
+			oUl.appendChild(frag);
+			oUl.children[0].className="active2";
+			wrap.appendChild(oUl);
+			return oUl;
+		}
+		var oUl=createBtn();
+		var btn=zzs.$("#wrap2","ul")[1].getElementsByTagName("li");
+		zzs.each(btn,function(_i){
+			this.onclick=function(){
+				if(c==false || index==_i){return;}
+				zzs.each(btn,function(){this.className=""});
+				this.className="active2";
+				zzs.doMove(oLi[index],{height:0,width:0},10,function(){
+					zzs.doMove(oLi[_i],{height:h,width:w},10,function(){c=true;});
+					index=_i;
+				});
+				c=false;
+			}
+		});
+		var auto=function(){
+				clearInterval(auto.timer);
+				auto.timer=setInterval(function(){
+					if(c==false){return;}
+					zzs.each(btn,function(){this.className=""});
+					zzs.doMove(oLi[index],{height:0,width:0},10,function(){
+						index++;
+						if(index>=btn.length){index=0;}
+						btn[index].className="active2";
+						zzs.doMove(oLi[index],{height:h,width:w},10,function(){c=true;});
+					});
+					c=false;
+				},3000);
+			}
+		auto();
+		wrap.onmouseover=function(){clearInterval(auto.timer)};
+		wrap.onmouseout=function(){auto()};
+	})();
+ </script>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <style>
+	body{text-align:center;}
+	.list li{height:100px; width:100px;position:absolute;border:1px solid red;}
+	.leftBtn,.rightBtn{height:30px; width:50px; border:1px solid black;cursor:pointer;}
+	#clickToSroll2{width:600px;}
+	.rq{padding:0 0 10px 0;}
+	.rq ul li{padding:0 50px;border:1px solid #cc0000;float:left; display:inline; margin:20px 0 0 10px; background:;cursor:pointer; text-align:center;
+	line-height:35px;}
+	.rq ul li.active{color:#cc0000;font-weight:bold;}
+	.rq	div{width:119px;background:#f2f2f2;height:35px;position:absolute;left:10px;top:20px;z-index:-1;}
+  </style>
+ </head>
+
+ <body>
+	<div id="clickToSroll">
+		<div class="leftBtn"><<</div>
+		<div class="rightBtn">>></div>
+		<ul class="list">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+
+	<div id="clickToSroll2" class="mt100" style="height:200px;" >
+		<div class="leftBtn a"><<</div>
+		<div class="rightBtn b">>></div>
+		<ul class="list">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+		</ul>
+	</div>
+
+	<div class="pr rq border bc" style="width:400px;" id="rq">
+		<div></div>
+		<ul class="clearfix">
+			<li class="active">1A</li>
+			<li>2BC</li>
+			<li>3DEF</li>
+			<li>4GHIJ</li>
+			<li>5KLMNO</li>
+			<li>6PQRSTU</li>
+			<li>7VWXYZ</li>
+		</ul>
+	</div>
+ </body>
+ <script>
+	function Scroll(id,l,r,list,auto)
+	{
+		this.id=zzs.$(id);
+		this.left=zzs.$$$(l,id)[0];
+		this.right=zzs.$$$(r,id)[0];
+		this.li=zzs.$$$(list,id)[0].getElementsByTagName("li");
+		this.arr=[];
+		this.arr2=[];
+		this.timer=null;
+		this.timer2=null;
+		this.can=true;
+		this.auto=auto;
+		var _this=this;
+		for (var i=0;i<_this.li.length ;i++ )
+		{
+			_this.arr[i]=i*_this.li[0].offsetWidth;
+			_this.arr2[i]=i*_this.li[0].offsetWidth;
+			zzs.css(this.li[i],"left",this.arr[i]);
+			zzs.css(this.li[this.li.length-1],"left",-this.li[0].offsetWidth);
+		}
+		_this.arr[this.li.length-1]=-_this.li[0].offsetWidth;
+		_this.arr2[this.li.length-1]=-_this.li[0].offsetWidth;
+		zzs.css(this.li[this.li.length-1],"left",_this.arr2[this.li.length-1]);
+		this.toLeft=function()
+		{
+			for (var i=0;i<this.arr2.length ;i++ )
+			{
+				_this.arr2[i]=_this.arr2[i]-_this.li[0].offsetWidth;
+				if (_this.arr2[i]<-_this.li[0].offsetWidth)
+				{
+					zzs.css(this.li[i],"visibility","hidden");
+					_this.arr2[i]=(_this.li.length-2)*_this.li[0].offsetWidth;
+				}else
+				{
+					zzs.css(this.li[i],"visibility","visible");
+					//_this.li[i].style["visibility"]="visible";
+				}
+			}
+			this.doMove(this.arr2,this.arr,this.li);
+			this.can=false;
+		}
+		this.right.onclick=function()
+		{
+			if (_this.can==true)
+			{
+				_this.toRight();
+			}
+		}
+		this.left.onclick=function()
+		{
+			if (_this.can==true)
+			{
+				_this.toLeft();
+			}
+		}
+		this.toRight=function()
+		{
+			for (var i=0;i<this.arr2.length ;i++ )
+			{
+				this.arr2[i]=this.arr[i]+this.li[0].offsetWidth;
+				if (this.arr2[i]>(this.li.length-2)*this.li[0].offsetWidth)
+				{
+					this.arr2[i]=-this.li[0].offsetWidth;
+					zzs.css(this.li[i],"visibility","hidden");
+				}else
+				{
+					zzs.css(this.li[i],"visibility","visible");
+				}
+			}
+			this.doMove(_this.arr2,_this.arr,_this.li);
+			this.can=false;
+		}
+		this.doMove=function(two,one,oLi)
+		{
+			clearInterval(_this.timer);
+			this.timer=setInterval(function()
+			{
+				var complete=true;
+				for (var index in two )
+				{
+					var s=(two[index]-one[index])/4;
+					s = s>0 ? Math.ceil(s) : Math.floor(s);
+					if (two[index]!=one[index])
+					{
+						complete=false;
+						one[index]=s+one[index];
+						zzs.css(oLi[index],"left",one[index]);
+						//oLi[index].style["left"]=one[index]+"px";
+					}
+				}
+				if (complete==true)
+				{
+					clearInterval(_this.timer);
+					_this.can=true;
+				}
+			},20);
+		}
+
+		this.autoPlay=function()
+		{
+			if (this.auto==true)
+			{
+				this.timer2=setInterval(function()
+				{
+					_this.toLeft();
+				},2500);
+			}
+
+		}
+		this.autoPlay();
+		zzs.bind(this.left,"mouseover",function(){clearInterval(_this.timer2),_this.timer2=null});
+		zzs.bind(this.right,"mouseover",function(){clearInterval(_this.timer2),_this.timer2=null});
+		zzs.bind(this.left,"mouseout",function(){_this.autoPlay()});
+		zzs.bind(this.right,"mouseout",function(){_this.autoPlay()});
+	}
+	//new Scroll("clickToSroll","leftBtn","rightBtn","list",true);
+	new Scroll("clickToSroll2","a","b","list",false);
+	(function(){
+		var li=zzs.$("rq").getElementsByTagName("li");
+		var bg=zzs.$("rq").getElementsByTagName("div")[0];
+		zzs.each(li,function(key,item){
+			this.onclick=function(){
+				clearInterval(li[0].timer);
+				li[0].timer=zzs.doMove(bg,{left:this.offsetLeft,top:this.offsetTop,width:this.offsetWidth});
+				zzs.each(item,function(){zzs.removeClass("active",this)});
+				zzs.addClass("active",this);
+
+			}
+		});
+	})();
+ </script>
+</html>

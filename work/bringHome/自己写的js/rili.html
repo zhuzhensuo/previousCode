@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <style>
+	#date{width:350px; position:absolute;left:0;top:0;display:none;}
+	.today{height:30px; line-height:30px;}
+	#date table{border-collapse:separate !important;}
+	#date table td{height:40px;width:49px;}
+	#date ul li{float:left;display:inline;width:49px;}
+	.active{background:pink;}
+	.isToday{cursor:pointer;}
+	.prev{left:0;top:5px; cursor:pointer; background:#cc0000;color:white;font-weight:bold;}
+	.next{right:0;top:5px; cursor:pointer;background:#cc0000;color:white;font-weight:bold;}
+
+	#date2{width:350px;}
+	#date2 table{border-collapse:separate !important;}
+	#date2 table td{height:40px;width:49px;}
+	#date2 ul li{float:left;display:inline;width:49px;}
+
+	#rl{margin:100px;}
+  </style>
+ </head>
+
+ <body>
+	<div id="date" class="bc tc">
+		<div class="prev pa">上个月</div>
+		<div class="next pa">下个月</div>
+		<div class="today"></div>
+		<ul>
+			<li>日</li>
+			<li>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li>六</li>
+		</ul>
+		<table>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+	<div id="date2" class="bc tc pr">
+		<div class="prev pa">上个月</div>
+		<div class="next pa">下个月</div>
+		<div class="today"></div>
+		<ul>
+			<li>日</li>
+			<li>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li>六</li>
+		</ul>
+		<table>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+
+	<div><input type="text" id="rl"/></div>
+ </body>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <script>
+		function Calender(id,cName,p,n){
+			this.id=zzs.$(id);
+			this.today=zzs.$$$(cName,id)[0];
+			this.li=zzs.$(id).getElementsByTagName("li");
+			this.td=zzs.$(id).getElementsByTagName("td");
+			this.rili=new Date();
+			this.year=this.rili.getFullYear();
+			this.month=this.rili.getMonth();
+			this.date=this.rili.getDate();
+			this.day=this.rili.getDay();
+			this.dayNum=[31,28,31,30,31,30,31,31,30,31,30,31];
+			this.rili2=new Date(this.year,this.month,this.date);
+			this.prev=zzs.$$$(p,id)[0];
+			this.next=zzs.$$$(n,id)[0];
+		}
+		Calender.prototype={
+			whatDay:function(day,date){
+				var ji=day-(date%7-1);
+				while(ji<0){
+					ji+=7;
+				}
+				return ji;
+			},
+			isRunYear:function(year){
+				if(!((year%4==0 && year%100!=0) || year%400==0)){
+					return true;
+				}
+			},
+			init:function(){
+				var ji=this.whatDay(this.rili2.getDay(),this.rili2.getDate());
+				var tmp;
+				for(var j=0;j<this.td.length;j++){
+					this.td[j].innerHTML="";
+					this.td[j].className="";
+				}
+				for(var i=0;i<this.dayNum[this.rili2.getMonth()];i++){
+
+					this.td[i+ji].innerHTML=i+1;
+					this.td[ji+i].className="active";
+					if(this.year==new Date().getFullYear() && this.month==new Date().getMonth() && this.date==new Date().getDate() && parseInt(this.td[i+ji].innerHTML)==new Date().getDate()){
+						this.td[i+ji].className="isToday";
+						this.td[i+ji].innerHTML="今天";
+						this.td[i+ji].title=i+ji;
+					}
+				}
+				var that=this;
+				that.today.innerHTML=that.rili2.getFullYear()+"年"+(that.rili2.getMonth()+1)+"月"+that.rili2.getDate()+"日"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+				setInterval(function(){
+					that.today.innerHTML=that.rili2.getFullYear()+"年"+(that.rili2.getMonth()+1)+"月"+that.rili2.getDate()+"日"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+				},1000);
+
+
+			},
+			events:function(){
+				var _this=this;
+				this.prev.onclick=function(){
+					_this.month--;
+					_this.rili2=new Date(_this.year,_this.month,_this.date);
+					_this.init();
+				}
+				this.next.onclick=function(){
+					_this.month++;
+					_this.rili2=new Date(_this.year,_this.month,_this.date);
+					_this.init();
+				}
+			}
+		}
+		var o=new Calender("date","today","prev","next");
+		o.init();
+		o.events();
+		o.getVal=function(id){
+			zzs.each(this.td,function(){
+				this.onclick=function(e){
+					var e=e||window.event;
+					e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+					zzs.$(id).value=this.innerHTML;
+				}
+			});
+		}
+		o.getVal("rl");
+		var o2=new Calender("date2","today","prev","next");
+		o2.init();
+		o2.events();
+		(function(){
+			zzs.$("rl").onclick=function(e){
+				var e=e||window.event;
+				e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+				var l=this.offsetLeft;
+				var t=this.offsetTop+this.offsetHeight;
+				zzs.css(zzs.$("date"),{display:"block",left:l,top:t});
+			}
+			document.onclick=function(){
+				zzs.css(zzs.$("date"),{display:"none"});
+			}
+		})();
+	</script>
+</html>

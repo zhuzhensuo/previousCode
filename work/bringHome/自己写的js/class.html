@@ -1,0 +1,111 @@
+hd_cart<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+<!--选项卡样式-->
+#main{width:500px;}
+	.option li{height:25px; line-height:25px;}
+	.option li.one{background:#bbb;color:white;}
+	.active{background:#bbb;color:white;}
+	#main .son{height:250px;float:left;width:250px;}
+<!--选项卡样式-->
+
+<!--点击左右切换样式-->
+#main2{width:400px;}
+#main2 .leftBtn,.rightBtn{height:25px;width:50px;background:white;}
+<!--点击左右切换样式-->
+
+<!--banner上下滚动样式-->
+#banner .container{height:200px; width:400px;position:absolute;top:0px;}
+#banner .container li{height:200px; width:400px; border:1px solid red;}
+#banner{position:relative;height:200px;}
+#banner .append{position:absolute;left:30px; bottom:30px;cursor:pointer;z-index:999;}
+#banner .append li{float:left;display:inline;margin-left:10px;height:15px; width:30px;background:black;}
+#banner li.active2{background:black;}
+#banner li.active{background:red;}
+ <!--banner上下滚动样式-->
+ 
+ <!--banner左右滚动样式(有按钮)-->
+ #a{width:400px ; height:200px !important; overflow:hidden;}
+ #a .b{height:200px; width:400px; float:left; display:inline;}
+ <!--banner左右滚动样式(有按钮)-->
+</style>
+</head>
+
+<body>
+	<!--选项卡HTML开始-->
+    <div class="clearfix">
+    	<div>选项卡演示</div>
+    	<div id="main" class="border bc clearfix cp">
+		<ul class="option fl">
+			<li class="one">选项1</li>
+			<li class="">选项2</li>
+			<li class="">选项3</li>
+			<li class="">选项4</li>
+		</ul>
+		<div>
+			<div class="son border first">11111111</div>
+			<div class="son border dn">2222222222</div>
+			<div class="son border dn">3333333333</div>
+			<div class="son border dn">444444444444</div>
+		</div>
+	</div>
+	
+    </div>
+    <!--选项卡HTML结束-->
+    <br />
+    <!--点击左右切换HTML开始-->
+    <div class="clearfix">
+    	<div>点击左右切换DIV功能演示</div>
+        <div id="main2" class="bc border clearfix">
+		<div class="leftBtn border cp">left</div>
+			<div>
+				<div class="display">11111111111</div>
+				<div class="display dn">22222222222</div>
+				<div class="display dn">33333333333</div>
+				<div class="display dn">44444444444</div>
+			</div>
+		<div class="rightBtn border cp">right</div>
+	</div>
+    </div>
+    <!--点击左右切换HTML结束-->
+    <br />
+    <!--banner的上下滚动HTML开始-->
+    <div class="clearfix">
+    	<div>banner的上下滚动功能演示</div>
+        <div id="banner" class="oh">
+		<ul class="container pa">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+    </div>
+    <!--banner的上下滚动HTML结束-->
+    <br />
+    
+    <!--banner的左右滚动(有按钮)HTML开始-->
+  	<div class="clearfix">
+    	<div>banner的左右滚动(有按钮)功能演示</div>
+        <div id="a" class="oh pr border">
+        	<div class="l pa"></div>
+            <ul class="pa b">
+            	<li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+            </ul>
+            <div class="r pa"></div>
+        </div>
+    </div>
+    <!--banner的左右滚动(有按钮)HTML结束-->
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script type="text/javascript" src="js/class.js"></script>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <style>
+	body{background:#EEEAD8;}
+	.father{height:270px; width:720px;}
+	.father ul.container li{display:none; height:100%; position:absolute;width:100%;left:0;top:0}
+	.father ul.container li img{width:100%;height:100%;}
+	.father ul li.first{display:block;}
+	.father ul.pa{z-index:1999;bottom:0;right:0;}
+	.father ul.pa li{height:20px; width:20px; background:red; float:left; display:inline;margin-left:10px; cursor:pointer;}
+	.father ul.pa li.active{background:blue;}
+  </style>
+ </head>
+
+ <body>
+	<div class="father border pr" id="fade">
+		<ul class="container">
+			<li class="first"><img src="image/img2.png"/></li>
+			<li><img src="image/b.jpg"/></li>
+			<li><img src="image/img2.png"/></li>
+			<li><img src="image/b.jpg"/></li>
+		</ul>
+		<ul class="pa">
+			<li class="active">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+	</div>
+ </body>
+ <script type="text/javascript" src="js/basic.js"></script>
+ <script>
+	function Fade(id,auto){
+		this.id=zzs.$(id);
+		this.fUl=this.id.getElementsByTagName("ul")[0];
+		this.fli=this.fUl.getElementsByTagName("li");
+		this.lul=this.id.getElementsByTagName("ul")[1];
+		this.lli=this.lul.getElementsByTagName("li");
+		this.i=0;
+		this.timer=null;
+		this.timer2=null;
+		this.auto=auto;
+		this.init.apply(this,arguments);
+	}
+	Fade.prototype.init=function(){
+		var _this=this;
+		for (var i=0,len=this.lli.length;i<len ;i++ )
+		{
+			this.lli[i].index=i;
+			this.lli[i].onclick=function(){
+				if(this.index==_this.i)return;
+				clearInterval(_this.timer);
+				zzs.doMove(_this.fli[_this.i],{opacity:50});
+				_this.i=this.index;
+				zzs.each(_this.fli,function(){this.style["display"]="none";});
+				zzs.each(_this.lli,function(){this.className="";});
+				_this.lli[this.index].className="active";
+				zzs.css(_this.fli[this.index],{"display":"block","opacity":50});
+				_this.timer=zzs.doMove(_this.fli[this.index],{opacity:100});
+			}
+		}
+		var fade=function(i){
+
+		}
+		var auto=function(){
+			clearInterval(_this.timer2);
+			_this.timer2=setInterval(function(){
+				_this.i++;
+				if(_this.i>=_this.lli.length){
+					_this.i=0;
+				}
+				zzs.each(_this.fli,function(){this.style["display"]="none";});
+				zzs.each(_this.lli,function(){this.className="";});
+				_this.lli[_this.i].className="active";
+				zzs.css(_this.fli[_this.i],{"display":"block","opacity":50});
+				_this.timer=zzs.doMove(_this.fli[_this.i],{opacity:100});
+			},4000);
+		}
+		if(this.auto){
+			auto();
+		}
+		var hover=function(){
+			_this.lul.onmouseover=_this.id.onmouseover=function(){clearInterval(_this.timer2);}
+			_this.lul.onmouseout=_this.id.onmouseout=function(){auto();}
+		}
+		hover();
+	}
+	new Fade("fade",true);
+ </script>
+</html>

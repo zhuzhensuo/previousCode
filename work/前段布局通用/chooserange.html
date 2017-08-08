@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <style>
+	*{margin:0;padding:0;}
+	.wrap{ position:absolute;height:200px;width:730px; left:50%;top:50%;margin:-100px 0 0 -365px;}
+	.inner{height:12px; position:relative;margin-top:100px;}
+	.line{height:2px; background:#999;}
+	.blue{height:2px; background:#55B9EA; position:absolute;left:0;top:0;width:0;}
+	.start,.end{ position:absolute;height:12px;width:12px;background:#55B9EA;border-radius:50%;top:-5px;z-index:10;cursor:move;}
+	.start{left:0;}
+	.end{left:12px;}
+  </style>
+ </head>
+
+ <body>
+	<span id="span"></span>
+	<div class="wrap" id="wrap">
+		<div class="inner">
+			<div class="start" id="start"></div>
+			<div class="end" id="end"></div>
+			<div class="line">
+				<div class="blue" id="blue"></div>
+			</div>
+		</div>
+	</div>
+ </body>
+ <script>
+	var $=function(id){
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+	
+	var run=function(json){
+			var start=$(json.start);
+			var end=$(json.end);
+			var leftpos=$(json.wrap).offsetLeft;
+			var width=$(json.wrap).offsetWidth-12;
+			var blue=$(json.blue);
+			var get=false;
+			var move=function(o){
+					var obj=o.obj;
+					obj.onmousedown=function(event){
+						var e1=event || window.event;
+						var xl=e1.clientX-obj.offsetLeft-leftpos;
+						if(obj.setCapture){ 
+							obj.setCapture(); 
+						}else if(window.captureEvents){ 
+							window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP); 
+						}
+						document.onmousemove=function(event){
+							var e=e || window.event;
+							var x=e.clientX;
+							var left=x-leftpos-xl;
+							if(left<=0){
+								if(get){return}
+								obj.style["left"]=0+"px";
+								return false;
+							}else if(left>=width){
+								if(get){return}
+								obj.style["left"]=width+"px";
+								return false;
+							}
+							
+							obj.style["left"]=left+"px";
+							o.callBack && o.callBack(obj,o.obj2);
+							
+							//$("span").innerHTML=obj.offsetLeft;
+						}
+						e1.returnValue=false;
+						return false;
+					}
+					document.onmouseup=function(event){
+						var e1=event || window.event;
+						if(obj.releaseCapture){ 
+							obj.releaseCapture(); 
+						}else if(window.captureEvents){ 
+							window.captureEvents(Event.MOUSEMOVE|Event.MOUSEUP); 
+						} 
+						document.onmousemove=null;
+						o.callBack && o.callBack(obj,o.obj2);
+						get=false;
+						e1.returnValue=true;
+						return true;
+					//	document.onmouseup=null;
+					}
+			}
+			move({
+					obj:start,
+					obj2:end,
+					callBack:function(a,b){
+						$("blue").style["left"]=a.offsetLeft+"px";
+						var w=b.offsetLeft-a.offsetLeft;
+						$("blue").style["width"]=w+"px";
+						if(a.offsetLeft>=b.offsetLeft-12){
+							a.style["left"]=b.offsetLeft-12+"px";
+							$("blue").style["left"]=b.offsetLeft+"px";
+							var w=a.offsetLeft-b.offsetLeft;
+							$("blue").style["width"]=w+"px";
+							
+							get=true;
+							return;
+						}else{
+							get=false;
+						}
+					}
+			});
+			move({
+					obj:end,
+					obj2:start,
+					callBack:function(a,b){
+						$("blue").style["left"]=b.offsetLeft+"px";
+						var w=a.offsetLeft-b.offsetLeft;
+						$("blue").style["width"]=w+"px";
+						if(a.offsetLeft<=b.offsetLeft+12){
+							a.style["left"]=b.offsetLeft+12+"px";
+							$("blue").style["left"]=b.offsetLeft+"px";
+							var w=a.offsetLeft-b.offsetLeft;
+							$("blue").style["width"]=w+"px";
+							
+							get=true;
+							return;
+						}else{
+							get=false;
+						}
+					}
+			});
+		
+	}
+	run({
+		start:"start",
+		end:"end",
+		wrap:"wrap",
+		blue:"blue"
+	});
+ </script>
+</html>

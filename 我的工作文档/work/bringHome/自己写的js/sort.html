@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+.px2{height:250px; width:250px;position:absolute; word-wrap:break-word; overflow:hidden;}
+.px{height:250px; width:250px; float:left; display:inline;}
+.tit{height:30px; background:orange; width:100%; cursor:move;}
+</style>
+</head>
+	<div class="clearfix" id="first">
+        <div class="px">
+            <div class="px2" id="a">
+                <div class="tit"></div>
+                <img src="image/img2.png"/>
+            </div>
+        </div>
+        <div class="px">
+            <div class="px2" id="b">
+                <div class="tit"></div>
+                <img src="image/img2.png"/>
+            </div>
+        </div>
+        <div class="px">
+            <div class="px2" id="c">
+                <div class="tit"></div>
+                <img src="image/img2.png"/>
+            </div>
+        </div>
+        <div class="px">
+            <div class="px2" id="d">
+                <div class="tit"></div>
+                <img src="image/img2.png"/>
+            </div>
+        </div>
+        <div class="px">
+            <div class="px2" id="d">
+                <div class="tit"></div>
+                <img src="image/img2.png"/>
+            </div>
+        </div>
+    </div>
+
+
+
+<body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	/*
+		这个类是实现简单排序功能，有4个参数：
+		1：最外层div的id；
+		2：提供位置的div 的className；
+		3：需要被排序的div的className；
+		4：需要被排序的div的内部的标题的div的className；
+	*/
+ 	function Sort(id,cName,cName2,tit){
+		this.father=zzs.$$$(cName,id);
+		this.son=zzs.$$$(cName2,id);
+		this.arr=[];
+		this.timer=null;
+		this.timer2=null;
+		this.move=false;
+		this.done=true;
+		this.tit=zzs.$$$(tit,id)[0];
+		this.init.apply(this,arguments);
+	}
+	Sort.prototype.init=function(){
+		var l,t,x,y,_this=this;
+		for(var i=0,len=this.father.length;i<len;i++){
+			this.son[i].index=i;
+			this.son[i].style["left"]=this.father[i].offsetLeft;
+			this.son[i].style["top"]=this.father[i].offsetTop;
+			this.son[i].onmousedown=function(event){
+				if(!_this.done){return}
+				document.onselectstart=function(){return false;}
+				zzs.each(_this.son,function(){this.style["zIndex"]=998});
+				this.style["zIndex"]=999;
+				var e=event||window.event;
+				l=e.clientX-this.offsetLeft;
+				t=e.clientY-this.offsetTop;
+				if (t>_this.tit.offsetHeight){
+					return;
+				}
+				var that=this;
+				document.onmousemove=function(event){
+					_this.move=true;
+					var e2=event||window.event;
+					x=e2.clientX;
+					y=e2.clientY;
+					_this.son[that.index].style["left"]=(x-l)+"px";
+					_this.son[that.index].style["top"]=(y-t)+"px";
+					for (var j=0;j<_this.son.length ;j++ )
+					{
+						if (zzs.css(_this.son[that.index],"top")>=(zzs.css(_this.father[j],"top")-20)==true &&
+						zzs.css(_this.son[that.index],"top")<=(zzs.css(_this.father[j],"top")+(_this.son[0].offsetHeight/2))==true &&
+						zzs.css(_this.son[that.index],"left")>=(zzs.css(_this.father[j],"left")-20)==true &&
+						zzs.css(_this.son[that.index],"left")<=(zzs.css(_this.father[j],"left")+(_this.son[0].offsetWidth/2))==true)
+						{
+							_this.arr.unshift(j);
+							zzs.each(_this.father,function(){zzs.css(this.children[0],"opacity",100)});
+							zzs.css(_this.father[_this.arr[0]].children[0],"opacity",50);
+						}
+					}
+				}
+				this.onmouseup=function(){
+					document.onmousemove=null;
+					document.onselectstart=function(){return true;}
+					if(!_this.move){return;}
+					_this.done=false;
+					zzs.each(_this.son,function(){zzs.css(this,"opacity",100)});
+					clearInterval(_this.timer);
+					clearInterval(_this.timer2);
+					_this.timer=zzs.doMove(_this.father[_this.arr[_this.arr.length-1]].children[0],
+					{left:_this.father[_this.arr[0]].offsetLeft,top:_this.father[_this.arr[0]].offsetTop},function(){
+						try
+						{
+							_this.father[_this.arr[_this.arr.length-1]].appendChild(_this.father[_this.arr[0]].children[0]);
+							_this.father[_this.arr[0]].appendChild(_this.father[_this.arr[_this.arr.length-1]].children[0]);
+						}
+						catch (e)
+						{
+							return;
+						}
+						_this.arr=[];
+						_this.move=false;
+						_this.done=true;
+					});
+					_this.timer2=zzs.doMove(_this.father[_this.arr[0]].children[0],{left:_this.father[_this.arr[_this.arr.length-1]].offsetLeft,
+					top:_this.father[_this.arr[_this.arr.length-1]].offsetTop});
+				}
+			}
+		}
+
+	}
+	new Sort("first","px","px2","tit");
+
+</script>
+</body>
+</html>

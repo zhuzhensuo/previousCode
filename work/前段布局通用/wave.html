@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content=""  charset="utf-8">
+  <style>
+		*{margin:0;padding:0;}
+		#banner{width:1000px; height:300px; left:50%;top:50%;margin:-150px 0 0 -500px;position:absolute; overflow:hidden;}
+		.banner{position:absolute;width:100%; height:100%;}
+		.banner  ul li{ position:absolute;left:0;top:0; width:1000px; height:300px; display:none;}
+		.banner  ul li.active{ display:block;}
+		.banner .wave{float:left; height:100%; background:white; position:relative; z-index:10; overflow:hidden;}
+		.banner .wave img{ position:absolute;left:0;top:0;}
+
+
+  </style>
+ </head>
+
+ <body>
+		<div id="banner">
+			<div class="banner" id="banner2">
+				<ul>
+					<li class="active"><img src="images/test1.jpg" /></li>
+					<li><img src="images/test2.jpg" /></li>
+					<li><img src="images/test3.jpg" /></li>
+				</ul>
+			</div>
+		</div>
+ </body>
+ <script src="jq1.9.js"></script>
+ <script>
+		var zzs={
+			bind:function(obj,fn){
+				return function(){
+					return fn.apply(obj,arguments);
+				}
+			}
+		}
+		var Wave=function(o){
+			this.id=$(o.id);
+			this.index=0;
+			this.done=true;
+			this.li=this.id.find(o.li);
+			this.img=this.id.find("img");
+			zzs.bind(this,this.init)();
+		}
+		
+		Wave.prototype={
+			init:function(){
+				this.auto();
+			},
+			returnData:function(max,min){
+				var random=function(max,min){
+						return Math.floor(Math.random()*(max-min+1)+min);
+				}
+				var w=this.id.outerWidth() , randomNum=random(max,min) , perwidth=(w/randomNum).toFixed(9),src=this.img.eq(this.index).attr("src")
+				,h=this.id.outerHeight(),perheight=Math.ceil((h/randomNum).toFixed(9));
+
+				return{
+					ran:randomNum,
+					w:perwidth,
+					src:src,
+					h:perheight,
+					wrap_w:w,
+					wrap_h:h
+				}
+			},
+			auto:function(){
+				var _this=this;
+				this.timer=setInterval(function(){
+					if(!_this.done){return;}
+					if(_this.index>=_this.img.length-1) {
+						_this.index = 0;
+						_this.doMove();
+						return;
+					}
+					_this.index++;
+					_this.doMove();
+					_this.done=false;
+				},5000);
+			
+			},
+			common:function(max,min){
+				this.o=this.returnData(max,min);
+				var frag=$(document.createDocumentFragment());
+				for(var i=0; i <this.o.ran ; i++){
+					var div=$("<div class='wave'></div>");
+					div.html("<img src="+this.o.src+">");
+					frag.append(div);
+				}
+				this.id.append(frag);
+				var wave=this.id.find(".wave");
+				return wave;
+			},
+			doMove:function(){
+				var random=function(max,min){
+					return Math.floor(Math.random()*(max-min+1)+min);
+				}
+				var num=random(7,1);
+				switch (num){
+				case 1:
+						this.fromLeft(40,30);
+						break;
+				case 2:
+						this.fromRight(40,30);
+						break;
+				case 3:
+						this.fromUp(20,10);
+						break;
+				case 4:
+						this.fromDown(20,10);
+						break;
+				case 5:
+						this.fromUp_pos(40,30);
+						break;
+				case 6:
+						this.fromDown_pos(40,30);
+						break;
+				case 7:
+						this.fromRandom(40,30);
+						break;
+				}
+				
+			},
+			callBack:function(o){
+					this.li.hide().eq(this.index).show();
+					o.remove();
+			},
+			noRepeat:function(len){
+				var fn=function(max,min){
+					return Math.floor(Math.random()*(max-min+1)+min);
+				}
+				var arr=[],has=false;
+				
+				while(true){
+					if(arr.length==len){ break}
+					
+					var num=fn(len-1,0);
+					for(var index in arr){
+						if(num==arr[index]){
+							has=true;
+							continue;
+						}
+					}
+
+					if(!has){
+						arr.push(num);
+					}
+					has=false;
+						
+				}
+				
+				return arr;
+
+			},
+			fromLeft:function(max,min){
+				var wave=this.common(max,min),i=0,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({height:100+"%",width:this.o.w,opacity:0});
+				wave.each(function(i){
+					arr[i]=_this.o.w*i;
+					$(this).children("img").css({left:-arr[i]});
+				});
+
+				timer=setInterval(function(){
+					wave.eq(i).animate({opacity:1},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i>=wave.length-1){
+							clearInterval(timer);
+						}
+					i++;
+
+				},70);
+			},
+			fromRight:function(max,min){
+				var wave=this.common(max,min),i=wave.length-1,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({height:100+"%",width:this.o.w,opacity:0});
+				wave.each(function(i){
+					arr[i]=_this.o.w*i;
+					$(this).children("img").css({left:-arr[i]});
+				});
+
+				timer=setInterval(function(){
+					wave.eq(i).animate({opacity:1},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i<0){
+							clearInterval(timer);
+						}
+					i--;
+
+				},70);
+			},
+			fromUp:function(max,min){
+				var wave=this.common(max,min),i=0,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({width:100+"%",height:this.o.h,opacity:0});
+				wave.each(function(i){
+					arr[i]=$(this).position().top;
+					$(this).children("img").css({top:-arr[i],left:0});
+				});
+
+				timer=setInterval(function(){
+					wave.eq(i).animate({opacity:1},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i>=wave.length-1){
+							clearInterval(timer);
+						}
+					i++;
+
+				},70);
+			},
+			fromDown:function(max,min){
+				var wave=this.common(max,min),i=wave.length-1,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({width:100+"%",height:this.o.h,opacity:0});
+				wave.each(function(i){
+					arr[i]=$(this).position().top;
+					$(this).children("img").css({top:-arr[i],left:0});
+				});
+
+				timer=setInterval(function(){
+					wave.eq(i).animate({opacity:1},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i<0){
+							clearInterval(timer);
+						}
+					i--;
+
+				},70);
+			},
+			fromUp_pos:function(max,min){
+				var wave=this.common(max,min),i=0,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({height:100+"%",width:this.o.w,marginTop:-this.o.wrap_h});
+				wave.each(function(i){
+					arr[i]=_this.o.w*i;
+					$(this).children("img").css({left:-arr[i]});
+				});
+				//alert(arr);
+				timer=setInterval(function(){
+					wave.eq(i).animate({marginTop:0},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i>=wave.length-1){
+							clearInterval(timer);
+						}
+					i++;
+
+				},70);
+			},
+			fromDown_pos:function(max,min){
+				var wave=this.common(max,min),i=0,timer=null,tmp=0,_this=this,arr=[];
+				wave.css({height:100+"%",width:this.o.w,marginTop:this.o.wrap_h});
+				wave.each(function(i){
+					arr[i]=_this.o.w*i;
+					$(this).children("img").css({left:-arr[i]});
+				});
+				//alert(arr);
+				timer=setInterval(function(){
+					wave.eq(i).animate({marginTop:0},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i>=wave.length-1){
+							clearInterval(timer);
+						}
+					i++;
+
+				},70);
+			},
+			fromRandom:function(max,min){
+				var wave=this.common(max,min),i=0,timer=null,tmp=0,_this=this,arr=[];
+				
+				var arrs=this.noRepeat(wave.length);
+				
+
+				wave.css({height:100+"%",width:this.o.w,opacity:0});
+				wave.each(function(i){
+					arr[i]=_this.o.w*i;
+					$(this).children("img").css({left:-arr[i]});
+				});
+
+				timer=setInterval(function(){
+					wave.eq(arrs[i]).animate({opacity:1},function(){
+						if(tmp>=wave.length-1){
+							_this.callBack(wave);
+							_this.done=true;
+							return;
+						}
+						tmp++;
+					});
+					if(i>=wave.length-1){
+							clearInterval(timer);
+						}
+					i++;
+
+				},70);
+			}
+
+
+
+
+
+		}
+
+		new Wave({
+			id:"#banner2",
+			li:"li"
+		});
+
+
+ </script>
+</html>

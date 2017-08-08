@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	html{overflow:hidden;}
+	*{margin:0;padding:0;}
+	.father{height:400px;width:400px;position:absolute;left:50%;top:50%;margin:-200px 0 0 -200px;border:1px solid #ccc;overflow:hidden;}
+	.father img{position:absolute;left:50%;top:50%;}
+	h1{text-align:center;padding-top:100px;}
+  </style>
+ </head>
+
+ <body>
+	<h1></h1>
+	<div class="father" id="father"><img src="images/heart.jpg"/></div>
+ </body>
+ <script>
+	var $=function(id){
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+
+	var img=$("father").getElementsByTagName("img")[0],h1=document.getElementsByTagName("h1")[0];
+	function center(obj){
+		var height=obj.clientHeight;
+		var width=obj.clientWidth;
+
+		obj.style["marginLeft"]=(-width/2)+"px";
+		obj.style["marginTop"]=(-height/2)+"px";
+	}
+	center(img);
+	$("father").onmouseover=function(){
+		document.onmousewheel=document.DOMMouseScroll=function(event){
+			var e=event||window.event;
+			if(e.wheelDelta>0){
+				h1.innerHTML="图片在变大！";
+				big(img);
+				center(img);
+			}else{
+				small(img);
+				center(img);
+				h1.innerHTML="图片在变小！";
+			}
+		}
+	}
+	function big(obj){
+		obj.style["height"]=obj.offsetHeight+40+"px";
+		obj.style["width"]=obj.offsetWidth+40+"px";
+	}
+	function small(obj){
+		try{
+			obj.style["height"]=obj.offsetHeight-40+"px";
+			obj.style["width"]=obj.offsetWidth-40+"px";
+		}
+		catch (e){
+			return;
+		}
+
+	}
+ </script>
+</html>

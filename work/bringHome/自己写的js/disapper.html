@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <style>
+	#fade{width:300px; margin:0 auto; border:1px solid red;height:25px; overflow:hidden;}
+	#fade ul li{height:25px; line-height:25px;opacity:100; filter:alpha(opacity=100);}
+	.scroll{height:150px; width:150px; border:1px solid red; position:relative;left:50%;top:50%; overflow:hidden;}
+	.scroll ul{position:absolute;left:0;top:0;}
+	.scroll ul li{width:150px; height:150px;}
+  </style>
+ </head>
+
+ <body>
+	<div id="fade">
+		<div class="ul">
+			<ul>
+				<li><a href="###">体轻能为掌上舞</a></li>
+				<li><a href="###">苦心高木不论资，富贵人生各有时</a></li>
+				<li><a href="###">掌中舞罢箫声绝，三十六宫秋月长</a></li>
+				<li><a href="###">君子藏器于身，待时而动</a></li>
+				<li><a href="###">亮，有一计</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="scroll">
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+ </body>
+ <script type="text/javascript" src="js/basic.js"></script>
+ <script type="text/javascript" src="js/jquery.js"></script>
+ <script>
+	function Disapper(id){
+		this.id=zzs.$(id);
+		this.ul=this.id.getElementsByTagName("ul")[0];
+		this.li=this.ul.children;
+		this.timer=null;
+		this.init.apply(this,arguments);
+	}
+	Disapper.prototype.init=function(){
+		//alert();
+		var _this=this;
+		var interval=function(){
+			zzs.doMove(_this.li[0],{opacity:0},function(){
+				_this.li[0].style["display"]="none";
+				_this.ul.appendChild(_this.li[0]);
+				zzs.css(_this.li[_this.li.length-1],{display:"block",opacity:100});
+			});
+		}
+
+		this.timer=setInterval(interval,4000);
+
+		this.id.onmouseover=function(){
+			clearInterval(_this.timer);
+		}
+		this.id.onmouseout=function(){
+			_this.timer=setInterval(interval,4000);
+		}
+	}
+	new Disapper("fade");
+ </script>
+ <script>
+	$(function(){
+		(function(){
+			var go=function(){
+				var ul=$(".scroll").find("ul");
+				var li=$(".scroll").find("li");
+
+				ul.animate({top:-li.height()},1000,function(){
+					li=$(".scroll").find("li");
+					ul.append(li.eq(0)).css("top",0);
+					go();
+				});
+			}
+			go();
+		})();
+
+
+	});
+ </script>
+</html>

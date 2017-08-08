@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="./js/jquery.fadeIn.js"></script>
+  <style>
+  </style>
+  <script>
+  $(function()
+  {
+	$("#scroll").scroll(
+	{
+		
+	});
+	
+
+
+
+
+  });
+  </script>
+  <style>
+	body{background:#3C3A3B;}
+	
+	#list li{opacity:1; filter:alpha(opacity=100);float:left;}
+	#list .div{ width:inherit;opacity:1;filter:alpha(opacity=100); margin-left:auto; margin-right:auto; border-bottom:1px dashed #333;padding-top:10px; padding-bottom:10px; background:#fff; position:relative;}
+	.text{height:30px; width:165px;border-radius:3px;line-height:30px;}
+	.delete{position:absolute;right:10px; bottom:10px;color:#889DB6;font-size:14px;cursor:pointer;visibility:hidden;z-index:9999;}
+	.btn{width:115px; height:35px; font-size:20px;font-weight:bold;color:white; background:#89C51D;line-height:35px;border-radius:3px;}
+
+	#list .div p{width:220px; color:#3C3A3B;font-size:14px;}
+
+	#list2 li{float:left; margin-left:20px;color:blue; text-decoration:underline;cursor:pointer;}
+	
+	.index{top:30px; right:50px; }
+	.index li{float:left;width:25px;color:red; cursor:pointer; margin-right:5px;}
+	#index li{border:1px solid white;height:10px; width:10px;}
+	#index img{height:30px; width:50px; position:absolute;}
+	#scroll .opacity{position:absolute;bottom:0px;left:0px;width:100%;height:35px; background:black;opacity:0.5;filter:alpha(opacity=50)}
+	#scroll .text{position:absolute;bottom:0px;left:0px;width:100%;height:35px;line-height:35px; padding-left:20px; color:white;}
+  </style>
+ </head>
+
+ <body>
+  <a href="js.html#table" style="color:white;font-size:50px;position:absolute;left:0px;">back</a>
+  <div class="scroll bc mt10" id="scroll" style="background:black;">
+	<ul class="pa">
+		<li><img src="./images/bannner_pic.jpg"></li>
+	    <li><img src="./images/img01.jpg" ></li>
+	    <li><img src="./images/img02.jpg" ></li>
+	    <li><img src="./images/img03.jpg" ></li>
+	   <li> <img src="./images/img04.jpg" ></li> 
+	</ul>
+
+	<ul class="dn">
+		<li>1111</li>
+		<li>2222</li>
+		<li>3333</li>
+		<li>4444</li>
+		<li>5555</li>
+	</ul>
+
+	<ul class="pa" id="index">
+		<li title="aaa"></li>
+	    <li title="bbb"></li>
+	    <li title="ccc"></li>
+	    <li title="ddd"></li>
+	   <li title="eee"></li> 
+	</ul>
+  </div>
+	<div class="bc mt50 pr" style="width:700px;border:1px solid #333; background:white;border-radius:5px;">
+		<div style="padding-bottom:20px;margin-left:10px;">
+		<div style="margin:10px 0px 10px 10px;font-size:17px;" >来 , 说说你在做什么 , 想什么</div>
+		<input type="text" class="text"><input type="button" value="广播" class="btn" style="margin-left:10px;margin-top:5px;">
+		<div>
+		<ul class="clearfix" style="width:300px;" id="list">
+			<li>
+				<div class='div clearfix'>
+					<img src='./images/iori.png' class="fl"><p class='fl ml10'>乌云在我们心里搁下一块阴影...</p><span class='delete'>删除</span>
+				</div>
+			</li>
+			<li>
+				<div class='div clearfix'>
+					<img src='./images/iori.png' class="fl"><p class='fl ml10'>静止了，所有的花开...</p><span class='delete'>删除</span>
+				</div>
+			</li>
+		</ul>
+		<ul id="list2" class="clearfix mt20">
+		</ul>
+	</div>
+	
+ </body>
+ <script>
+	function Add(id)
+	{
+		this.id=document.getElementById(id);
+		this.btn=this.id.getElementsByTagName("img");
+		this.text=this.id.getElementsByTagName("input");
+		this.init.apply(this,arguments);
+		
+		this.index=0;
+	}
+	Add.prototype=
+	{
+		init:function()
+		{
+			var arr=[110,120,130,140,150,160,170,180,190];//需要添加到电话号码
+			var oThis=this;
+			this.text[0].value=arr[0];
+			for (var i=0;i<oThis.btn.length ;i++ )
+			{
+				(function()
+				{
+					oThis.btn[i].onclick=function()
+					{
+						oThis.index++;
+						if (oThis.index>=arr.length)
+						{
+							return;
+						}
+						var parent=this.parentNode;
+						oThis.id.appendChild(parent.cloneNode(true));
+						oThis.text[oThis.index].value=arr[oThis.index];
+					}
+				})(i);
+			}
+			
+		}
+	}
+//	new Add("phone");
+	function getId(id)
+	{
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+	function getTag(id,tName)
+	{
+		if (arguments.length==1)
+		{
+			return document.getElementsByTagName(arguments[0]);
+		}else if (arguments.length==2)
+		{
+			return getId(id).getElementsByTagName(tName);
+		}
+	}
+	function getClass(className)
+	{
+		var arr=[];
+		var ele=getTag("*");
+		var patt="(^\\s|)"+className+"(|\\s$)";
+		var reg=new RegExp(patt);
+		for (var i=0;i<ele.length ;i++ )
+		{
+			if (reg.test(ele[i].className))
+			{
+				arr[arr.length]=ele[i];
+			}
+		}
+		return arr;
+	}
+	String.prototype.trim=function(s)
+	{
+		s=s.replace(/\s|　/g,"");
+		return s;
+	}
+	String.prototype.trimL=function(s)
+	{
+		s=s.replace(/^[\s|　]*/,"");
+		return s;
+	}
+	String.prototype.trimR=function(s)
+	{
+		s=s.replace(/[\s|　]*$/,"");
+		return s;
+	}
+	var o="";
+	var s=o.trimL("     df  d  d  f 　　　　 ,　　　　　");
+	//alert(s);
+	var btn=getClass("btn")[0];
+	var text=getClass("text")[0];
+	var ul=getId("list");
+	var ul2=getId("list2");
+	var oli=getTag("list","li");
+	var page=5,tmp=1;
+	function getValue(obj)
+	{
+		var val=obj.value;
+		if (/(^[\s|　]*$)/.test(val))
+		{
+			alert("请输入内容!");
+			return;
+		}
+		var li=document.createElement("li");
+		li.className="active";
+		li.innerHTML="<div class='div clearfix'><img src='./images/iori.png' class='fl'><p class='fl ml10'>"+val+"</p><span class='delete'>删除</span></div>";
+		ul.appendChild(li);
+		var len=getClass("div").length;
+		var c=getClass("div")[len-1];
+		css(c,"opacity",0);
+		oli.length ? ul.insertBefore(li,ul.children[0]) : ul.appendChild(li);
+		doMove(c,100,10,function()
+		{
+			text.value="";
+		});
+	}
+	function tips(obj,father)
+	{
+		var l=obj.offsetLeft;
+		var t=obj.offsetTop;
+		var tip=document.createElement("span");
+		tip.innerHTML="请输入你想说的话";
+		tip.style.cssText="position:absolute; z-index:-1;width:"+obj.offsetWidth+"px; height:"+obj.offsetHeight+"; top:"+t+"px; left:"+l+"px;";
+		father.appendChild(tip);
+	}	
+	btn.onclick=function()
+	{
+		this.blur();
+		getValue(text);
+		var len=getClass("div");
+		var del=getClass("delete");
+		var length=len.length;
+		var min=Math.floor(length/page);
+		if (oli.length>tmp*page && text.value!="")
+		{
+			option(min,oli,length);
+		}
+		for (var i=0;i<len.length ;i++ )
+		{
+			(function(_i)
+			{
+				len[_i].onmouseover=function()
+				{
+					for (var j=0;j<len.length ;j++ )
+					{
+						len[j].style["background"]="#fff";
+						del[j].style["visibility"]="hidden";
+					}
+					this.style["background"]="#F5F5F5";
+					del[_i].style["visibility"]="visible";
+				}
+				len[_i].onmouseout=function()
+				{
+					del[_i].style["visibility"]="hidden";
+					this.style["background"]="";
+				}
+				del[_i].onclick=function()
+				{
+					this.style["display"]="none";
+					css(len[_i],"opacity",100);
+					doMove(len[_i],0,5,function()
+					{
+						len[_i].style["display"]="none";
+						ul.removeChild(del[_i].parentNode.parentNode);
+					});
+				}
+			})(i);
+
+		}
+	}
+	function option(m,li,c)
+	{
+		tmp++;
+		for (var i=0;i<c;i++ )
+		{
+			li[i].style["display"]="none";
+		}
+		for (var i=0;i<c-m*page ;i++ )
+		{
+			li[i].style["display"]="block";
+		}
+		createUl(m,ul2);
+	}
+	function createUl(num,list)
+	{
+		var li=document.createElement("li");
+		list.appendChild(li);
+		li.innerHTML=num;
+		var oli2=getTag("list2","li");
+		for (var i=0;i<oli2.length ;i++ )
+		{
+			oli2[i].index=i;
+			oli2[i].onclick=function()
+			{
+				var num=parseInt(this.innerHTML);
+				for (var i=0;i<oli.length;i++ )
+				{
+					oli[i].style["display"]="none";
+				}
+				for (var i=0;i<oli2.length ;i++ )
+				{
+					oli2[i].style.cssText="color:blue; text-decoration:underline;cursor:pointer;";
+				}
+				for (var i=(num-1)*page;i<num*page ;i++ )
+				{
+					oli[i].style["display"]="block";
+				}
+			this.style.cssText="cursor:none;color:black;text-decoration:none;";
+			}
+		}
+	
+	}
+	var use=false;
+	btn.disabled=true;
+	text.onkeyup=function()
+	{
+		/^(\s|　)$/g.test(text.value) ? use=false : use=true;
+		use==false ? btn.disabled=true : btn.disabled=false;
+	}
+	function css(obj,attr,value)
+	{
+		if (arguments.length==2)
+		{
+			return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr]);
+		}else if (arguments.length==3)
+		{
+			attr=="opacity" ? (obj.style.filter="alpha(opacity="+value+")" , obj.style.opacity=value/100): obj.style[attr]=value+"px";
+		}
+		
+	}
+	
+	/*
+	function margin(obj,top,callBack)
+	{
+		var timer;
+		clearInterval(timer);
+		timer=setInterval(function()
+		{
+			var s=(top-css(obj,"marginTop"))/5;
+			s =s>0 ? Math.ceil(s) : Math.floor(s);
+			if (css(obj,"marginTop")>=top)
+			{
+				clearInterval(timer);
+				callBack && (callBack());
+			}else
+			{
+				obj.style["marginTop"]=(s+css(obj,"marginTop"))+"px";
+			}
+		},20);
+	}
+	*/
+	function doMove(obj,value,speed,callBack)
+	{
+		var timer;
+		clearInterval(timer);
+		timer=setInterval(function()
+		{
+			var opt=parseInt(css(obj,"opacity").toFixed(2)*100);
+			var s=(value-opt)/speed;
+			s =s>0 ? Math.ceil(s) : Math.floor(s);
+			if (opt==value)
+			{
+				clearInterval(timer);
+				callBack && (callBack());
+			}else
+			{
+				css(obj,"opacity",(s+opt));
+			}
+		},50);
+	}
+ </script>
+</html>

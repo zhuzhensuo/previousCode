@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <style>
+	#change li{height:100%; width:200px;}
+	#change li:hover{border:3px solid yellow;}
+	#main{width:960px;}
+	#last{margin-left:230px;border:1px solid blue;height:500px; width:500px;}
+	.left{left:0px; top:70px;}
+	.right{right:0px; top:70px;}
+	a{width:100px; height:50px;display:inline-block;line-height:50px;}
+  </style>
+  <script src="jquery.js"></script>
+  <script src="./js/jquery.clickToChange2.js"></script>
+  <script>
+
+	$(function()
+	{
+		$("#change").clickToChange(
+		{
+			h:"150",//调用层的高
+			w:"600",//调用层的宽
+			time:200//轮播所使用的时间
+		});
+	});
+  </script>
+ </head>
+
+ <body>
+ 
+  <div id="main" class=" bc pr border">
+  <div class="left w100 border fl pa" >向左</div>
+  <div id="change" class=" pr bc oh">
+	  <ul class="pa" >
+		<li><img src="images/2page-img1.jpg"></li>
+		<li><img src="images/2page-img11.png"></li>
+		<li><img src="images/2page-img1.jpg"></li>
+		<li><img src="images/2page-img11.png"></li>
+		<li><img src="images/2page-img1.jpg"></li>
+		<li><img src="images/2page-img11.png"></li>
+		<li><img src="images/2page-img1.jpg"></li>
+		<li><img src="images/2page-img11.png"></li>
+		<li><img src="images/2page-img1.jpg"></li>
+		<li><img src="images/2page-img11.png"></li>
+	  </ul>
+  </div>
+  <div class="right w100 border pa fr">向右</div>
+  <div id="last" class="bc">
+	<ul >
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+  </div>
+ </div>
+<a class="border tc">2332</a>
+ </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="gbk">
+  <script src="http://api.map.baidu.com/api?v=1.4" type="text/javascript"></script>
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  
+	<style>
+	#map{height:200px; width:200px;border:1px solid black;}
+	#btn{position:absolute;left:0;top:0;cursor:move;}
+	</style>
+ </head>
+	
+ <body>
+	<div id="map"></div>
+	<div><input type="button" value="关灯" id="btn" style="height:200px;width:200px;"/></div>
+		
+ </body>
+ <script>
+	var map=new BMap.Map("map");
+	map.centerAndZoom(new BMap.Point(116.404, 39.915),10);
+	map.enableScrollWheelZoom();
+	map.enableContinuousZoom();
+	map.enableInertialDragging();
+	map.setCenter(new BMap.Point(121.32455, 30.9612),10);
+	(function()
+	{
+		var btn=document.getElementById("btn");
+		var b=document.getElementsByTagName("body")[0];
+		var arr=["fff","eee","ddd","ccc","bbb","aaa","999","888","777","666","555","444","333","222","111","000"];
+		arr=arr.reverse();
+		var num=arr.length;
+		var timer=null;
+		function doMove(target,cur,callBack)
+		{
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var s=(target-cur)/5;
+				s = s>0? Math.ceil(s) : Math.floor(s);
+				
+				if (target==cur)
+				{
+					clearInterval(timer);
+				}else
+				{
+					cur= s+cur;
+					callBack && callBack(cur);
+					//
+				}
+			},20);
+		}
+		btn.onclick=function()
+		{
+			if (this.value=="关灯")
+			{
+				doMove(0,num,function(c)
+				{
+					b.style.backgroundColor="#"+arr[c];
+				});
+				this.value="开灯";
+			}else
+			{
+				doMove(arr.length-1,0,function(c)
+				{
+					b.style.backgroundColor="#"+arr[c];
+				});
+				this.value="关灯";
+			}
+			
+		}
+	})();
+	
+	(function()
+	{
+		var btn=document.getElementById("btn"),x,y,x2,y2,l,t;
+		btn.onmousedown=function(event)
+		{
+			var e=event||window.event;
+			x=e.clientX;
+			y=e.clientY;
+			l=x-this.offsetLeft;
+			t=y-this.offsetTop;
+			this.onmousemove=function(event)
+			{
+				var e2=event||window.event;
+				x2=e2.clientX;
+				y2=e2.clientY;
+				btn.style["left"]=(x2-l)+"px";
+				btn.style["top"]=(y2-t)+"px";
+			}
+			this.onmouseup=function()
+			{
+				this.onmousemove=null;
+			}
+		}
+		
+
+	})();
+ </script>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	html{overflow-y:hidden;}
+	div{width:400px;position:absolute;top:0;left:50%;margin-left:-200px;z-index:999;}
+	.wk{position:absolute;left:0;top:0;margin-left:700px; z-index:1000;}
+  </style>
+ </head>
+
+ <body>
+	<div>
+		<img src="images/sky.jpg"/>
+
+	</div>
+ </body>
+ <script>
+	(function(){
+		var img=document.getElementsByTagName("img")[0],h=img.scrollHeight||20643,div=document.getElementsByTagName("div")[0],t=0,back=true,
+		height=document.body.scrollHeight||document.documentElement.clientHeight;
+		var start=function(){
+			var timer=setInterval(function(){
+				back ? t+=20 : t-=20;
+				if(t>=h-height){
+					back=!back;
+				}
+				if(t<=0){
+					clearInterval(timer);
+				}
+				div.style["top"]=-t+"px";
+			},20);
+		}
+		start();
+	})();
+ </script>
+</html>

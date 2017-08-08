@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script src="jquery.js"></script>
+  <style>
+	body{background:#fff;}
+	.next{width:720px;height:250px;}
+	#next2{width:720px;height:250px;}
+	.active{position:absolute;top:0px; left:0px;font-size:20px; font-size:20px;font-weight:bold;}
+  </style>
+  <script>
+  $(function()
+  {
+  /*
+	while(true)
+	{
+		var mess=prompt("请输入你想说的话","");
+		if (mess=="")
+		{
+			alert("不能为空！");
+			continue;
+		}else
+		{
+			if (mess==null)
+			{
+				continue;
+			}
+			mess=mess.split("");
+			break;
+		}
+	}
+	*/
+	/*
+	var mess="一个很好玩的效果...";
+	mess=mess.split("");
+	var xpo=[],ypo=[],arr=[];
+	var is=false,x,y;
+	for (var i=0;i<mess.length ;i++ )
+	{
+		arr.push("_"+i);
+		arr[i]=$("<span>"+mess[i]+"</span>");
+		arr[i].addClass("active");
+		$("body").append(arr[i]);
+	}
+	function go(event)
+	{
+		var e=e||window.event;
+		x=e.clientX;
+		y=e.clientY;
+	}
+	function random(max,min)
+	{
+		return Math.floor(Math.random()*(max-min+1)+min);
+	}
+	function color()
+	{
+		var c=random(0xFFFFFF,0).toString(16);
+		while(c.length<6)
+		{
+			c+="0";
+		}
+		return "#"+c;
+	}
+
+	function move()
+	{
+		for (var i=mess.length-1;i>=1 ;i-- )
+		{
+			xpo[i]=xpo[i-1]+30;
+			ypo[i]=ypo[i-1];
+		}
+		xpo[0]=x+10;
+		ypo[0]=y;
+
+		$("span:eq(0)").css({"left":xpo[0],"top":ypo[0]});
+		for (var i=0;i<mess.length ;i++ )
+		{
+			var c=color();
+			$("span").eq(i).css({"left":xpo[i],"top":ypo[i],"color":c});
+		}
+		var timer=setTimeout(move,20);
+	}
+	move();
+	$(document).mousemove(function(e)
+	{
+		go();
+
+	});
+	*/
+	var zzs=
+	{
+		getObj: function(id)
+		{
+			return $("#"+id);
+		}
+	}
+	function Animate(id)
+	{
+		this.timer=null;
+		this.time=4000;
+		this.id=zzs.getObj(id);
+		this.ul=this.id.children("ul:first");
+		this.ul2=this.id.children("ul:last");
+		this.li2=this.ul2.children("li");
+		this.li=this.ul.children("li");
+		this.tmp=0;
+		this.interval=null;
+		this.tip=null;
+	}
+	Animate.prototype=
+	{
+		init:function()
+		{
+			this.id.css({"overflow":"hidden","position":"relative"});
+			this.li.css({"display":"none"});
+			this.li.eq(this.tmp).css({"display":"block"});
+			this.ul2.css({"position":"absolute","right":"0px","bottom":"10px","zIndex":"999"});
+			this.li2.css({"height":"15px","width":"30px","background":"orange","float":"left","text-align":"center","marginRight":"10px","border-radius":"4px"});
+			this.li2.eq(this.tmp).css({"background":"white"});
+			this.tip=$("<div></div>");
+			this.tip.appendTo(this.id);
+			this.tip.css({"height":"40px","width":this.id.width(),"position":"absolute","bottom":"0px","left":"0px","background":"black","opacity":"0.5","color":"white","lineHeight":"40px","fontWeight":"bold","padding-left":"20px","display":"none"});
+			var that=this;
+			that.li2.hover(function()
+			{
+				that.tmp=that.li2.index(this);
+				that.li2.eq(that.tmp).css({"background":"white"}).siblings().css({"background":"orange"});
+				that.li.eq(that.tmp).stop(false,true).fadeIn("slow").siblings().css({"display":"none"});
+				clearInterval(that.timer);
+				clearTimeout(that.interval);
+				that.tips();
+			},function()
+			{
+				that.auto();
+				that.interval=setTimeout(function()
+				{
+					that.tips();
+				},that.time);
+			});
+		},
+		auto:function()
+		{
+			var oThis=this;
+			oThis.timer=setInterval(function()
+			{
+				oThis.tmp+=1;
+				if (oThis.tmp==oThis.li.length)
+				{
+					oThis.tmp=0;
+				}
+				oThis.li2.eq(oThis.tmp).css({"background":"white"}).siblings().css({"background":"orange"});
+				oThis.li.eq(oThis.tmp).stop(false,true).fadeIn(1000).siblings().css({"display":"none"});
+				oThis.tips();
+			},this.time);
+		},
+		tips:function()
+		{
+			this.tip.css("display","none").stop(false,true).slideDown(200);
+			this.tip.html(this.li.eq(this.tmp).attr("title"));
+		}
+	}
+	var ok=new Animate("next");
+	ok.init();
+	ok.auto();
+	ok.tips();
+	function Son()
+	{
+		Animate.apply(this,arguments);
+		this.div=null;
+	};
+	Son.prototype=new Animate();
+
+	var son=new Son("next2");
+	son.init();
+	son.auto();
+	son.tips();
+
+	Son.prototype.show=function()
+	{
+		var oThis=this;
+		oThis.li2.mouseover(function()
+		{
+			oThis.div=$("<div></div>");
+			oThis.div.css({"height":"30px","width":"30px","position":"absolute","left":"0px","top":"0px","background":"white"});
+			oThis.div.appendTo(oThis.id);
+			oThis.div.stop(false,true).animate({height:oThis.id.height(),width:oThis.id.width(),opacity:0},500,function()
+			{
+				oThis.div.remove();
+			});
+		})
+	}
+	son.show();
+  });
+  </script>
+ </head>
+
+ <body>
+	<div class="next bc mt100" id="next">
+		<ul>
+			<li title="第1张图片"><img src="./images/bannner_pic.jpg"></li>
+			<li title="第2张图片"><img src="./images/img01.jpg" ></li>
+			<li title="第3张图片"><img src="./images/img02.jpg" ></li>
+			<li title="第4张图片"><img src="./images/img03.jpg" ></li>
+		    <li title="第5张图片"><img src="./images/img04.jpg" ></li>
+			<li title="第6张图片"><img src="./images/bannner_pic.jpg"></li>
+			<li title="第7张图片"><img src="./images/img01.jpg" ></li>
+			<li title="第8张图片"><img src="./images/img02.jpg" ></li>
+			<li title="第9张图片"><img src="./images/img03.jpg" ></li>
+		    <li title="第10张图片"><img src="./images/img04.jpg" ></li>
+		</ul>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+	<div class="bc mt100" id="next2">
+		<ul>
+			<li title="第1张图片"><img src="./images/bannner_pic.jpg"></li>
+			<li title="第2张图片"><img src="./images/img01.jpg" ></li>
+			<li title="第3张图片"><img src="./images/img02.jpg" ></li>
+			<li title="第4张图片"><img src="./images/img03.jpg" ></li>
+		    <li title="第5张图片"><img src="./images/img04.jpg" ></li>
+			<li title="第6张图片"><img src="./images/bannner_pic.jpg"></li>
+			<li title="第7张图片"><img src="./images/img01.jpg" ></li>
+			<li title="第8张图片"><img src="./images/img02.jpg" ></li>
+			<li title="第9张图片"><img src="./images/img03.jpg" ></li>
+		    <li title="第10张图片"><img src="./images/img04.jpg" ></li>
+		</ul>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<p></p>
+ </body>
+ <script>
+
+	var mess="一个很好玩的效果...";
+	mess=mess.split("");
+	var frag=document.createDocumentFragment();
+	for (var i=0;i<mess.length ;i++ )
+	{
+		var span=document.createElement("span");
+		span.className="active";
+		span.innerHTML=mess[i];
+		frag.appendChild(span);
+	}
+	document.body.appendChild(frag);
+	var span=document.getElementsByTagName("span");
+	var x=0,y=0,flag=30,xpo=[],ypo=[],is=false;
+
+	function pos(e)
+	{
+		x=e.clientX;
+		y=e.clientY;
+		is=true;
+	}
+	for (var i=0;i<mess.length ;i++ )
+	{
+		xpo[i]=ypo[i]=100;
+
+	}
+	function random(max,min)
+	{
+		return Math.floor(Math.random()*(max-min+1)+min);
+	}
+	function color()
+	{
+		var c=random(0xFFFFFF,0).toString(16);
+		while(c.length<6)
+		{
+			c+="0";
+		}
+		return "#"+c;
+	}
+	function move()
+	{
+		for (var i=mess.length-1;i>=1 ;i-- )
+		{
+			xpo[i]=xpo[i-1]+30;
+			ypo[i]=ypo[i-1];
+		}
+		xpo[0]=x+20;
+		ypo[0]=y;
+
+		for (var i=0;i<mess.length ;i++ )
+		{
+			var c=color();
+			span[i].style.left=xpo[i]+"px";
+			span[i].style.top=ypo[i]+"px";
+			span[i].style["color"]=c;
+		}
+		var timer=setTimeout(move,20);
+	}
+
+	move();
+	document.onmousemove=function(event)
+	{
+		var e=event||window.event;
+		pos(e);
+		var p=document.getElementsByTagName("p")[0].innerHTML=x+"--"+y;
+	}
+
+ </script>
+</html>

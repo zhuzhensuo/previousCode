@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="js/jquery.move.js"></script>
+  <style>
+	img{height:200px; width:200px;}
+  </style>
+ </head>
+ <body style="height:1000px;">
+  <canvas id="canvas" style="border:1px solid red;" height="500" width="500" >你的浏览器不支持HTML5...</canvas>
+  <p id="value" class="tc"></p>
+  <p id="index"></p>
+  <div class="bc oh pr" style="height:400px;width:700px; background:url(images/forest.jpg) no-repeat center center" id="zone"></div>
+  <marquee direction="up" scrollAmount="1" style="font-size:30px; width:30px; height:300px;" class=" fb" >花开花落，缘起缘灭...</marquee>
+ </body>
+
+ <script>
+	/*
+	var obj2=document.getElementById("canvas");
+	var ctx2=obj2.getContext("2d");
+	var tmp=0;
+		var arr=["#1111111","#222222","#333333","#444444","#555555","#666666","#777777","#888888","#999999","#aaaaaa","#bbbbbb","#cccccc","#dddddd","#eeeeee"];
+		var arr2=["red","orange","yellow","green","blue","purple","pink","black","white","brown","gold","silvery","cyan","carmine"];
+		obj2.onmousedown=function(){
+		var img=new Image();
+		img.src="images/img01.jpg";
+		//ctx2.drawImage(img,0,0,200,100);
+		obj2.onmousemove=function run(event)
+		{
+			 event=event ?event:window.event;
+			 x=event.clientX;
+			 y=event.clientY;
+			// obj2.style.cursor="none";
+			ctx2.drawImage(img,x,y,200,100);
+			ctx2.beginPath();
+			ctx2.fillStyle="white";
+			ctx2.fillRect(x,y,200,100);
+			ctx2.fill();
+
+			document.getElementById("value").innerHTML=x+","+y;
+			document.getElementById("index").innerHTML=tmp;
+			ctx2.beginPath();
+			ctx2.lineWidth="15";
+			ctx2.lineJoin="round";
+			ctx2.lineCap="round";
+			ctx2.strokeStyle="gray";
+			ctx2.moveTo(x-3,y-3);
+			ctx2.lineTo(x,y);
+			ctx2.stroke();
+			tmp+=1;
+			if (tmp==arr.length)
+			{
+				tmp=0;
+			}
+		}
+	}
+
+	obj2.onmouseup=function()
+	{
+
+		obj2.onmousemove="null";
+	}
+	*/
+	(function()
+	{
+		function getId(id)
+		{
+			return typeof id=="string" ? document.getElementById(id) : id;
+		}
+		function rand(max,min)
+		{
+			return Math.floor(Math.random()*(max-min+1)+min);
+		}
+		var zone=getId("zone");
+		var ca=getId("value");
+		function create()
+		{
+			var img=new Image();
+			img.src="./images/shuye"+rand(11,1)+".png";
+			zone.appendChild(img);
+			with(img.style)
+			{
+				position="absolute";
+				top=rand(-(img.offsetHeight+100),-(img.offsetHeight))+"px";
+				left=rand(zone.offsetWidth-img.offsetWidth,0)+"px";
+				opacity=1;
+			}
+			doMove(img,zone);
+			ca.innerHTML="共有"+document.images.length+"张图片";
+			var timer=setTimeout(arguments.callee,3000);
+		}
+		create();
+		function css(obj,attr,value)
+		{
+			if (arguments.length==2)
+			{
+				return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr]);
+			}else if (arguments.length==3)
+			{
+				attr=="opacity" ? (obj.style.filter="alpha(opacity="+value+")" , obj.style.opacity=value/100): obj.style[attr]=value+"px";
+			}
+
+		}
+		function changeO(obj,value,time,callBack)
+		{
+			var timer;
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var opt=parseInt(css(obj,"opacity").toFixed(2)*100);
+				var s=(value-opt)/10;
+				s =s>0 ? Math.ceil(s) : Math.floor(s);
+				if (opt==value)
+				{
+					clearInterval(timer);
+					callBack && (callBack());
+				}else
+				{
+					css(obj,"opacity",(s+opt));
+				}
+			},time);
+		}
+		function doMove(obj,z)
+		{
+			var deg=0;
+			var jia=true,right=true;;
+			var r=rand(3,1);
+			var timer=setInterval(function()
+			{
+				jia==true ? deg++ : deg--;
+				if (deg>=90)
+				{
+					jia=false;
+				}else if (deg<0)
+				{
+					jia=true;
+				}
+				switch (r)
+				{
+				case 1:
+					obj.style["-webkitTransform"]="rotate("+deg+"deg)";
+					obj.style.MozTransform="rotate("+deg+"deg)";
+					obj.style["left"]=(obj.offsetLeft+1)+"px";
+						break;
+				case 2:
+					obj.style["-webkitTransform"]="rotatex("+deg+"deg)";
+					obj.style.MozTransform="rotatex("+deg+"deg)";
+					obj.style["left"]=(obj.offsetLeft-1)+"px";
+						break;
+				case 3:
+					obj.style["-webkitTransform"]="rotatey("+deg+"deg)";
+					obj.style.MozTransform="rotatey("+deg+"deg)";
+						break;
+				}
+				obj.style["top"]=(obj.offsetTop+2)+"px";
+				obj.offsetTop>=(z.offsetHeight-obj.offsetHeight) && (changeO(obj,0,1000));
+				obj.offsetTop>=z.offsetHeight && (z.removeChild(obj));
+			},50);
+			obj.onmouseover=function()
+			{
+				clearInterval(timer);
+			}
+			obj.onmouseout=function()
+			{
+				changeO(this,0,50,function()
+				{
+					z.removeChild(this);
+				})
+			}
+		}
+	})();
+ </script>
+</html>

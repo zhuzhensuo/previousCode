@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+		*{margin:0;padding:0;}
+		li{list-style:outside none;}
+
+		#div{height:20px; line-height:20px; width:10px; text-align:center; position:relative; overflow:hidden;float:left;}
+		#ul{position:absolute;left:0;top:0;}
+		#ul li{height:20px; width:10px; text-align:center;}
+
+		#div2{height:20px; line-height:20px; width:10px; text-align:center; position:relative; overflow:hidden;float:left;}
+		#ul2{position:absolute;left:0;top:0;}
+		#ul2 li{height:20px; width:10px; text-align:center;}
+  </style>
+ </head>
+
+ <body>
+
+		<div id="div2">
+				<ul id="ul2">
+					<li></li>
+					<li></li>
+				</ul>
+		</div>
+		<div id="div">
+				<ul id="ul">
+					<li></li>
+					<li></li>
+				</ul>
+		</div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+		var second_li=zzs.$("#ul","li");
+		var second_ul=zzs.$("#ul");
+
+		var second_li2=zzs.$("#ul2","li");
+		var second_ul2=zzs.$("#ul2");
+		var getNum=function(arr){
+			var num=parseInt(arr[0].innerHTML);
+			for(var i=1;i<arr.length;i++){
+				arr[i].innerHTML=num+i;
+			}
+		}
+		//getNum();
+		var animate=function(){
+			
+
+			var a=function(no,li,ul){
+				li[0].innerHTML=parseInt(no);
+				
+				clearInterval(animate.timer);
+				animate.timer=zzs.doMove(ul,{top:-li[0].offsetHeight},10,function(){
+				ul.style["top"]=0+"px";
+				ul.appendChild(li[0]);
+				});
+				getNum(li);
+			}
+		
+			setInterval(function(){
+				var second=new Date().getSeconds();
+				second=second.toString();
+				//a(second);
+				
+				if(second.length==2){
+					var ge=second.substring(1);
+					var shi=second.substring(0,1);
+					second_li2[0].innerHTML=shi;
+					if(ge>=9){
+						shi =shi >5 ? 0 : shi;
+						a(shi,second_li2,second_ul2);
+					}else{
+						a(ge,second_li,second_ul);
+					}
+					
+
+				}else{
+					if(parseInt(second)==9){
+						a(second,second_li2,second_ul2);
+					}else{
+						a(second,second_li,second_ul);
+					}
+					
+				}
+				
+			},1000);
+		}
+		animate();
+ </script>
+</html>

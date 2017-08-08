@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="./js/jquery.toLeft.js"></script>
+  <style>
+   .img li{height:100%; width:220px;}
+   table td{height:100px; width:100px; text-align:center; vertical-align:middle; font-weight:bolder; border:1px solid #333;}
+   #btn{height:40px; width:100px; font-weight:bolder; color:red; font-size:20px;}
+  </style>
+  <script>
+  
+
+  $(function()
+  {
+	$("#toLeft").toLeft(
+	{
+		w:"660px",//div宽（div的宽要能够整除li的宽，否则方向向右时会出现bug）
+		h:"150px",//div高
+		Hz:25,//setinterval函数的Hz
+		step:2,//递增的步长
+		direction:2//方向，奇数向左走，偶数向右走
+	});
+
+
+
+
+
+  });
+  </script>
+ </head>
+
+ <body>
+	<div class="bc pr" id="toLeft">
+		<ul class="pa img">
+			<li><img src="images/1page-img1.png"></li>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img13.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+			<li><img src="images/1page-img1.png"></li>
+			<li><img src="images/2page-img11.png"></li>
+			<li><img src="images/2page-img13.png"></li>
+			<li><img src="images/2page-img12.png"></li>
+		</ul>
+	</div>
+	<input type="button" value="Go" id="btn"><select id="select"><option>随机</option><option>肯定会赢</option><option>肯定不会赢</option></select>
+	<table class="pa">
+		<tr>
+			<td style="background:#aaa;">香蕉</td>
+		</tr>
+		<tr>
+			<td>苹果</td>
+		</tr>
+		<tr>
+			<td>桔子</td>
+		</tr>
+		<tr>
+			<td>菠萝</td>
+		</tr>
+		<tr>
+			<td>橙子</td>
+		</tr>
+	</table>
+	<table class="pa" style="left:100px;top:595px;">
+		<tr>
+			<td>金毛</td>
+			<td>斗牛犬</td>
+			<td>藏獒</td>
+			<td>哈士奇</td>
+			<td>牧羊犬</td>
+		</tr>
+	</table>
+	<div class="pa fb tc" id="div" style="width:505px; height:305px; left:100px; top:290px; line-height:305px; font-size:150px;">
+	</div>
+	<table class="pa" style="left:605px;">
+		<tr>
+			<td>刀</td>
+		</tr>
+		<tr>
+			<td>枪</td>
+		</tr>
+		<tr>
+			<td>剑</td>
+		</tr>
+		<tr>
+			<td>矛</td>
+		</tr>
+		<tr>
+			<td>盾</td>
+		</tr>
+	</table>
+	<table class="pa" style="left:100px;">
+		<tr>
+			<td>人</td>
+			<td>神</td>
+			<td>魔</td>
+			<td>天</td>
+			<td>地</td>
+		</tr>
+	</table>
+ </body>
+ <script>
+	$(function()
+	{
+		(function()
+		{
+			var td=document.getElementsByTagName("td");
+			var btn=document.getElementById("btn");
+			var div=document.getElementById("div");
+			
+			btn.onclick=function()	
+			{
+				var value=$("select").val();
+				var tmp=div.innerHTML;
+				if (/^\s*$/i.test(tmp)==true)
+				{
+					alert("请选择押注");
+					return false;
+				}
+				var num=0;
+				this.disabled=true;
+				go(num,td,value);
+			}
+			function second(max,min)
+			{
+				return Math.floor(Math.random()*(max-min+1)+min);
+			}
+			var html;
+			function go(tmp,obj,val)
+			{	
+				var timer=setInterval(function()
+				{
+					tmp++;
+					tmp>=obj.length && (tmp=0);
+					for (var i=0;i<td.length ;i++ )
+					{
+						obj[i].style["background"]="";
+						obj[tmp].style["background"]="#aaa";
+					}
+				},20);
+				var time=setTimeout(function()
+				{
+					clearInterval(timer);
+					var html=obj[tmp].innerHTML;
+					switch (val)
+					{
+					case "随机":
+						if (html!=div.innerHTML)
+						{
+							alert("没押中!");
+						}else
+						{
+							alert("押中了!");
+						}
+						break;
+					case "肯定会赢":
+						for (var i=0;i<td.length ;i++ )
+						{
+							if (td[i].innerHTML==div.innerHTML)
+							{
+								td[i].style["background"]="#aaa";
+							}else
+							{
+								td[i].style["background"]="";
+							}
+						}
+						break;
+					case "肯定不会赢":
+						if (html==div.innerHTML)
+						{
+							tmp+=1;
+							td[tmp].style["background"]="#aaa";
+						}
+					}
+					
+					btn.disabled=false;
+				},second(4000,500));
+			}
+			for (var i=0;i<td.length ;i++ )
+			{
+				(function(_i)
+				{
+					td[_i].onclick=function()
+					{
+						var value=this.innerHTML;
+						div.innerHTML=value;
+					}
+					
+				})(i);
+			}
+		})();
+	});
+	
+ </script>
+</html>

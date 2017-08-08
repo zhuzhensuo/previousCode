@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="js/jquery.js" type="text/javascript">
+  </script>
+  <script>
+	$(function()
+	{
+		function Opacity(id,clas,color)
+		{
+			this.id=$("#"+id);
+			this.div=this.id.find("div."+clas+"");
+			this.color=color;
+			this.out=null;
+			this.createDiv=function()
+			{
+				var arr=[];
+				this.div.css({"position":"relative"});
+				for (var i=0;i<this.div.length ;i++ )
+				{
+					arr[i]=$("<div></div>")
+					this.div.eq(i).append(arr[i]);	arr[i].css({"position":"absolute","height":this.div.eq(i).height(),"width":this.div.eq(i).width(),"background":this.color,"left":"0px","top":"0px","opacity":0});
+				}
+				var _this=this;
+				this.div.hover(function()
+				{
+					var index=_this.div.index(this);
+					clearTimeout(_this.out);
+					for (var index2 in arr )
+					{
+							if (index2==index)
+							{
+								arr[index2].css({"opacity":0});
+							}else
+							{
+								arr[index2].stop(false,true).animate({opacity:0.8},function()
+								{
+									arr[index].css({"opacity":0});
+								});
+							}
+					}
+
+				},function()
+				{
+					_this.out=setTimeout(function()
+					{
+						for (var index2 in arr )
+						{
+							arr[index2].stop(false,true).animate({opacity:0});
+						}
+					},500);
+				});
+			}
+			this.createDiv();
+		}
+		new Opacity("opacity","black","black");
+		new Opacity("opacity2","black","red");
+	});
+
+	(function(){
+
+	})();
+  </script>
+  <style>
+*{margin:0px; padding:0px;}
+.one{height:100px; width:100px; border:1px solid red; }
+.two{height:100px; width:200px; border:1px solid red; }
+.three{height:100px; width:300px; border:1px solid red; }
+</style>
+ </head>
+
+ <body>
+  <div id="opacity">
+		<div class="one black">dddd</div>
+		<div class="two black">ddd</div>
+		<div class="one black">dddd</div>
+		<div class="two black">ddd</div>
+		<div class="three black">ddd</div>
+	</div>
+	<div id="opacity2">
+		<div class="one black">dddd</div>
+		<div class="two black">ddd</div>
+		<div class="one black">dddd</div>
+		<div class="two black">ddd</div>
+		<div class="three black">ddd</div>
+	</div>
+ </body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+.wrap{height:400px; width:500px; margin:300px 0 0 300px; background:white;}
+.line{width:5px; height:100%; background:#666; top:0; right:10px; z-index:1;z-index:20;}
+.scroll{width:13px; height:100px; background:#555; top:0px; right:6px;z-index:10;z-index:20;}
+.scroll:hover{ background:#222; cursor:s-resize;}
+.content{left:0;top:0;z-index:10;}
+.up{color:white; background:#333;right:20px;top:0px;z-index:20;}
+.down{color:white; background:#333;right:20px;bottom:0px;z-index:20;}
+
+</style>
+</head>
+
+<body>
+	<div class="wrap border oh pr" id="wrap">
+    	<div class="line pa"></div>
+        <div class="scroll pa"></div>
+		<div class="up pa cp">向上</div>
+		<div class="down pa cp">向下</div>
+        <div class="pa content">
+			<div><img src="image/mn2.jpg"/></div>
+			<div><img src="image/mn2.jpg"/></div>
+       	</div>
+    </div>
+
+    <div class="wrap border oh pr" id="wrap2">
+    	<div class="line pa"></div>
+        <div class="scroll pa"></div>
+		<div class="up pa cp">向上</div>
+		<div class="down pa cp">向下</div>
+        <div class="pa content">
+
+            <ul>
+            	<li>DDDDDDDDDDDDDD</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>AAAAAAAAAAAAAA</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>FFFFFFFFFFFFFFFFFF</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>DDDDDDDDDDDDDDDDD</li><li>1111111111</li>
+                <li>1111111111</li>
+                <li>EEEEEEEEEEEEEEEE</li>
+                <li>1111111111</li>
+                <li>FFFFFFFFFFFFFF</li>
+            </ul>
+			 <ul>
+            	<li>DDDDDDDDDDDDDD</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>AAAAAAAAAAAAAA</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>FFFFFFFFFFFFFFFFFF</li>
+                <li>1111111111</li>
+                <li>1111111111</li>
+                <li>DDDDDDDDDDDDDDDDD</li><li>1111111111</li>
+                <li>1111111111</li>
+                <li>EEEEEEEEEEEEEEEE</li>
+                <li>1111111111</li>
+                <li>FFFFFFFFFFFFFF</li>
+            </ul>
+            <div>END!!!</div>
+       	</div>
+    </div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	/*
+		这个类是自定义滚动条,有三个参数：
+		1：最外层div的id；
+		2：滚动条的className；
+		3：内容的className；
+	*/
+	function Roll(id,scrolling,content,up,down){
+		this.id=zzs.$(id);
+		this.scrolling=zzs.$$$(scrolling,id)[0];
+		this.content=zzs.$$$(content,id)[0];
+		this.up=zzs.$$$(up,id)[0];
+		this.down=zzs.$$$(down,id)[0];
+		this.init.apply(this,arguments);
+	}
+	Roll.prototype.init=function(){
+		var tmp=parseFloat((this.content.offsetHeight-this.id.offsetHeight)/(this.id.offsetHeight-this.scrolling.offsetHeight)),t,num=0,end=false;
+		//alert(tmp);
+		var _this=this;
+		this.scrolling.onmousedown=function(event){
+			var e=event||window.event;
+			t=e.clientY-this.offsetTop;
+
+			document.onmousemove=function(event){
+				var e2=event||window.event;
+				var distance=e2.clientY-t;
+				num=distance;
+				move(distance);
+
+			}
+			document.onselectstart=function(){return false;}
+
+			document.onmouseup=function(){
+				document.onmousemove=null;
+				document.onselectstart=function(){return true;}
+			}
+		}
+
+		function move(a){
+			_this.scrolling.style["top"]=a+"px";
+			if(zzs.css(_this.scrolling,"top")<0){
+				_this.scrolling.style["top"]=0+"px";
+				_this.content.style["top"]=0+"px";
+				return;
+			}
+			if(zzs.css(_this.scrolling,"top")>_this.id.offsetHeight-_this.scrolling.offsetHeight){
+				end=true;
+				_this.scrolling.style["top"]=_this.id.offsetHeight-_this.scrolling.offsetHeight+"px";
+				_this.content.style["top"]=-(_this.content.offsetHeight-_this.id.offsetHeight)+"px";
+				return;
+			}else{end=false;}
+			_this.content.style["top"]=-(tmp*_this.scrolling.offsetTop)+"px";
+		}
+		this.id.onmouseover=function(){
+
+			document.onmousewheel=function(event){
+				var e=event||window.event;
+				e.stopPrevent ? e.stopPrevent() : e.returnValue=false;
+				var fx=e.wheelDelta;
+				if(fx>=0){
+					if(num<=0){
+						return;
+					}
+					num-=20;
+
+				}else{
+					if(end)return;
+					num+=20;
+				}
+				move(num);
+
+			}
+		}
+
+		this.id.onmouseout=function(){
+			document.onmousewheel=function(){return true;}
+		}
+		this.up.onmousedown=function(){
+			this.timer=setInterval(function(){
+				if(num<=0)return;
+				num-=10;
+				move(num);
+			},20);
+		}
+		this.up.onmouseup=function(){
+			clearInterval(this.timer);
+		}
+		this.down.onmousedown=function(){
+			this.timer=setInterval(function(){
+				if(end){return;}
+				num+=10;
+				move(num);
+			},20);
+		}
+		this.down.onmouseup=function(){
+			clearInterval(this.timer);
+		}
+
+	}
+	new Roll("wrap","scroll","content","up","down");
+	new Roll("wrap2","scroll","content","up","down");
+</script>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+	body{height:2000px;}
+	.drag{height:200px; width:200px; position:absolute; border:1px solid red;}
+	.tit{height:30px; line-height:30px; width:100%; background:orange; cursor:move;}
+</style>
+</head>
+
+<body>
+	<div class="drag" id="drag">
+    	<div class="tit"></div>
+    </div>
+
+    <div class="drag" id="drag2">
+    	<div class="tit"></div>
+    </div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	/*
+		这个类用来实现拖动层，需要传入两个参数：
+		1：需要被拖动DIV的id；
+		2：外层DIV内部一个div的className；
+	*/
+	function Drag(obj,cName){
+		this.obj=zzs.$(obj);
+		this.srcElement=zzs.$$$(cName,obj)[0];
+		this.init.apply(this,arguments);
+	}
+	Drag.prototype.init=function(){
+		var _this=this;
+		var width=document.body.offsetWidth||document.documentElement.offsetWidth;
+		window.onresize=function(){width=document.body.offsetWidth||document.documentElement.offsetWidth;}
+		this.obj.onmousedown=function(event){
+			document.onselectstart=document.onmousewheel=function(){return false;}
+			var e=window.event||event;
+			var sc=document.body.scollTop||document.documentElement.scrollTop;
+			var l=e.clientX-this.offsetLeft;
+			var t=e.clientY+sc-this.offsetTop;
+			if (t>_this.srcElement.offsetHeight){
+				return;
+			}
+			document.onmousemove=function(event){
+				var e2=event||window.event;
+				var x=e2.clientX,y=e2.clientY;
+				_this.obj.style["left"]=(x-l)+"px";
+				_this.obj.style["top"]=(y-t)+sc+"px";
+				if(zzs.css(_this.obj,"left")<0){
+					_this.obj.style["left"]=0+"px";
+					return;
+				}
+				if (zzs.css(_this.obj,"top")<0){
+					_this.obj.style["top"]=0+"px";
+					return;
+				}
+				if(zzs.css(_this.obj,"left")>width-_this.obj.offsetWidth){
+					_this.obj.style["left"]=width-_this.obj.offsetWidth+"px";
+					return;
+				}
+			}
+			document.onmouseup=function(){
+				document.onmousemove=null;
+				document.onselectstart=document.onmousewheel=function(){return true;}
+			}
+		}
+	}
+	new Drag("drag","tit");
+	new Drag("drag2","tit");
+</script>
+</html>

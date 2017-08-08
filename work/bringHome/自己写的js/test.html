@@ -1,0 +1,682 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="gb2312">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <style>
+	body{}
+	.btn{position:fixed; top:0px;right:0px;}
+	.father{height:30px;z-index:1;}
+	.son{height:200px; width:200px;left:200px;top:0px;z-index:-1;background:white;}
+	.father p{background:white;width:200px;height:30px;line-height:30px;}
+
+	.list li{float:left;display:inline; border:1px solid black;border-bottom:none;padding:8px 15px 9px 15px;background:white; margin-left:10px;}
+	#list li.active{border:none;border-bottom:1px solid black;}
+	#list li.active_two{border:1px solid black;border-bottom:"none"}
+	.container{border:1px solid black;margin-top:-1px;width:500px;z-index:-1;}
+
+	.menu{border:none;padding:10px 0px;line-height:30px;width:200px;border-bottom:1px dashed #bbb;cursor:pointer;overflow:hidden;text-align:center;}
+	.menu li{filter:alpha(opacity=80);list-style:outside disc !important; width:100%;}
+	.menu2{background:#bbb;}
+	.menu2 li:hover{background:gray;color:white;}
+	.fix{border:1px solid blue;height:30px;position:fixed;width:100%;left:0px; bottom:0px;text-align:center;}
+	.each{border:1px solid black;height:100px; background:white;}
+
+	.relative{width:300px;height:100px;}
+	.absolute{height:100px;left:0px;top:0px;width:500px;}
+	.absolute li{height:100px; width:100px;float:left;text-align:center;}
+
+	.px_1{height:200px; width:200px;margin-top:5px;opacity:1;filter:alpha(opacity=100);}
+	.px2{left:0;top:0;height:200px;width:200px;background:black;color:white;font-weight:bold;
+	font-size:50px;line-height:200px; text-align:center;}
+	.px2 .tit{cursor:move;height:40px;background:orange;}
+	.fix_n{position:fixed;right:0;bottom:0; height:100px; width:200px;
+	cursor:pointer;}
+	.sccoller{height:300px;border:1px solid #ccc;width:600px;margin-top:50px;position:relative;left:100px;top:50px;}
+	.line{position:absolute;right:20px;top:0;width:5px;height:100%;background:#666;}
+	.line div{height:100px;width:15px;background:#999;position:absolute;top:0;left:-5px;cursor:n-resize;z-index:1000;}
+	.line div:hover{background:#000;}
+	.sccoller_1{width:500px;left:0;top:0;position:absolute;}
+	.a{ background:red;}
+	#jgg .fl{height:150px; width:150px; background:black; margin-left:5px; color:white; font-size:50px; text-align:center; line-height:150px;}
+
+	.scrolling{border:1px solid red; height:75px; position:relative;}
+	.scrolling ul{ position:absolute; top:0; left:0;}
+	.scrolling ul li{height:25px; line-height:25px; cursor:pointer; background:white;}
+
+	.queue{height:100px;width:100px; position:absolute;background:#000;top:0;left:0;border-radius:0; richness:300;}
+  </style>
+ </head>
+
+ <body>
+	<input type="button" value="变大" id="btn" style="height:10px;width:10px;opacity:1;"/>
+	<input type="button" value="btn" class="btn" />
+
+	<div class="fl cp color">文字颜色随机变色</div>
+	<div class="w200 father pr clearfix mt20">
+		<p class="fl border test cp">用于测试</p>
+		<div class="son pa border dn">dddd</div>
+	</div>
+	<div class="mt10">
+		<ul class="list cp ml10 clearfix" id="list">
+			<li>电影</li>
+			<li>电视剧</li>
+			<li>购物</li>
+			<li>KTV</li>
+			<li>更多》</li>
+		</ul>
+		<div class="container ml10 pr">
+		<p class="mt10">这里是主题内容</p>
+		<p class="mt10">这里是主题内容</p>
+		<p class="mt10">这里是主题内容</p>
+		<p class="mt10">这里是主题内容</p>
+		<p class="mt10 pb10">这里是主题内容</p>
+		</div>
+	</div>
+	<div class="clearfix mt10">
+		<div class="ml10 border menu">
+			电影
+			<ul class="menu2">
+				<li>111</li>
+				<li>222</li>
+				<li>333</li>
+				<li>444</li>
+				<li>111</li>
+				<li>222</li>
+				<li>333</li>
+				<li>444</li>
+			<ul>
+		</div>
+		<div class="ml10 border menu">
+			电视剧
+			<ul class="menu2">
+				<li>111</li>
+				<li>222</li>
+				<li>333</li>
+				<li>444</li>
+			<ul>
+		</div>
+		<div class="ml10 border menu">
+			购物
+			<ul class="menu2">
+				<li>111</li>
+				<li>222</li>
+				<li>333</li>
+				<li>444</li>
+			<ul>
+		</div>
+		<div class="ml10 border menu">
+			KTV
+			<ul class="menu2">
+				<li>111</li>
+				<li>222</li>
+				<li>333</li>
+				<li>444</li>
+			<ul>
+		</div>
+	</div>
+	<div class="each">1</div>
+	<div class="each">2</div>
+	<div class="each">3</div>
+	<div class="fix"></div>
+	<div class="relative pr ml100 oh">
+		<ul class="absolute pa">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+	<div class="px">
+		<div class="px_1 fl ml10">
+			<div class="px2 pa"><div class="tit"></div>1</div>
+		</div>
+		<div class="px_1 fl ml10">
+			<div class="px2 pa"><div class="tit"></div>2</div>
+		</div>
+		<div class="px_1 fl ml10"><div class="px2 pa"><div class="tit"></div>3</div></div>
+		<div class="px_1 fl ml10"><div class="px2 pa"><div class="tit"></div>4</div></div>
+		<div class="px_1 fl ml10"><div class="px2 pa"><div class="tit"></div>5</div></div>
+		<input type="button" class="fix_n" value="随机排序"/>
+	</div>
+	<div class="oh sccoller pr" id="test">
+		<div class="line"><div></div></div>
+
+		<div class="scoller_1 pa">
+			<div>11111111111111111111</div>
+			<div>2222222222222222222</div>
+			<div>3333333333333333333</div>
+			<div>4444444444444444444</div>
+			<div>5555555555555555555</div>
+			<div>6666666666666666</div><div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div><div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div><div>dfdfdfdfddf</div>
+			<div>11111111111111111111</div>
+			<div>2222222222222222222</div>
+			<div>3333333333333333333</div>
+			<div>4444444444444444444</div>
+			<br>
+			<div>5555555555555555555</div>
+			<div>6666666666666666</div><div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div><div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<div>dfdfdfdfddf</div>
+			<br>
+			<div>dfdfdfdfddf</div>
+			<div>end!!!!!!</div>
+
+
+		</div>
+	</div>
+    <div id="jgg">
+    	<div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+        <div class="fl"></div>
+    </div>
+    <div class="scrolling oh" id="scrolling">
+    	<ul>
+        	<li>11111111111</li>
+            <li>22222222222</li>
+            <li>33333333333</li>
+            <li>44444444444</li>
+            <li>55555555555</li>
+        </ul>
+    </div>
+	<div class="queue"></div>
+	<div class="back pa" id="back" style="bottom:0;left:0; cursor:pointer;">回到顶部</div>
+ </body>
+	<script>
+		(function()
+		{
+
+			var div=zzs.$$("div")[0];
+		var btn=zzs.$("btn");
+		var bt=zzs.$$$("btn")[0];
+		var fn={height:100,width:100,opacity:50};
+		var z=zzs.doMove;
+		var curryFn=zzs.curry(z,div,fn,"");
+		var fn2={height:100,width:400,opacity:100};
+		var curryFn2=zzs.curry(zzs.doMove,div,fn2,"");
+
+		function say()
+		{
+			//alert(this);
+		}
+
+		//btn.onmouseover=curryFn2;
+		function Animate()
+		{
+			this.timer=null;
+			var _this=this;
+			this.fn=zzs.apply(this,zzs.doMove2);
+			this.move=function(obj,oAttr)
+			{
+				this.obj=obj;
+				this.oAttr=oAttr;
+				clearInterval(this.timer);
+				this.timer=setInterval(function()
+				{
+					_this.fn(_this.obj,_this.oAttr);
+				},20);
+			}
+		}
+		var a=new Animate();
+		var b=new Animate();
+
+		//var b=new Animate(btn,{height:100,width:100,opacity:50});
+
+		zzs.bind(bt,"mouseover",function()
+		{
+			var _t=this;
+			a.move(div,{height:100,width:400,opacity:100});
+			b.move(btn,{height:100,width:400,opacity:100});
+		});
+		zzs.bind(bt,"mouseout",function()
+		{
+			a.move(div,{height:100,width:100,opacity:50});
+			b.move(btn,{height:100,width:100,opacity:50});
+		});
+
+
+		var fn=zzs.apply(zzs,zzs.prevent);
+
+		zzs.css(div,{height:100,width:100,background:zzs.createColor(),opacity:100});
+		//zzs.bind(document.body,"click",say);
+		var arr=zzs.createDiffRan(10,1,10);
+		var s="     ddddd     ";
+
+
+		var arr=[0,3,7,5,9];
+		var arr=zzs.resort(arr);
+		})();
+
+		//alert(arr);
+		(function()
+		{
+			function changeColor()
+			{
+				var obj=zzs.$$$("color")[0];
+				zzs.css(obj,"color",zzs.createColor());
+				setTimeout(arguments.callee,200);
+			}
+			changeColor();
+		})();
+		void function()
+		{
+			var out=null;
+			var test=zzs.$$$("test")[0];
+			var son=zzs.$$$("son")[0];
+			test.onmouseover=son.onmouseover=function()
+			{
+				clearTimeout(out);
+				zzs.css(test,"borderRight","none");
+				zzs.css(son,"display","block");
+			}
+
+			test.onmouseout=son.onmouseout=function()
+			{
+				out=setTimeout(function()
+				{
+					zzs.css(test,"borderRight","1px solid red");
+					zzs.css(son,"display","none");
+				},500);
+			}
+		}();
+		(function()
+		{
+			var li=zzs.$$$("list")[0].getElementsByTagName("li");
+			for (var i=0;i<li.length ;i++ )
+			{
+				li[i].index=i;
+				li[i].onclick=function()
+				{
+					zzs.each(li,function(){this.className="active"});
+					li[this.index].className="active_two";
+				}
+			}
+		})();
+		(function()
+		{
+			var m=zzs.$$$("menu");
+			var m2=zzs.$$$("menu2");
+			var _this=this;
+			var c=0;
+			var h=[];
+			zzs.each(m2,function(_i){
+				h[_i]=zzs.css(this,"height");
+				zzs.css(this,"display","none");
+			});
+			for (var i=0;i<m.length ;i++ )
+			{
+				m[i].index=i;
+				m[i].onmouseenter=function()
+				{
+					for (var j=0;j<m.length ;j++ )
+					{
+						zzs.css(m2[j],"display","none");
+					}
+
+					zzs.css(m2[this.index],{display:"block",height:0});
+					zzs.doMove(m2[this.index],{height:h[this.index]},function(){});
+				}
+				m[i].onclick=function()
+				{
+					zzs.stopPro();
+					if (zzs.css(m2[this.index],"display")=="block")
+					{
+						for (var j=0;j<m.length ;j++ )
+						{
+							zzs.css(m2[j],"display","none");
+						}
+					}else if (zzs.css(m2[this.index],"display")=="none")
+					{
+						for (var j=0;j<m.length ;j++ )
+						{
+							zzs.css(m2[j],"display","none");
+						}
+
+						zzs.css(m2[this.index],{display:"block",height:0});
+						zzs.doMove(m2[this.index],{height:h[this.index]});
+					}
+				}
+
+				m[i].onmouseleave=function()
+				{
+					for (var j=0;j<m.length ;j++ )
+					{
+						zzs.css(m2[j],"display","none");
+					}
+				}
+				zzs.bind(document.body,"click",function()
+				{
+					zzs.each(m2,function(){zzs.css(this,"display","none")});
+				});
+			}
+		})();
+		(function()
+		{
+			var obj=zzs.$$$("fix")[0];
+			obj.innerHTML=decodeURIComponent(location.href.replace(new RegExp("\\s?test\\s?","i"),"map_api"));
+			var arr=[{height:100},{width:200},{background:"red"}];
+			var div=zzs.$$$("each");
+			var each=function(oLi,callBack)
+			{
+				for (var i=0;i<oLi.length;i++ )
+				{
+					callBack.apply(oLi[i],arguments);
+				}
+			}
+			zzs.each(div,function()
+			{
+				zzs.css(this,"display","none");
+			});
+
+
+		})();
+		(function()
+		{
+			var btn=zzs.$$$("btn")[0];
+			var ul=zzs.$$$("absolute");
+			var li=ul[0].getElementsByTagName("li");
+			btn.onclick=function()
+			{
+
+				zzs.doMove(ul[0],{left:-li[0].offsetWidth},function(){
+					ul[0].appendChild(li[0]);
+					zzs.css(ul[0],{left:0});
+				});
+			}
+			var b=zzs.$("btn")
+			b.onclick=function()
+			{
+				if (zzs.css(ul[0],"left")>=0)
+				{
+				ul[0].insertBefore(li[li.length-1],li[0]);
+					zzs.doMove(ul[0],{left:0},function(){
+
+					});
+					zzs.css(ul[0],{left:-li[0].offsetWidth});
+				}
+			}
+		})();
+		//排序
+		(function()
+		{
+			var px=zzs.$$$("px2"),l,t,x,y,x2,y2,arr=[],px_1=zzs.$$$("px_1"),top,clone,btn=zzs.$$$("fix_n")[0];
+			var fix=zzs.$$$("fix")[0];
+			for (var i=0,len=px.length;i<len ;i++ )
+			{
+				zzs.css(px[i],{left:px_1[i].offsetLeft,top:px_1[i].offsetTop});
+				px[i].index=i;
+				//fix.innerHTML=px_1[0].children[0].innerText+","+px_1[1].children[0].innerText+","+px_1[2].children[0].innerText;
+				px_1[i].children[0].onmousedown=function(event)
+				{
+					document.body.onselectstart=document.onmousewheel=function(){return false;}
+					top=document.body.scrollTop||document.documentElement.scrollTop;
+					var e=event||window.event;
+					var target=e.target||e.srcElement;
+					if (zzs.css(target,"cursor")!="move")
+					{
+						document.body.onselectstart=null;
+						return;
+					}
+					x=e.clientX;
+					y=e.clientY;
+					l=x-this.offsetLeft;
+					t=y-this.offsetTop;
+					var _this=this;
+					zzs.each(px,function(){this.style["zIndex"]=999;});
+					this.style["zIndex"]=1000;
+					document.onmousemove=function(event)
+					{
+						var e2=event||window.event;
+						x2=e2.clientX;
+						y2=e2.clientY;
+						zzs.css(px[_this.index],"left",x2-l);
+						zzs.css(px[_this.index],"top",y2-t);
+
+						for (var i=0;i<px_1.length ;i++ )
+						{
+							if (zzs.css(px[_this.index],"top")>=(zzs.css(px_1[i],"top")-20)==true &&
+							zzs.css(px[_this.index],"top")<=(zzs.css(px_1[i],"top")+(px[0].offsetWidth/2))==true &&
+							zzs.css(px[_this.index],"left")>=(zzs.css(px_1[i],"left")-20)==true &&
+							zzs.css(px[_this.index],"left")<=(zzs.css(px_1[i],"left")+(px[0].offsetWidth/2))==true)
+							{
+								arr.unshift(i);
+								zzs.each(px_1,function(){zzs.css(this.children[0],"opacity",100)});
+								zzs.css(px_1[arr[0]].children[0],"opacity",50);
+							}else{
+								zzs.each(px_1[i].children[0],function(){zzs.css(this,"opacity",100)});
+							}
+						}
+					}
+					this.onmouseup=function()
+					{
+						document.onmousemove=document.body.onselectstart=document.onmousewheel=null;
+						if (arr.length==0)
+						{
+							return;
+						}
+						var timer,timer2;
+						zzs.each(px,function(){zzs.css(this,"opacity",100)});
+						clearInterval(timer);
+						clearInterval(timer2);
+						try
+						{
+							timer=zzs.doMove(px_1[arr[arr.length-1]].children[0],{left:px_1[arr[0]].offsetLeft,top:px_1[arr[0]].offsetTop,opacity:100},
+							function()
+							{
+								try
+								{
+									px_1[arr[arr.length-1]].appendChild(px_1[arr[0]].children[0]);
+								}
+								catch (e)
+								{
+									return;
+								}
+								px_1[arr[0]].appendChild(px_1[arr[arr.length-1]].children[0]);
+								arr=[];
+							});
+							zzs.css(px_1[arr[arr.length-1]].children[0],{opacity:0});
+							timer2=zzs.doMove(px_1[arr[0]].children[0],{left:px_1[arr[arr.length-1]].offsetLeft,
+							top:px_1[arr[arr.length-1]].offsetTop});
+						}
+						catch (e)
+						{
+							alert("出错了!");
+						}
+
+					}
+				}
+			}
+			btn.onclick=function()
+			{
+				var randomArr=zzs.createDiffRan(px.length-1,0,px.length),t,array=[];
+				clearInterval(t);
+				for (var i=0;i<randomArr.length;i++)
+				{
+					t=zzs.doMove(px_1[i].children[0],{left:px_1[randomArr[i]].offsetLeft,top:px_1[randomArr[i]].offsetTop},function()
+					{
+					});
+				}
+			}
+		})();
+		//自定义滚动条
+		(function()
+		{
+			var scroller=zzs.$$$("line")[0].children[0],move=zzs.$$$("scoller_1")[0],father=zzs.$$$("sccoller")[0];
+			var x,y,x2,y2,t;
+
+			scroller.onmousedown=function(event)
+			{
+
+				document.onselectstart=function()
+				{
+					return false;
+				}
+				var e=window.event||event;
+				x=e.clientX;
+				t=this.offsetTop;
+				y=e.clientY;
+				var tmp=parseInt((move.offsetHeight-father.offsetHeight)/(father.offsetHeight-scroller.offsetHeight));
+				document.onmousemove=function(event)
+				{
+					e2=window.event||event;
+					y2=e2.clientY;
+					zzs.$$$("fix")[0].innerHTML=scroller.offsetTop;
+					scroller.style["top"]=(y2-(y-t))+"px";
+					move.style["top"]=(-scroller.offsetTop*tmp)+"px";
+					if (zzs.css(scroller,"top")<0)
+					{
+						zzs.css(scroller,"top",0)
+						move.style["top"]=0+"px";
+						return;
+					}else if (zzs.css(scroller,"top")>father.offsetHeight-scroller.offsetHeight)
+					{
+						zzs.css(scroller,"top",father.offsetHeight-scroller.offsetHeight);
+						move.style["top"]=-(move.offsetHeight-father.offsetHeight)+"px";
+						return;
+					}
+				}
+				this.onmouseup=document.onmouseup=function()
+				{
+					document.onselectstart=function()
+					{
+						return true;
+					}
+					document.onmousemove=null;
+				}
+			}
+		})();
+		(function(){
+			var test=zzs.$("test");
+			zzs.addClass("a",test);
+			zzs.removeClass("a",test);
+
+			var jgg=zzs.$$("jgg","div");
+			for( var i=0 ; i<jgg.length;i++){
+				jgg[i].innerHTML=i+1;
+			}
+			var num=0,outid;
+			var numArr=zzs.createDiffRan(jgg.length-1,0,jgg.length);
+			function self(){
+				jgg[numArr[num]].style["backgroundColor"]="#cc0000";
+				num++;
+				if (num>jgg.length-1){
+				num=0;
+				clearTimeout(outid);
+				return;
+				}
+				outid=setTimeout(arguments.callee,100);
+			}
+			self();
+		})();
+		(function(){
+			var scrolling=zzs.$$$("scrolling")[0],timer;
+			function go(){
+				var top=scrolling.children[0].offsetTop,li=zzs.$$("scrolling","li");
+				timer=setInterval(function(){
+					top-=1;
+					if (top==-li[0].offsetHeight){
+						scrolling.children[0].appendChild(li[0]);
+						top=0;
+					}
+					scrolling.children[0].style["top"]=top+"px";
+				},20);
+			}
+			go();
+			scrolling.onmouseover=function(){ clearInterval(timer)};
+			scrolling.onmouseout=go;
+		})();
+		(function(){
+			var arr=[{left:100},{top:100},{width:300},{height:300}],queue=zzs.$$$("queue")[0];
+			var tmp=0,timer,done=true,times=0;
+			function goes(obj,queueArr,callBack){
+				tmp=0;
+				var fn=function(){
+					if(tmp>=queueArr.length){
+						tmp=0;
+						callBack && callBack();
+						return;
+					};
+					zzs.doMove(obj,queueArr[tmp],function(){
+							fn();
+							times++;
+					});
+					tmp++;	
+				}
+				fn();
+			}
+			//zzs.doMove(queue,{zIndex:360});
+			goes(queue,[{left:500,top:500,zIndex:-360},{top:100},{width:300,height:300,zIndex:360},{height:100,width:100}],function(){
+				goes(queue,[{height:100,zIndex:100},{width:100},{top:0},{left:0,zIndex:360},{opacity:0}]);
+			});
+
+			zzs.$("back").onclick=function(){
+				zzs.backTo(0);
+			}
+		})();
+		(function(){
+			zzs.$$$("btn")[0].onclick=function(){
+				if(this.value=="btn"){
+					this.value="开灯";
+					zzs.lights(false,document.body,0);
+				}else{
+					this.value="btn";
+					zzs.lights(true,document.body,15);
+				}
+
+			}
+		})();
+	</script>
+</html>

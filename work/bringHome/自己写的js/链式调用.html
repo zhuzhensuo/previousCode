@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+	<style>
+		*{margin:0;padding:0;}
+		.div{position:absolute;left:0; background:#cc0000;width:100px; height:100px}
+		ul li{background:pink;}
+		#ok{width:200px; height:200px; background:#cc0000;position:fixed;right:0px;bottom:0; display:none;_position:absolute;}
+		p{position:absolute;bottom:0;width:148px; height:148px; line-height:148px; text-align:center; font-size:50px;font-weight:bold;left:-160px;}
+		#center{background:#333;margin:0 auto;}
+		#div div{height:50px; width:50px; background:white;}
+		.test{height:150px; width:150px; background:gray}
+	</style>
+ </head>
+
+ <body id="body">
+	<div id="div" class="div">
+		<div>1</div>
+		<div>2</div>
+		<div>2</div>
+	</div>
+	<div class="test"></div>
+	<div class="test"></div>
+	<div class="test"></div>
+	<div id="center"></div>
+	<ul>
+		<li>
+			11111111
+		</li>
+		<li>
+			222222222
+		</li>
+		<li>
+			33333333
+		</li>
+		<li>
+			11111111
+		</li>
+		<li>
+			222222222
+		</li>
+		<li>
+			33333333
+		</li>
+		<li>
+			11111111
+		</li>
+		<li>
+			222222222
+		</li>
+		<li>
+			33333333
+		</li>
+	</ul>
+	<div class="" id="ok"></div>
+ </body>
+ <script>
+	var curry=function(obj,fn){
+		var args=Array.prototype.slice.call(arguments,2);
+		return function(){
+			var finalArg=Array.prototype.slice.call(arguments);
+			return fn.apply(obj,args.concat(finalArg));
+		}
+	}
+	var _$=function(arg1,arg2){
+		 if(arguments.length==1){
+			if(arguments[0].indexOf("#")!=-1){
+				this.id=document.getElementById(arguments[0].substring(1));
+			}else if(arguments[0].indexOf(".")!=-1){
+				var reg=new RegExp("(^|\\s)"+arguments[0].substring(1)+"(\\s|$)"),arr=[],el;
+				el=document.getElementsByTagName("*");
+				for(var i=0;i<el.length;i++){
+					if(reg.test(el[i].className)){
+						arr[arr.length]=el[i];
+					}
+				}
+				this.id=arr;
+			}else{
+				this.id=document.getElementsByTagName(arguments[0]);
+			}
+		}else if(arguments.length>=2){
+			if(arg1.indexOf("#")!=-1 && arg2.indexOf(".")==-1){
+				var id=document.getElementById(arg1.substring(1));
+				this.id=id.getElementsByTagName(arg2);
+			}else if(arg1.indexOf("#")!=-1 && arg2.indexOf(".")!=-1){
+				var reg=new RegExp("(^|\\s)"+arg2.substring(1)+"(\\s|$)"),arr=[],el;
+				el=document.getElementById(arg1.substring(1)).getElementsByTagName("*");
+				for(var i=0;i<el.length;i++){
+					if(reg.test(el[i].className)){
+						arr[arr.length]=el[i];
+					}
+				}
+				this.id=arr;
+			}
+		}
+	}
+	_$.prototype={
+		each:function(fn){
+			for(var i = 0 ; i<this.id.length;i++){
+				if(i in this.id){
+					fn.call(this,this,this.id[i],i);
+				}
+			}
+		},
+		curry:function(fn){
+			var arg=Array.prototype.slice.call(arguments,1);
+			return function(obj){
+				var finalArg=Array.prototype.slice.call(arguments);
+				return fn.apply(obj,arg.concat(finalArg));
+			}
+		},
+		eq:function(pos){
+			this.id=this.id[pos];
+			return this;
+		},
+		attr:function(key,value){
+			if(arguments.length==2){
+				this.id.key ? this.id.key=value : this.id.setAttribute(key,value);
+			}else{
+				return this.id.key ? this.id.key : this.id.getAttribute(key);
+			}
+			return this;
+		},
+		css:function(key,item){
+			var fn=arguments;
+				if(fn.length>=2){
+				switch (key)
+				{
+				case "height":
+				case "width":
+				case "left":
+				case "top":
+					this.id.style[key]=item+"px";
+					break;
+				case "opacity":
+					this.id.style[key]=(item/100);
+					this.id.style.filter="alpha(opacity="+item+")";
+					break;
+
+				default:
+					this.id.style[key]=item;
+					break;
+				}
+			}else if(fn.length==1&&typeof fn[0]!="object"){
+				switch (key)
+				{
+				case "height":
+					return this.id.offsetHeight;
+					break;
+				case "width":
+					return this.id.offsetWidth;
+					break;
+				case "top":
+					return this.id.offsetTop;
+					break;
+				case "left":
+					return this.id.offsetLeft;
+					break;
+				default:
+					var value=this.id.currentStyle ? this.id.currentStyle[key] : getComputedStyle(this.id,null)[key];
+					if(key=="zIndex" && value=="auto"){
+						return 0;
+					}else if(!isNaN(value)){
+						return parseFloat(value);
+					}else{
+						return value;
+					}
+					break;
+				}
+			}else if(fn.length==1&&typeof fn[0]=="object"){
+				var oAttr=fn[0],_this=this;
+				for(var index in oAttr){
+					this.css(index,oAttr[index]);
+				}
+			}
+			return this;
+		},
+		doMove:function(oAttr,time,callBack){
+			var fn=arguments;
+			var _this=this;
+
+			clearInterval(this.id.timer);
+			this.id.timer=setInterval(function(){
+				var c=true;
+				for(var i in oAttr){
+					var cur= i=="opacity" ? parseInt(_this.css(i).toFixed(2)*100) : parseInt(_this.css(i));
+					var s=(oAttr[i]-cur)/7;
+					s =s >0 ? Math.ceil(s) : Math.floor(s);
+					if(cur!=oAttr[i]){
+						c=false;
+						_this.css(i,cur+s);
+					}
+				}
+				if(c){
+					clearInterval(_this.id.timer);
+					callBack && callBack(a);
+				}
+			},time||20);
+			return this;
+		},
+		index:function(){
+			for(var i=0;i<this.id.length;i++){
+				this.id[i]._index=i;
+				var _this=this;
+
+			}
+			return this;
+		},
+		bind:function(type,callBack){
+			if(this.id.addEventListener){
+				this.id.addEventListener(type,callBack,false);
+			}else if(this.id.attachEvent){
+				this.id.attachEvent("on"+type,callBack);
+			}else{
+				this.id["on"+type]=callBack;
+			}
+			return this;
+		},
+		unbind:function(type,callBack){
+			if(this.id.removeEventListener){
+				this.id.removeEventListener(type,callBack,false);
+			}else if(this.id.detachEvent){
+				this.id.detachEvent("on"+type,callBack);
+			}else{
+				this.id["on"+type]=null;
+			}
+			return this;
+		}
+		,
+		fadeOut:function(time,callBack){
+			time= time||20;
+			var value=this.css("opacity");
+
+			if(typeof value=="undefined"){
+				this.css("opacity",100);
+			}
+			var _this=this;
+			this.doMove({opacity:0},time,function(){
+				_this.css("display","none");
+				callBack && callBack();
+			});
+			return this;
+		},
+		fadeIn:function(time,callBack){
+			time= time||20;
+			var dis=this.css("display");
+			if(dis=="none"){
+				this.css({display:"block",opacity:0});
+			}
+			this.doMove({opacity:100},time,function(){
+				callBack && callBack();
+			});
+		},
+		slideBlock:function(time,callBack){
+			time= time||20;
+			this.css("display","block");
+			var h=this.css("height");
+			this.css({height:0,overflow:"hidden"});
+			this.doMove({height:h},time,function(){
+				callBack && callBack();
+			});
+		},
+		slideNone:function(time,callBack){
+			time= time||20;
+			var _this=this;
+			var h=this.css("height");
+			this.css({overflow:"hidden",height:h}).doMove({height:0},time,function(){
+				_this.css("display","none");
+				callBack && callBack(_this.id);
+			});
+		},
+		len:function(){
+			return this.id.length;
+		},
+		find:function(el){
+
+		}
+	}
+
+	window.$=function(a,b){
+		if(arguments.length==2){
+			return new _$(a,b);
+		}else if(arguments.length==1){
+			return new _$(arguments[0]);
+		}
+
+	}
+	$("div").eq(0).css("opacity",50).doMove({zIndex:90,left:400},20,function(){
+	});
+	$("div").each(function(a,b,c){
+		a.css("color","red");
+	});
+	document.onclick=function(){
+		$("div").eq(0).doMove({zIndex:0,left:0},20);
+	}
+	$("ul").eq(0).slideBlock(20,function(){
+		$("li").eq(2).slideNone();
+	});
+	var a=$("#ok");
+
+	(function(){
+		var str="君子藏器于身,待时而动";
+		str=str.split("");
+		var frag=document.createDocumentFragment();
+		for(var i=0;i<str.length;i++){
+			var p=document.createElement("p");
+			p.innerHTML=str[i];
+			frag.appendChild(p);
+		}
+		document.body.appendChild(frag);
+		var _index=0;
+		function go(){
+			var el=$("p"),width=el.eq(0).css("width");
+			$("p").eq(_index).doMove({left:_index*width,zIndex:360},_index*_index);
+			_index++;
+			if(_index>=$("p").len()){
+				clearInterval(go.timer);
+				return;
+			}
+			go.timer=setTimeout(arguments.callee,200);
+		}
+		go();
+	})();
+	function Ok(id,tag){
+		this.el=$("#"+id);
+		this.tag=$("#"+id,tag);
+		this.li=$("li");
+		this.div=$(".test");
+		this.init.apply(this,arguments);
+
+	}
+	Ok.prototype.init=function(){
+		//var _this=this,i=0;
+		this.tag.each(function(a,b,c){
+			this.id.css("color","red");
+		});
+	}
+	//new Ok("div","div");
+ </script>
+</html>

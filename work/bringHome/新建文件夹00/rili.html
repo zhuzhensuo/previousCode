@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" href="css/basic.css" rel="stylesheet"/>
+  <style>
+	#c{width:350px;}
+	table td{height:50px;width:50px;border:1px solid #333;line-height:50px; text-align:center;}
+	#c ul li{height:45px; width:48px;border:1px solid #333;float:left; line-height:45px; text-align:center;}
+	#today{height:50px;text-align:center;border:1px solid #333; border-bottom:none;line-height:50px;}
+  </style>
+ </head>
+
+ <body>
+	<div id="c" class="bc">
+		<div id="today" class="fb"></div>
+		<div class="pr">
+			<div class="pa tc fb" id="left" style="height:50px; width:50px;left:-50px;line-height:50px;font-size:30px;color:white;background:#bbb; cursor:pointer;"> < </div>
+			<ul class="clearfix">
+				<li>日</li>
+				<li>一</li>
+				<li>二</li>
+				<li>三</li>
+				<li>四</li>
+				<li>五</li>
+				<li>六</li>
+			</ul>
+			<div class="pa tc fb" style="height:50px; width:50px;right:-50px;line-height:50px;font-size:30px;color:white;background:#bbb;cursor:pointer;top:0px;" id="right"> > </div>
+		</div>
+		<table>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+ </body>
+ <script>
+	function $(id){
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+	function $$(id,tag){
+		if (arguments.length==2)
+		{
+			return $(id).getElementsByTagName(tag);
+		}else if(arguments.length==1){
+			return document.getElementsByTagName(arguments[0]);
+		}
+	}
+	(function()
+	{
+		var td=$$("c","td");
+		var left=$("left");
+		var right=$("right");
+		var tips=$("today");
+
+
+		var riqi=new Date();
+		var y1=riqi.getFullYear();
+		var m1=riqi.getMonth();
+		var d1=riqi.getDate();
+
+		var riqi2=new Date(y1,m1,d1);
+		var dayNum=[31,28,31,30,31,30,31,31,30,31,30,31];
+		function whatDay(day,date){
+			var ji=day-(date%7-1);
+			while(ji<0){
+				ji+=7;
+			}
+			return ji;
+		}
+		function rili(obj,m,dat,y,m){
+			var ji=whatDay(riqi2.getDay(),riqi2.getDate());
+			tips.innerHTML=riqi2.getFullYear()+"年"+(riqi2.getMonth()+1)+"月"+riqi2.getDate()+"日";
+			for (var i=0;i<obj.length ;i++ )
+			{
+				obj[i].innerHTML="";
+				obj[i].style["background"]="";
+			}
+			var is=new Date();
+			for (var i=0;i<dayNum[m] ;i++ )
+			{
+				obj[i+ji].innerHTML=i+1;
+				obj[i+ji].style.cssText="background:pink;cursor:pointer;";
+				if (parseInt(obj[i+ji].innerHTML)==dat && y==new Date().getFullYear()&& m==new Date().getMonth()){
+					obj[i+ji].style.cssText="background: ;font-weight:bold;color:red;cursor:pointer;";
+					obj[i+ji].title="今天";
+				}
+			}
+		}
+		rili(td,riqi2.getMonth(),riqi2.getDate(),riqi2.getFullYear(),riqi2.getMonth());
+		left.onclick=function()
+		{
+			m1--;
+
+			if (m1==0 && !((y1%4==0 && y1%100!=0)|| y1%400==0))
+			{
+				//闰年
+				if (m1==-1)
+				{
+					y1--;
+				}
+			}else if (m1==0 && ((y1%4==0 && y1%100!=0)|| y1%400==0))
+			{
+				//平年
+				if (m1==0)
+				{
+					y1--;
+				}
+			}
+			riqi2=new Date(y1,m1,d1);
+			rili(td,riqi2.getMonth(),riqi2.getDate(),riqi2.getFullYear(),riqi2.getMonth());
+		}
+		right.onclick=function()
+		{
+			m1++;
+			if (m1==0 && !((y1%4==0 && y1%100!=0)|| y1%400==0))
+			{
+				if (m1==-1)
+				{
+				//	y1++;
+				}
+			}else if (m1==0 && ((y1%4==0 && y1%100!=0)|| y1%400==0))
+			{
+				if (m1==0)
+				{
+					//y1++;
+				}
+			}
+
+			riqi2=new Date(y1,m1,d1);
+			rili(td,riqi2.getMonth(),riqi2.getDate(),riqi2.getFullYear(),riqi2.getMonth());
+		}
+	})();
+ </script>
+</html>

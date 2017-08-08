@@ -1,0 +1,378 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script>
+	window.onload=function()
+	{
+		var zzs=
+		{
+			$:function(id)
+			{
+				return typeof id==="string" ? document.getElementById(id) : id;
+			},
+			$$:function(id,tagName)
+			{
+				return (this.$(id) || document).getElementsByTagName(tagName);
+			}
+		}
+		function Animate()
+		{
+			this.initalize.apply(this,arguments);
+		}
+		Animate.prototype=
+		{
+			initalize:function()
+			{
+				this.obj=zzs.$("div");
+				this.ul=zzs.$$(this.obj,"ul");
+				this.li=zzs.$$("div","img");
+				this.timer=null;
+				this.index=0;
+				
+				this.interval();
+				this.createBtn();
+				this.oLi=this.ul2.getElementsByTagName("li");
+				this.css();
+				this.hover();
+			},
+			css:function()
+			{
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					this.li[i].style.display="none";
+					this.li[this.index].style.display="block";
+					this.oLi[i].className="";
+					this.oLi[this.index].className="active";
+				}
+			},
+			interval:function()
+			{	
+				clearInterval(this.timer);
+				var _this=this;
+				_this.timer=setInterval(function()
+				{
+					_this.index++;
+					if (_this.index>_this.li.length-1)
+					{
+						_this.index=0;
+					}
+					_this.css();
+					_this.doMove(_this.index);
+				},3000);
+			},
+			doMove:function(para)
+			{
+				var opa=0,timer;
+				var _this=this;
+				this.li[para].style.filter="alpha(opacity="+opa+")";
+				this.li[para].style.opacity=opa;
+				clearInterval(timer);
+				timer=setInterval(function()
+				{
+					if (_this.li[para].currentStyle)
+					{
+						opa+=5;
+						if (opa>=100)
+						{
+							clearInterval(timer);
+						}
+						_this.li[para].style.filter="alpha(opacity="+opa+")";
+					}else
+					{
+						opa+=0.1;
+						if (opa>=1)
+						{
+							clearInterval(timer);
+						}
+						_this.li[para].style.opacity=opa;
+					}
+				},20);
+			},
+			createBtn:function()
+			{
+				this.ul2=document.createElement("ul");
+				//var li,frag;
+				this.ul2.className="secondUl";
+				this.frag=document.createDocumentFragment();
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					var li=document.createElement("li");
+					this.frag.appendChild(li);
+				}
+				this.ul2.appendChild(this.frag);
+				this.obj.appendChild(this.ul2);
+			},
+			hover:function()
+			{
+				var _this=this;
+				for (var i=0;i<_this.oLi.length ;i++ )
+				{
+					_this.oLi[i].index=i;
+					_this.oLi[i].onclick=function(event)
+					{
+						var e=event || window.event;
+						e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+						clearInterval(_this.timer);
+						if (_this.index==this.index)
+						{
+							return;
+						}
+						_this.index=this.index;
+						_this.doMove(_this.index);
+						_this.css();
+					}
+					_this.oLi[i].onmouseout=function()
+					{
+						_this.interval();
+						_this.css();
+					}
+				}
+			}	
+		}
+
+		var o=new Animate();
+
+
+		var obj=zzs.$("clone");
+		var mouse=zzs.$("mouse");
+		
+		(function()
+		{
+			mouse.onmousedown=function()
+			{
+			var x=[],y=[];
+			document.onmousemove=function(event)
+			{
+				var e=event||window.event;
+				x.push(e.clientX);
+				y.push(e.clientY);
+			}
+			document.body.onmouseup=function()
+			{
+				document.onmousemove=null;
+				back(mouse,x,y,function()
+				{
+					//alert(x.length);
+				});
+			}
+		}
+		function back(o,left,top,callBack)
+		{
+			var num=0;
+				var timer=setInterval(function()
+				{
+					num++;
+					if (num>=left.length)
+					{
+						clearInterval(timer);
+						callBack && (callBack());
+						return;
+					}
+					o.style["left"]=left[num]+"px";
+					o.style["top"]=top[num]+"px";
+				},20);
+			}
+		})();
+		
+		obj.onmousedown=function(event)
+		{
+			var clone=this.cloneNode(false);
+			var e=event || window.event;
+			var x2=e.clientX;
+			var y2=e.clientY;
+			var left=this.offsetLeft;
+			var top=this.offsetTop;
+			document.body.appendChild(clone);
+			document.onmousemove=function(event)
+			{
+				var e=event || window.event;
+				var x=e.clientX;
+				var y=e.clientY;
+				clone.style.left=x-(x2-left)+"px";
+				if (clone.offsetLeft<0)
+				{
+					clone.style["left"]=0+"px";
+				}
+
+				clone.style.top=y-(y2-top)+"px";
+				if (clone.offsetTop<0)
+				{
+					clone.style["top"]=0+"px";
+				}
+				clone.style["background"]="";
+				clone.style.border="2px dashed #333";
+			}
+			document.body.onmouseup=function(event)
+			{
+				var e=event || window.event;
+				e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+				document.onmousemove=null;
+				document.body.onmouseup=null;
+				var cLeft=clone.offsetLeft;
+				var cTop=clone.offsetTop;
+				if (clone.tagName.toUpperCase()=="")
+				{	
+					return ;
+				}
+				goMove(obj,cLeft,cTop,clone);
+			}
+		}
+		function goMove(o,left,top,d)
+		{
+			var timer;
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var s=(left-o.offsetLeft)/5;
+				var s2=(top-o.offsetTop)/5;
+				s=s>0 ? Math.ceil(s) : Math.floor(s);
+				s2=s2>0 ? Math.ceil(s2) : Math.floor(s2);
+				obj.offsetLeft==left ? ( clearInterval(timer),document.body.removeChild(d)): obj.style.left=s+obj.offsetLeft+"px",obj.style.top=s2+obj.offsetTop+"px";
+			},20);
+		}
+		
+		var oul=zzs.$$("scroll","ul");
+		var oli=zzs.$$("scroll","li");
+		oul[0].style.width=oli.length*oli[0].offsetWidth+"px";
+		
+		var ok=zzs.$("ok");
+		var p=zzs.$$("ok","p")[0];
+		var h=zzs.$$("scroll","h1")[0];
+		var tmp,timer;
+		var container=zzs.$("scroll");
+		
+		p.onmousedown=function(event)
+		{
+			document.body.onselectstart=function(){
+				return false;
+			}
+			var e=event || window.event;
+			var x2=e.clientX;
+			var left=this.offsetLeft;
+
+			document.onmousemove=function(event)
+			{
+				var border=false;
+				var e=event || window.event;
+				var x=e.clientX;
+				var l=x-(x2-left);
+				var index=parseInt(Math.abs(oul[0].offsetLeft)/oli[0].offsetWidth);
+				//tmp=index;
+				var tmp=parseFloat(oul[0].offsetWidth-oli[0].offsetWidth)/(ok.offsetWidth-p.offsetWidth);
+				p.style.left=l+"px";
+				if (p.offsetLeft<0)
+				{
+					p.style["left"]=0+"px";
+					oul[0].style.left=0+"px";
+					return;
+				}
+				if (p.offsetLeft>ok.offsetWidth-p.offsetWidth)
+				{
+					p.style.left=ok.offsetWidth-p.offsetWidth+"px";
+					oul[0].style.left=-(oul[0].offsetWidth-oli[0].offsetWidth)+"px";
+					return;
+				}
+				oul[0].style.left=-(p.offsetLeft*tmp)+"px";
+			}
+			this.onmouseup=document.body.onmouseup=function(event)
+			{
+				document.body.onselectstart=null;
+				var e=event || window.event;
+				e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+				document.body.click();
+				document.onmousemove=null;
+			}
+		}
+		container.onmouseover=function()
+		{
+			fMove(h,oli[0].offsetHeight);
+		}
+		container.onmouseout=function()
+		{
+			fMove(h,0);
+		}
+		function fMove(obj,target,index)
+		{
+			clearInterval(timer);
+			obj.style["display"]="block";
+			//obj.innerHTML=oli[index].title;
+			timer=setInterval(function()
+			{
+				var s=(target-obj.offsetHeight)/5;
+				s=s>0 ? Math.ceil(s) : Math.floor(s);
+				obj.offsetHeight==target ? clearInterval(timer) : obj.style.height=s+obj.offsetHeight+"px";
+			},20);
+		}
+		function getClass(cName)
+		{
+			//var patt=/(\s|^)arguments[0]($|\s)/;
+			var patt=new RegExp("(\\s|^)"+cName+"($|\\s)")
+			var arr=[];
+			var all=document.getElementsByTagName("*");
+			for (var i=0;i<all.length ;i++ )
+			{
+				if (patt.test(all[i].className))
+				{
+					arr.push(all[i]);
+				}
+			}
+			return arr;
+		}
+		var o=getClass("eassy")[0];
+		//alert(o.scrollHeight);
+	}
+  </script>
+  <style>
+	#div{width:720px;}
+	#div .secondUl{position:absolute; right:10px;bottom:20px;}
+	#div .secondUl li{width:50px; height:20px; background:white; float:left; border:2px solid black; margin-left:10px; cursor:pointer;}
+	#div .secondUl .active{background:orange;}
+	#scroll{width:720px;height:250px;}
+	#scroll ul li{float:left;}
+	.tiaozi{border-radius:10px;}
+	#ok a{display:inline-block;height:20px; width:300px;}
+	#ok a:hover{background:#333;border-radius:10px;}
+  </style>
+ </head>
+
+ <body>
+  <div id="div" class="bc pr">
+	<ul>
+		<li><img src="images/img04.jpg"></li>
+		<li><img src="images/img02.jpg"></li>
+		<li><img src="images/img04.jpg"></li>
+		<li><img src="images/img02.jpg"></li>
+	</ul>
+  </div>
+	<div id="clone" style="height:100px; width:100px; background:#333333; cursor:move
+; color:white; line-height:100px;" class="pa fb ooo">此层可拖动</div>
+	<div id="mouse" style="height:100px; width:160px; background:#333333; cursor:move; color:white; line-height:100px; left:100px;" class="pa fb">此层按鼠标轨迹移动</div>
+	<hr class="mt50">
+	
+	<div id="scroll" class="bc pr oh">
+		<ul class="pa">
+			<li title="第1张图片"><img src="images/img04.jpg"></li>
+			<li title="第2张图片"><img src="images/img02.jpg"></li>
+			<li title="第3张图片"><img src="images/img04.jpg"></li>
+			<li title="第4张图片"><img src="images/img02.jpg"></li>
+			<li title="第5张图片"><img src="images/img04.jpg"></li>
+			<li title="第6张图片"><img src="images/img02.jpg"></li>
+			<li title="第7张图片"><img src="images/img04.jpg"></li>
+			<li title="第8张图片"><img src="images/img02.jpg"></li>
+			<li title="第9张图片"><img src="images/img04.jpg"></li>
+		</ul>
+		<h1 style="height:0px; background:#333333; color:white; width:inherit; line-height:40px; bottom:0px; filter:alpha(opacity=50); opacity:0.5; display:none;" class="pa fb">
+		</h1>
+  </div>
+	<div style="height:5px;width:720px;background:#666666;" class="bc mt30 pr" id="ok">
+		<p class="pa tiaozi" style="cursor:e-resize;height:20px;width:300px; background:gray;left:0px;top:-7px;"><a onclick="javascript:;"></a></p>
+	</div>
+	<div class="eassy wb" style="height:100px; width:100px; overflow:auto;">ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>
+ </body>
+</html>

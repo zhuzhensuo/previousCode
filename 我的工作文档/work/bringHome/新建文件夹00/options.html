@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <script src="jquery.js"></script>
+  <script src="js/jquery.options.js"></script>
+  <style>
+	.title{height:200px;}
+	.title div{}
+	.title li{float:left;width:100px;}
+	.same li{list-style:square inside;float:none;width:100%;}
+	.same{line-height:30px;margin-top:20px;width:100%;z-index:999;}
+
+  </style>
+  <script>
+
+
+  $(function()
+  {
+	$(".title").tab(
+	{
+		bg:"#333333",//tab标题的背景，可以是颜色，也可以是图片
+		pos:10,//ul闪出的位置（px）
+		fcolor:"white"//tab标题选中时的颜色
+		//使用此插件应使用以下格式一个div，下面是ul列表
+	});
+
+	(function()
+	{
+		function $$$(cName)
+		{
+			var patt="(^|\\s)+"+cName+"(\\s|$)";
+			var arr=[];
+			var reg=new RegExp(patt);
+			var ele=(document || cName).getElementsByTagName("*");
+			for (var i=0;i<ele.length ;i++ )
+			{
+				if (reg.test(ele[i].className))
+				{
+					arr.push(ele[i]);
+				}
+			}
+			return arr;
+		}
+		var div=$$$("div");
+		var btn=$$$("click")[0];
+		//alert(div.length);
+		function css(obj,attr,value)
+		{
+			if (arguments.length==2)
+			{
+				return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr]);
+			}else if (arguments.length==3)
+			{
+				attr=="opacity"?(obj.style["filter"]="alpha(opacity="+value+")",obj.style["opacity"]=(value/100)) :obj.style[attr]=value+"px";
+			}
+		}
+		var array=[
+		{height:500,width:500,left:100,top:100,opacity:50},
+		{height:210,width:210,right:800,top:200,opacity:10}
+		];
+		var array2=[
+		{height:200,width:200,left:0,top:0,opacity:100},
+		{height:210,width:210,right:0,top:0,opacity:100}
+		]
+		var option,tt;
+		var aArr=["",""];
+		btn.onclick=function()
+		{
+			clearInterval(tt);
+			if (this.value=="变大")
+			{
+				(function()
+				{
+					for (var index in aArr)
+					{
+						more(div[index],array[index]);
+					}
+				})();
+
+				this.value="还原";
+			}else if (this.value=="还原")
+			{
+				for (var index in aArr)
+				{
+					more(div[index],array2[index]);
+				}
+				this.value="变大";
+			}else
+			{
+				alert("出现异常!");
+			}
+		}
+
+		function more(obj,attr,callBack)
+		{
+			var tt;
+			clearInterval(tt);
+			tt=setInterval(function()
+			{
+				var complete=true;
+				for (var index in attr )
+				{
+					var opt= index=="opacity"? parseInt(css(obj,index).toFixed(2)*100) :css(obj,index);
+					var s=(attr[index]-opt)/5;
+					s =s>0 ? Math.ceil(s) : Math.floor(s);
+					attr[index] != opt && (complete=false,css(obj,index,s+opt));
+				}
+				if (complete)
+				{
+					clearInterval(tt);
+					callBack && callBack();
+				}
+			},20);
+
+		}
+		var input=$$$("input")[0];
+		function inter()
+		{
+			input.innerHTML=="" ? input.innerHTML="|" : input.innerHTML="";
+			var timer=setTimeout(inter,600);
+		}
+		inter();
+		function getImage()
+		{
+			var container=$$$("image")[0];
+			container.innerHTML="";
+			var oFile=$$$("file")[0];
+			var	url=oFile.value;
+			switch(url)
+			{
+				case "":
+					alert("请选择图片路径，以便生成图片!");
+					return;
+				break;
+			}
+
+			var index=url.lastIndexOf(".");
+			url=url.substr(index);
+			switch(url)
+			{
+				case ".png":
+				case ".gif":
+				case ".jpg":
+				case ".jpeg":
+				case ".cur":
+					url=oFile.value;
+					break;
+				default:
+					alert("格式不对(支持所有图片格式)，请重新选择");
+					return;
+			}
+			var img=new Image();
+			if (!container.currentStyle)
+			{
+				img.src="./images/"+url;
+				container.appendChild(img);
+				//alert(img.src);
+			}else
+			{
+				img.src=url;
+				container.appendChild(img);
+			}
+
+		}
+		$$$("btn")[0].onclick=getImage;
+
+
+
+		var eassy=$$$("eassy")[0];
+		var top=$(".eassy").scrollTop();
+		var timer=null,border=false;
+		function go(){
+			timer=setInterval(function()
+			{
+				//$(":text").val(timer+"<>"+top);
+				border==false ? top+=2 : top-=2;
+				top>=eassy.scrollHeight-$(".eassy").height() && (border=true);
+				top<=0 && (border=false);
+				$(".eassy").scrollTop(top);
+			},50);
+		}
+		go();
+		eassy.onmouseover=function()
+		{
+			clearInterval(timer);
+		}
+		eassy.onmouseout=go;
+	})();
+  });
+  </script>
+ </head>
+
+ <body>
+  <div class="title w400 bc border">
+	<ul class="tc w400">
+		<li>奥运新闻</li>
+		<li>体育赛事</li>
+		<li>关于刘翔</li>
+		<li>中国加油</li>
+	</ul>
+	<p class="cb"></p>
+	<div>
+		<ul class="same">
+			<li>奥运新闻,奥运新闻奥运新闻,奥运新闻
+			</li>
+			<li>奥运新闻,奥运新闻奥运新闻,奥运新闻
+			</li>
+			<li>奥运新闻,奥运新闻奥运新闻,奥运新闻
+			</li>
+			<li>奥运新闻,奥运新闻奥运新闻,奥运新闻
+			</li>
+		</ul>
+	</div>
+	<div>
+		<ul class="same">
+			<li>体育赛事,体育赛事体育赛事,体育赛事</li>
+			<li>体育赛事,体育赛事体育赛事,体育赛事</li>
+			<li>体育赛事,体育赛事体育赛事,体育赛事</li>
+			<li>体育赛事,体育赛事体育赛事,体育赛事</li>
+		</ul>
+	</div>
+	<div>
+		<ul class="same ">
+			<li>关于刘翔,关于刘翔体育赛事,体育赛事</li>
+			<li>关于刘翔,关于刘翔体育赛事,体育赛事</li>
+			<li>关于刘翔,关于刘翔体育赛事,体育赛事</li>
+			<li>关于刘翔,关于刘翔体育赛事,体育赛事</li>
+		</ul>
+		<div></div>
+	</div>
+	<div>
+		<ul class="same">
+			<li>中国加油,中国加油体育赛事,体育赛事</li>
+			<li>中国加油,中国加油体育赛事,体育赛事</li>
+			<li>中国加油,中国加油体育赛事,体育赛事</li>
+			<li>中国加油,中国加油体育赛事,体育赛事</li>
+		</ul>
+	</div>
+  </div>
+  <input type="text" name="name">
+  <div class="eassy wb" style="height:100px; width:200px; overflow:auto;">
+  滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答
+  </div>
+  <div class="image" style="width:200px; height:200px;">
+  </div>
+  <input type="file" class="file">
+	<br>
+  <input type="button" value="确认生成图片" class="btn">
+  <div class="input ml50 fb" style="height:25px; width:290px; border:1px solid #3E86AF; background:#C8E2F1;color:black; font-size:20px;"></div>
+  <div style="height:200px; width:200px; background:#333; opacity:1; position:absolute;top:0px;left:0px;" class="div"></div>
+  <div style="height:200px; width:200px; background:#333; opacity:1; position:absolute;top:0px;right:0px;" class="div"></div>
+  <input type="button" value="变大" class=" click ">
+ </body>
+ <script>
+	(function()
+	{
+		var name=document.getElementsByName("name")[0];
+		var b=document.getElementsByTagName("body")[0];
+		name.onblur=function()
+		{
+			var value=name.value;
+			var patt="((^[^\\s|\\d|^　]*)[^\\s|\\d]{5}([^\\s|\\d]*)$)";//正则表达式验证用户名
+			var reg=new RegExp(patt);
+			//alert();
+			if (reg.test(value) && value.length<10)
+			{
+				alert("匹配成功!");
+			}else
+			{
+				alert("非法字符!");
+			}
+		}
+		var value="565296844";
+		var patt="";
+		var reg=new RegExp(patt);
+		//reg.test(value)==true ? alert("输入正确") : alert("不合法");
+	})();
+ </script>
+</html>

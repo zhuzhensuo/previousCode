@@ -1,0 +1,617 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <style>
+	*{margin:0px;padding:0px;}
+	#container{height:250px; width:720px;}
+	#container li{height:250px; width:720px;}
+	.pos{position:absolute;right:20px; bottom:10px;}
+	#container .active{position:absolute;top:10px; right:20px;}
+	#container .active li{height:10px; width:30px; background:#fff;float:left;border:2px solid black;margin-left:10px;}
+	#container ul .fff{background:white;}
+	#container ul .color{background:#DE6003;}
+	#init{position:absolute; right:10px; bottom:10px;z-index:999; }
+	#init li{height:10px; width:30px; background:#fff;float:left; margin-left:10px;border:2px solid black;}
+
+	#div{height:250px; width:720px;}
+	#div .fd{position:absolute;background:#333333; color:white;z-index:1000;top:100px;cursor:pointer;width:50px;height:50px;font-size:30px;line-height:50px;
+	text-align:center;font-weight:bold; filter:alpha(opacity=80);display:none;}
+	#div .ld{position:absolute;background:#333333; color:white;z-index:1000;top:100px;cursor:pointer;right:0px;width:50px;height:50px;font-size:30px;line-height:50px;
+	text-align:center;font-weight:bold; filter:alpha(opacity=80); display:none;}
+
+	#div .fd:hover, #div .ld:hover{background:orange;}
+	#div ul{position:absolute;left:0px;}
+	#div ul li{position:absolute;}
+	#div ul li p{padding:50px 0px 50px 40px;}
+	#container .clone{position:absolute; left:0px; top:250px;list-style:none;z-index:-1;}
+	.img td{height:150px; width:150px;}
+	.img td img{position:absolute;top:0px; left:0px;cursor:move;}
+  </style>
+  <script>
+	window.onload=function()
+	{
+		function Animate(id,ul,li)
+		{
+			this.obj=document.getElementById(id);
+			this.ul=this.obj.getElementsByTagName(ul)[0];
+			this.ul2=this.obj.getElementsByTagName(ul)[1];
+			this.li=this.ul.getElementsByTagName(li);
+			this.initalize.apply(this,arguments);
+			this.append();
+			this.li2=this.oBtn.getElementsByTagName("li");
+			this.click();
+			this.timer;
+			this.timer2;
+			this.timer3;
+			this.index=0;
+			this.speed=0;
+		}
+		Animate.prototype=
+		{
+			initalize:function()
+			{
+				
+				var _this=this;
+				_this.timer=setInterval(function()
+				{
+					_this.index++;
+					if (_this.index>=_this.li.length)
+					{
+						var clone=_this.li[0].cloneNode(true);
+						_this.obj.appendChild(clone);
+						clone.className="clone";
+						(function()
+						{
+							var _timer=null;
+							_timer=setInterval(function()
+							{
+								var speed=(clone.offsetTop)/8;
+								speed = speed >0 ? Math.ceil(speed) : Math.floor(speed);
+								if (clone.offsetTop==0)
+								{
+									clearInterval(_timer);
+									if (_this.ul.currentStyle)
+									{
+										_this.ul.style.top=0+"px";
+									}else
+									{
+										_this.ul.setAttribute("style","top:0px");
+										_this.index=0;
+										_this.doMove(-(_this.li[0].offsetHeight*_this.index));
+									}
+									_this.obj.removeChild(clone);
+								}else
+								{
+									clone.style.top=(-speed)+ clone.offsetTop+"px";
+								}
+							},20)
+						})();	
+					}
+					_this.doMove(-(_this.li[0].offsetHeight*_this.index));
+					_this.interval();
+				},4000);
+			},
+			doMove:function(target,obj)
+			{
+				if (arguments.length==1)
+				{
+					clearInterval(this.timer2);
+					var _this=this;
+					_this.timer2=setInterval(function()
+					{
+						var speed=(_this.ul.offsetTop-target)/8;
+						speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+						_this.ul.offsetTop == target ? clearInterval(_this.timer2) : _this.ul.style.top=-speed+_this.ul.offsetTop+"px";
+					},20);
+				}
+			},
+			interval:function()
+			{
+				if (this.index>=this.li.length)
+				{
+					this.index=0;
+				}
+				this.oBtn.children[this.index].style.background="#DE6003";
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					/*
+					this.ul2.children[i].className="";
+					this.ul2.children[this.index].className="color";
+					*///此方法与下面的方法等价
+					
+					if (i==this.index)
+					{
+						this.ul2.children[i].className="color";
+						this.oBtn.children[i].style.background="#DE6003";
+					}else
+					{
+						this.ul2.children[i].className="fff";
+						this.oBtn.children[i].style.background="white";
+					}
+					
+				}
+			},
+			hover:function()
+			{
+				var _this=this;
+				for (var i=0;i<_this.li.length ;i++ )
+				{
+					(function(_i)
+					{
+						_this.ul2.children[_i].onmouseover=function()
+						{
+							_this.ul2.children[_i].index=_i;
+							clearInterval(_this.timer);
+							clearInterval(_this.timer2);
+							_this.index=this.index;
+							_this.doMove(-(_this.li[0].offsetHeight*_this.index));
+							_this.interval();
+						}
+						_this.ul2.children[_i].onmouseout=function()
+						{
+							_this.initalize();
+						}
+					})(i);
+				}
+			},
+			append:function()
+			{
+				this.oBtn=document.createElement("ul");
+				this.oBtn.className="active";
+				this.frag=document.createDocumentFragment();
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					var li=document.createElement("li");
+					this.frag.appendChild(li);
+				}
+				this.oBtn.appendChild(this.frag);
+				this.obj.appendChild(this.oBtn);
+			},
+			click:function()
+			{
+				var _this=this;
+				for (var i=0;i<this.li2.length ;i++ )
+				{
+					_this.li2[i].index=i;
+					(function(_i)
+					{
+						_this.li2[_i].onclick=function()
+						{
+							_this.index=this.index;
+							_this.doMove(-(_this.li[0].offsetHeight*_this.index));
+							for (var j=0;j<_this.li2.length ;j++ )
+							{
+								j==_this.index && (_this.li2[j].style.background="purple");
+								j!=_this.index && (_this.li2[j].style.background="#fff");
+							}
+						}
+					})(i);
+				}
+			}
+		}
+		var o=new Animate("container","ul","li");
+			o.hover();
+			o.interval();
+
+
+
+		var zzs=
+		{
+			$:function(id)
+			{
+				return typeof id=="string" ? document.getElementById(id) : id;
+			},
+			$$:function(id,tag)
+			{
+				return this.$(id).getElementsByTagName(tag);
+			},
+			random:function(max,min)
+			{
+				return Math.floor(Math.random()*(max-min+1)+min);
+			}
+		}
+		var obj=zzs.$("div");
+		var oUl=zzs.$$("div","ul");
+		var oLi=zzs.$$("div","li");
+		var fDiv=zzs.$$("div","div")[0];
+		var lDiv=zzs.$$("div","div")[1];
+		var oWidth=oLi[0].offsetWidth;
+		var index=0,timer;
+		function css()
+		{
+			fDiv.className="fd";
+			lDiv.className="ld";
+			for (var i=0;i<oLi.length ;i++ )
+			{
+				oLi[i].style.left=(i*oWidth)+"px";
+			}
+		}
+		css();
+		obj.onmouseover=function()
+		{
+			fDiv.style.display="block";
+			lDiv.style.display="block";
+		}
+		obj.onmouseout=function()
+		{
+			fDiv.style.display="none";
+			lDiv.style.display="none";
+		}
+		fDiv.onclick=function()
+		{
+			index++;
+			
+			if (index>oLi.length-1)
+			{
+				index=0;
+				oUl[0].style.left=0+"px";
+				var copy=oLi[0].cloneNode(true);
+				var copy2=oLi[oLi.length-1].cloneNode(true);
+
+				obj.appendChild(copy);
+				obj.appendChild(copy2);
+				copy.style.cssText="list-style:none; position:absolute;left:720px;";
+				copy2.style.cssText="list-style:none; position:absolute; left:0px;";
+				
+				(function()
+				{
+					var timer=null;
+					clearInterval(timer);
+					timer=setInterval(function()
+					{
+						var speed=(0-copy.offsetLeft)/5;
+						var speed2=(copy2.offsetLeft+720)/5;
+						speed = speed>0 ? Math.ceil(speed) : Math.floor(speed);
+						speed2 = speed2>0 ? Math.ceil(speed2) : Math.floor(speed2);
+						if (copy.offsetLeft==0 )
+						{
+							clearInterval(timer);
+							obj.removeChild(copy);
+							obj.removeChild(copy2);
+							
+						}else
+						{
+							copy.style.left=speed+copy.offsetLeft+"px";
+							copy2.style.left=(-speed2+copy2.offsetLeft)+"px";
+						}
+					},20);
+				})();
+				
+				/*
+				(function()
+				{
+					var timer;
+					clearInterval(timer);
+					timer=setInterval(function()
+					{
+						if (copy2.offsetLeft==(-oLi[0].offsetWidth))
+						{
+							clearInterval(timer);
+							obj.removeChild(copy2);
+						}else
+						{
+							
+						}
+					},20);
+					
+				})();
+				*/
+			}
+			
+		//	display();
+			doMove(-(index*oWidth));
+			
+			
+		}
+		lDiv.onclick=function()
+		{
+			index--;
+			
+			if (index<0)
+			{
+				
+				oUl[0].style.left=(-(oLi.length-1)*oLi[0].offsetWidth)+"px";
+				index=oLi.length-1;
+				var copy=oLi[oLi.length-1].cloneNode(true);
+				var copy2=oLi[0].cloneNode(true);
+				obj.appendChild(copy);
+				obj.appendChild(copy2);
+				copy.style.cssText="list-style:none; position:absolute;left:-720px";
+				copy2.style.cssText="list-style:none; position:absolute;left:0px";
+				//alert(copy.offsetLeft);
+				(function()
+				{
+					var timer=null;
+					clearInterval(timer);
+					timer=setInterval(function()
+					{
+						var speed=(0-copy.offsetLeft)/5;
+						var speed2=(oLi[0].offsetWidth-copy2.offsetLeft)/5;
+						speed = speed>0 ? Math.ceil(speed) : Math.floor(speed);
+						speed2 = speed2>0 ? Math.ceil(speed2) : Math.floor(speed2);
+						if (copy.offsetLeft==0 )
+						{
+							clearInterval(timer);
+							//doMove(-(index*oWidth));
+							obj.removeChild(copy);
+							obj.removeChild(copy2);
+							//return;
+						}else
+						{
+							copy.style.left=speed+copy.offsetLeft+"px";
+							copy2.style.left=speed2+copy2.offsetLeft+"px";
+						}
+					},20);
+				})();
+			}
+			doMove(-(index*oWidth));
+		}
+		function display()
+		{
+			if (index>0)
+			{
+				lDiv.style.display="block";
+			}else if(index<=0)
+			{
+				lDiv.style.display="none";
+			}
+			if (index>=oLi.length-1)
+			{
+				fDiv.style.display="none";
+			}
+			else
+			{
+				fDiv.style.display="block";
+			}
+		}
+		function doMove(target)
+		{
+			var speed;
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				speed=(target-oUl[0].offsetLeft)/5;
+				speed= speed>0 ? Math.ceil(speed) : Math.floor(speed);
+				oUl[0].offsetLeft==target ? clearInterval(timer) : oUl[0].style.left=(speed)+oUl[0].offsetLeft+"px";
+			},20);
+		}
+
+
+		var oTable=zzs.$("table");
+		var oTd=zzs.$$("table","td");
+		var oImg=zzs.$$("table","img");
+		
+		for (var i=0;i<oTd.length ;i++ )
+		{
+			oTd[i].index=i;
+			(function(_i)
+			{
+				oImg[_i].onmousedown=function(event)
+				{
+					var e=event || window.event;
+				//	alert();
+					var x=e.clientX;
+					var y=e.clientY;
+					var left=x-this.offsetLeft;
+					var top=y-this.offsetTop;
+					var pos;
+					var _this=this;
+					this.onmousemove=function(event)
+					{
+						var e=event || window.event;
+						var x2=e.clientX;
+						var y2=e.clientY;
+						this.style.left=x2-left+"px";
+						this.style.top=y2-top+"px";
+						for (var j=0;j<oTd.length ;j++ )
+						{
+							if (this.offsetTop>=oTd[j].offsetTop && this.offsetLeft>=oTd[j].offsetLeft && this.offsetTop<=oTd[j].offsetTop+50 && this.offsetLeft<=oTd[j].offsetLeft+50 )
+							{
+								pos=j;
+								for (var a=0;a<oTd.length ;a++ )
+								{
+									oImg[a].style.zIndex=998;
+									oTd[a].style.border="none";
+								}
+								this.style.zIndex=999;
+								oTd[j].style.cssText="border:5px dashed purple";
+								this.onmouseup=function()
+								{
+									this.onmousemove=null;
+									more(oTd[pos],oImg[_i].offsetLeft,oImg[_i].offsetTop);
+								}
+							}else
+							{
+								
+							}
+						}
+					}
+					/*
+					this.onmouseup=function()
+					{
+						//alert(pos);
+						this.onmousemove=null;
+					}
+					*/
+					
+				}
+			})(i);
+		}
+		//写个刁玩意功能玩玩，bug TMD一大堆,艹...
+		function more(obj,left,top)
+		{
+			var timer;
+		//	alert(left+"?"+top);
+			clearInterval(timer);
+			timer=setInterval(function()
+			{
+				var speed=(left-obj.children[0].offsetLeft)/5;
+				var speed2=(top-obj.children[0].offsetTop)/5;
+				speed= speed>0 ? Math.ceil(speed) : Math.floor(speed);
+				speed2= speed2>0 ? Math.ceil(speed2) : Math.floor(speed2);
+				if (obj.children[0].offsetLeft==left || obj.children[0].offsetTop==top)
+				{
+					clearInterval(timer);
+				}else
+				{
+					obj.children[0].style.left=speed+obj.children[0].offsetLeft+"px";
+					obj.children[0].style.top=speed2+obj.children[0].offsetTop+"px";
+				}
+			},20);
+		}
+		function getDiff(num)
+		{
+			var arr=[];
+			var isHas=false;
+			while(true)
+			{
+				if (arr.length==num)
+				{
+					break;
+				}
+				var rand=zzs.random(oImg.length-1,0);
+				for (var index in arr )
+				{
+					if (rand==arr[index])
+					{
+						isHas=true;
+					}
+				}
+				if (isHas==false)
+				{
+					arr.push(rand);
+				}
+				isHas=false;
+			}
+			return arr;
+		}
+		function buju()
+		{
+			var pos=[];
+			//var timer;
+			//clearInterval(timer);
+			var array=getDiff(24);
+			for (var i=0;i<oTd.length ;i++ )
+			{
+				oImg[i].style["zIndex"]=i;
+				pos.push({left:oTd[i].offsetLeft,top:oTd[i].offsetTop});
+				Move(pos[i].left,pos[i].top,oImg[array[i]]);
+			}
+		}
+		buju();
+		
+		function Move(tar1,tar2,obj)
+		{
+			var timer;
+			timer=setInterval(function()
+			{
+				var speed=(tar1-obj.offsetLeft)/5;
+				var speed2=(tar2-obj.offsetTop)/5;
+				speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+				speed2 = speed2 > 0 ? Math.ceil(speed2) : Math.floor(speed2);
+				if (obj.offsetLeft==tar1)
+				{
+					clearInterval(timer);
+				}
+				obj.style.left=speed+obj.offsetLeft+"px";
+				obj.style.top=speed2+obj.offsetTop+"px";
+			},20);
+		}
+		zzs.$("sort").onclick=buju;
+		//有bug，技术有限，说不清，道不明，cao。。。
+
+
+	}
+  </script>
+ </head>
+
+ <body>
+	<div id="container" class="pr bc oh">
+		<ul class="pa">
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+		</ul>
+
+		<ul id="init">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<hr class="mt50" >
+	<div id="div" class="pr contain bc oh">
+		<div class="fb tc"> < </a> </div>
+		<ul class="pa" class="append">
+			<li>
+				<p class="oh" style="width:720px;height:250px;background:white;">
+					<img src="images/1.png">
+					<img src="images/1.png">
+					<img src="images/1.png">
+					<img src="images/1.png">
+				</p>
+			</li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img04.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+		</ul>
+		
+		<div class="fb tc"> > </div>
+	</div>
+	<hr class="mt50">
+	<table class="img pr bc" id="table">
+	<tr>
+		<td><img src="images/boy1.png"></td>
+		<td><img src="images/boy2.png"></td>
+		<td><img src="images/boy3.png"></td>
+		<td><img src="images/boy4.png"></td>
+		<td><img src="images/boy5.png"></td>
+		<td><img src="images/boy6.png"></td>
+		<td><img src="images/boy7.png"></td>
+		<td><img src="images/boy8.png"></td>
+	</tr>
+	<tr>
+		<td><img src="images/boy9.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy12.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy15.png"></td>
+		<td><img src="images/boy16.png"></td>
+	</tr>
+	<tr>
+		<td><img src="images/boy9.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy12.png"></td>
+		<td><img src="images/boy10.png"></td>
+		<td><img src="images/boy11.png"></td>
+		<td><img src="images/boy15.png"></td>
+		<td><img src="images/boy16.png"></td>
+	</tr>
+  </table>
+ <input type="button" value="随机排序" id="sort" class="fr pa" style="right:0px;top:500px;">
+ <p id="html"></p>
+ </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	html{overflow:hidden;}
+	#div{height:50px; width:50px; background:#333;position:absolute;top:250px;left:200px;}
+	.wrap{height:100%;position:absolute;top:0;}
+	.wrap div{position:absolute;width:100%;background:#333;left:0;}
+  </style>
+ </head>
+
+ <body>
+	<div id="div"></div>
+ </body>
+ <script src="basic.js">
+ </script>
+ <script>
+	var $=function(id){
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+	var init=function(){
+		fall($("div"));
+	}
+	var fall=function(obj){
+		var num=0;
+		var h=document.documentElement.clientHeight;
+		fall.timer=setInterval(function(){
+			var top=obj.offsetTop;
+			num+=1;
+			obj.style["top"]=top+num+"px";
+			if(top+num>=h-obj.offsetHeight){
+				window.location.reload();
+			}
+		},30);
+	}
+	fall($("div"));
+
+	var to=function(obj){
+		var top2=obj.offsetTop;
+		top2-=50;
+		clearInterval(fall.timer);
+		clearInterval(to.timer);
+		var num2=0;
+		to.timer=zzs.doMove(obj,{top:top2},10,function(){
+			clearInterval(to.timer);
+			fall(obj);
+		});
+		/*
+		to.timer=setInterval(function(){
+			
+			var top=obj.offsetTop;
+			num2-=2;
+			//num2*=-1;
+			//num2*=0.75;
+			if(num2+top<=top2){
+				clearInterval(to.timer);
+				num2=0;
+				fall(obj);
+			}
+			obj.style["top"]=num2+top+"px";
+			
+			
+		},30);
+		*/
+		/**/
+	}
+	document.onkeyup=function(ev){
+		var ev=ev||window.event;
+		switch (ev.which){
+		case 32:
+			to($("div"));
+		}
+	}
+	
+	function Qiang(){
+		this.random=zzs.apply(zzs,zzs.random);
+		this.init();
+		this.interval();
+	}
+	Qiang.prototype={
+		init:function(){
+			var clientWidth=document.documentElement.offsetWidth;
+			var clientHeight=document.documentElement.clientHeight;
+			this.wrap=document.createElement("div");
+			this.wrap.className="wrap";
+			var w=this.random(400,200);
+			var l=this.random(clientWidth+10,clientWidth);
+			this.wrap.style["width"]=w+"px";
+			this.wrap.style["left"]=l+"px";
+			for(var i=0;i<2;i++){
+				var div=document.createElement("div");
+				div.style["height"]=this.random((clientHeight/2)-100,(clientHeight/2)-200)+"px";
+				this.wrap.appendChild(div);
+			}
+			document.body.appendChild(this.wrap);
+			var obj=this.wrap.children;
+			obj[obj.length-1].style["bottom"]=0+"px";
+		},
+		interval:function(){
+			var _this=this;
+			this.timer=setInterval(function(){
+				_this.wrap.style["left"]=_this.wrap.offsetLeft-5+"px";
+			},20);
+		}
+	}
+	setInterval(function(){
+		new Qiang();
+	},3000);
+	
+ </script>
+</html>

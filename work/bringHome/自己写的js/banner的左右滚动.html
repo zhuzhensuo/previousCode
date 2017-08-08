@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script type="text/javascript" src="js/basic.js"></script>
+  <style>
+	.container{height:200px;position:absolute;top:0px;left:0px;z-index:-1;}
+	.container li{height:200px; width:400px; border:1px solid red;float:left;text-align:center;line-height:200px;}
+	#banner{position:relative;height:200px;width:400px;}
+	 .append{position:absolute;left:30px; bottom:30px;cursor:pointer;}
+	 .append li{float:left;display:inline;margin-left:10px;height:15px; width:30px;background:black;}
+	 li.active2{background:black;}
+	 li.active{background:red;}
+	#banner .clone,#banner2 .clone{line-height:200px; text-align:center;list-style:outside none;width:400px;}
+	#banner .right{z-index:100000;right:20px;}
+	#banner .left{z-index:100000;left:20px;}
+
+	#banner2{position:relative;height:200px;}
+	#banner2 .append{position:absolute;left:30px; bottom:30px;cursor:pointer;}
+	#banner2 .append li{float:left;display:inline;margin-left:10px;height:15px; width:30px;background:black;}
+	#banner2 li.active2{background:black;}
+	#banner2 li.active{background:red;}
+  </style>
+ </head>
+
+ <body>
+	<div id="banner" class="oh">
+		<div class="left cp pa">左</div>
+		<div class="right cp pa">右</div>
+		<ul class="container">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+
+	<div id="banner2" class="oh mt100">
+		<div class="left cp pa">左</div>
+		<div class="right cp pa">右</div>
+		<ul class="container">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+ </body>
+ <script>
+	function Animate(id,cName,left,right,btn)
+	{
+		this.id=zzs.$(id);
+		this.scroll=zzs.$$$(cName,id)[0];
+		this.left=zzs.$$$(left,id)[0];
+		this.right=zzs.$$$(right,id)[0];
+		this.li=this.scroll.getElementsByTagName("li");
+		this.ul=document.createElement("ul");
+		this.index=0;
+		this.t=null;
+		this.timer2=null;
+		this.c=true;
+		this.timer;
+		this.btn=btn;
+		var _this=this;
+		this.fn=zzs.apply(this,zzs.doMove2);
+
+		this.click=function()
+		{
+			this.left.onclick=function()
+			{
+				_this.index--;
+				if (_this.c==false)
+				{
+					return;
+				}
+				if (_this.index<0)
+				{
+					//_this.index=_this.li.length-1;
+					_this.c=false;
+					_this.clone(_this.li[_this.li.length-1],function(c)
+					{
+						zzs.css(c,{"position":"absolute","left":-_this.li[0].offsetWidth,"top":0});
+						zzs.doMove(c,{left:0},function()
+						{
+							_this.c=true;
+							_this.id.removeChild(c);
+							zzs.css(_this.scroll,"left",-(_this.li.length-1)*_this.li[0].offsetWidth);
+							_this.index=_this.li.length-1;
+						});
+					});
+
+					clearInterval(_this.timer);
+					_this.timer=setInterval(function()
+					{
+						_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+					},20);
+				}
+				clearInterval(_this.timer);
+				_this.timer=setInterval(function()
+				{
+					_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+				},20);
+			}
+			this.right.onclick=function()
+			{
+				if (_this.c==false)
+				{
+					return;
+				}
+				_this.index++;
+				if (_this.index>_this.li.length-1)
+				{
+					_this.c=false;
+					_this.clone(_this.li[0],function(c)
+					{
+						zzs.css(c,{"position":"absolute","left":_this.li[0].offsetWidth,"top":0});
+						zzs.doMove(c,{left:0},function()
+						{
+							_this.c=true;
+							_this.id.removeChild(c);
+							zzs.css(_this.scroll,"left",0);
+							_this.index=0;
+						});
+					});
+					/*
+					_this.index=0;
+					clearInterval(_this.timer);
+					_this.timer=setInterval(function()
+					{
+						_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+					},20);
+					*/
+				}
+				clearInterval(_this.timer);
+				_this.timer=setInterval(function()
+				{
+					_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+				},20);
+			}
+		}
+		this.clone=function(obj,call)
+		{
+			var clone=obj.cloneNode(true);
+			_this.id.appendChild(clone);
+			clone.className="clone";
+			call&&call(clone);
+		}
+		this.color=function(index)
+		{
+			for (var j=0;j<li.length ;j++ )
+			{
+				li[j].className="active2";
+			}
+			li[index].className="active";
+		}
+		this.click();
+	}
+	Animate.prototype=
+	{
+		autoPlay:function()
+		{
+			var _this=this;
+			clearInterval(this.timer2);
+			this.timer2=setInterval(function()
+			{
+				_this.index++;
+
+				if (_this.index>_this.li.length-1)
+				{
+					_this.c=false;
+					_this.clone(_this.li[0],function(c)
+					{
+						zzs.css(c,{"position":"absolute","left":_this.li[0].offsetWidth,"top":0});
+						zzs.doMove(c,{left:0},function()
+						{
+							_this.c=true;
+							_this.id.removeChild(c);
+							zzs.css(_this.scroll,"left",0);
+							_this.index=0;
+						});
+					});
+				}
+				clearInterval(_this.timer);
+				_this.timer=setInterval(function()
+				{
+					_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+				},20);
+			},3000);
+
+		},
+		hover:function()
+		{
+			var _this=this;
+			_this.left.onmouseover=_this.right.onmouseover=function()
+			{
+				clearInterval(_this.timer2);
+				_this.timer2=null;
+			}
+			_this.left.onmouseout=_this.right.onmouseout=function()
+			{
+				_this.autoPlay();
+			}
+
+		},
+		hasBtn:function()
+		{
+			if (this.btn==true)
+			{
+				this.createBtn=function()
+				{
+					this.frag=document.createDocumentFragment();
+					for (var i=0;i<this.li.length ;i++ )
+					{
+						this.frag.appendChild(document.createElement("li"));
+					}
+					this.ul.appendChild(this.frag);
+					this.ul.className="append";
+					this.id.appendChild(this.ul);
+					zzs.css(this.scroll,"width",this.li.length*this.li[0].offsetWidth);
+					var li=this.ul.getElementsByTagName("li");
+					li[0].className="active";
+					return li;
+				}
+				var li=this.createBtn();
+				var _this=this;
+				for (var i=0;i<li.length ;i++ )
+				{
+					li[i].index=i;
+					li[i].onmouseover=function()
+					{
+						zzs.each(li,function(){this.className=""});
+						li[this.index].className="active";
+						clearInterval(_this.timer);
+						clearInterval(_this.timer2);
+						_this.index=this.index;
+						_this.timer=setInterval(function()
+						{
+							_this.fn(_this.scroll,{left:-(_this.index*_this.li[0].offsetWidth)},function(){clearInterval(_this.timer)});
+						},20);
+					}
+				}
+				_this.ul.onmouseout=function()
+				{
+					_this.autoPlay();
+				}
+			}
+		}
+	}
+
+	var o=new Animate("banner","container","left","right",true);
+	o.autoPlay();
+	o.hover();
+	o.hasBtn();
+	var o2=new Animate("banner2","container","left","right");
+	o2.autoPlay();
+	o2.hover();
+ </script>
+</html>

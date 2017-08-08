@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+		*{margin:0;padding:}
+		#zoom{ position:relative;border:1px solid green;float:left;width:350px;height:350px; overflow:hidden;}
+		#zoom img{height:350px;width:350px;}
+		#mover{height:200px;width:200px; background:black;position:absolute;left:0;top:0;filter:alpha(opacity=50); opacity:0.5; cursor:move; visibility:hidden;}
+		#big_zoom{ position:relative;border:1px solid green;float:left;margin-left:30px;height:350px; width:350px; overflow:hidden;visibility:hidden; }
+		#big_zoom img{position:absolute;left:0;top:0;}
+  </style>
+ </head>
+
+ <body>
+		<div class="father_zoom" id="zoom">
+			<img src="images/big2.jpg"/>
+			<div id="mover">
+			</div>
+		</div>
+		<div class="" id="big_zoom">
+				<img src="images/big2.jpg"/>
+		</div>
+ </body>
+ <script src="basic.js"></script>
+ <script>
+		var zoom=zzs.$("#zoom");
+		var move=zzs.$("#mover");
+
+		var pos=function(obj){
+			var left=obj.offsetLeft,top=obj.offsetTop;
+			while(obj.offsetParent){
+				obj=obj.offsetParent;
+				left+=obj.offsetLeft;
+				top+=obj.offsetTop;
+			}
+
+			return{
+				left:left,
+				top:top
+			}
+		}
+		
+		
+			
+
+		var big_zoom=zzs.$("#big_zoom");
+		var img=zzs.$("#big_zoom","img")[0],a=0,b=0;
+
+		var equal_rate=function(){
+			return (zoom.offsetWidth*zoom.offsetWidth)/img.width;
+			// return (img.width*move.offsetWidth)/zoom.offsetWidth;
+		}
+		move.style["width"]=move.style["height"]=equal_rate()+"px";
+		var rate=function(){
+			a=(img.height-zoom.offsetHeight)/(zoom.offsetHeight-move.offsetHeight);
+			b=(img.width-zoom.offsetWidth)/(zoom.offsetWidth-move.offsetWidth);
+		}
+		rate();
+
+	
+		zoom.onmousemove=function(event){
+			move.style["visibility"]="visible";
+			big_zoom.style["visibility"]="visible";
+			var e=event||window.event;
+			var x=e.clientX;
+			var y=e.clientY;
+			var xpos=x-(equal_rate()/2);
+			var ypos=y-(equal_rate()/2);
+			if(xpos<=0){
+				xpos=0;
+			}
+			if(xpos>=zoom.offsetWidth-move.offsetWidth){
+				xpos=zoom.offsetWidth-move.offsetWidth;
+			}
+			if(ypos>=zoom.offsetHeight-move.offsetHeight){
+				ypos=zoom.offsetHeight-move.offsetHeight;
+			}
+			if(ypos<=0){
+				ypos=0;
+			}
+			move.style["left"]=xpos+"px";
+			clearInterval(this.timer);
+			this.timer=zzs.doMove(img,{left:parseInt(-(xpos*a)),top:parseInt(-(ypos*b))},zzs.isie ? 20 : 30);
+			//img.style["left"]=-(xpos*a)+"px";
+			move.style["top"]=ypos+"px";
+			//img.style["top"]=-(ypos*b)+"px";
+			zoom.onmouseout=function(){
+				move.style["visibility"]="hidden";
+				big_zoom.style["visibility"]="hidden";
+			}
+
+		}
+	
+ </script>
+</html>

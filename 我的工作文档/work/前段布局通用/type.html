@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+	*{margin:0;padding:0;}
+	#eassy{width:100%;height:550px;font-size:35px;}
+	#eassy .active{font-weight:bold;color:green; background:url(images/yes.png) no-repeat right bottom;}
+	#eassy span{float:left; display:inline;height:42px; width:42px;}
+	#eassy .active2{color:#cc0000; background:url(images/no.png) no-repeat right bottom;}
+	#input textarea{width:100%;height:250px;font-size:35px;border:0;padding:10px;}
+
+  </style>
+ </head>
+
+ <body>
+	<div id="eassy"></div>
+	<hr>
+	<div id="input">
+		<textarea scrolling="no"></textarea>
+	</div>
+ </body>
+ <script src='basic.js'></script>
+ <script>
+	(function(){
+		var sEassy="“亲贤臣，远小人，此先汉所以兴隆也；亲小人，远贤臣，此后汉所以倾颓也。先帝在时，每与臣论此事，未尝不叹息痛恨于桓、灵也！侍中、尚书、长史、参军，此悉贞亮死节之臣也，愿陛下亲之、信之，则汉室之隆，可计日而待也。臣本布衣，躬耕南阳，苟全性命于乱世，不求闻达于诸侯。先帝不以臣卑鄙，猥自枉屈，三顾臣于草庐之中，谘臣以当世之事，由是感激，遂许先帝以驱驰。后值倾覆，受任于败军之际，奉命于危难之间：尔来二十有一年矣。先帝知臣谨慎，故临崩寄臣以大事也。受命以来，夙夜忧虑，恐付托不效，以伤先帝之明；故五月渡泸，深入不毛。今南方已定，甲兵已足，当奖帅三军，北定中原，庶竭驽钝，攘除奸凶，兴复汉室，还于旧都：此臣所以报先帝而忠陛下之职分也。至于斟酌损益，进尽忠言，则攸之、依、允等之任也。愿陛下托臣以讨贼兴复之效，不效则治臣之罪，以告先帝之灵；若无兴复之言，则责攸之、依、允等之咎，以彰其慢。陛下亦宜自谋，以谘诹善道，察纳雅言，深追先帝遗诏。臣不胜受恩感激！今当远离，临表涕泣，不知所云。”——《出师表》";
+
+		var fCreateSpan=function(str){
+			str=str.split("");
+			var frag=document.createDocumentFragment();
+			for(var i=0,len=str.length;i<len;i++){
+				var span=document.createElement("span");
+				span.innerHTML=str[i];
+				frag.appendChild(span);
+			}
+			zzs.$("#eassy").appendChild(frag);
+		}
+		fCreateSpan(sEassy);
+
+		document.onkeyup=toKnow;
+		function toKnow(){
+			var str=zzs.$("#input","textarea")[0].value;
+			str=str.split("");
+			var oSpan=zzs.$("#eassy","span");
+			if(str.length>oSpan.length){
+				str.length=oSpan.length;
+				zzs.$("#input","textarea")[0].value=str.join("");
+			}
+			zzs.each(oSpan,function(){
+				this.className="";
+			});
+			for(var i=0;i<str.length;i++){
+				if(str[i]==oSpan[i].innerHTML){
+					oSpan[i].className="active";
+				}else{
+					oSpan[i].className="active2";
+				}
+			}
+		}
+	})();
+ </script>
+</html>

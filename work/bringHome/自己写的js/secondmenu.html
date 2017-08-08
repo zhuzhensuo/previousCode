@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="css/basic.css"/>
+<style>
+.list li{position:relative; float:left; display:inline;text-align:center; width:100px; height:50px; line-height:50px; background:white;}
+.list li .second{position:absolute; line-height:20px; top:40px;left:20px; display:none; background:white;}
+</style>
+</head>
+
+<body>
+	<div class="">
+    	<div>
+        	<ul class="list clearfix" id="list">
+            	<li>
+                	<a href="###">test1</a>
+                    <div class="second">
+                    	<div>11111111</div>
+                        <div>22222222</div>
+                        <div>33333333</div>
+                    </div>
+                </li>
+                <li>
+                	<a href="###">test1</a>
+                    <div class="second">
+                    	<div>11111111</div>
+                        <div>22222222</div>
+                        <div>33333333</div>
+                    </div>
+                </li>
+                <li>
+                	<a href="###">test1</a>
+                    <div class="second">
+                    	<div>11111111</div>
+                        <div>22222222</div>
+                        <div>33333333</div>
+                    </div>
+                </li>
+                <li>
+                	<a href="###">test1</a>
+                    <div class="second">
+                    	<div>11111111</div>
+                        <div>22222222</div>
+                        <div>33333333</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/basic.js"></script>
+<script>
+	function SecondMenu(id){
+		this.li=zzs.$$(id,"li");
+	}
+	SecondMenu.prototype={
+		mouseover:function(){
+		var that=this;
+		for(var i=0;i<this.li.length;i++){
+			this.li[i].index=i;
+			this.li[i].onmouseover=function(){
+				if(this.children[1]){
+					this.children[1].style["display"]="block";
+				}
+			}
+			this.li[i].onmouseout=function(){
+				if(this.children[1]){
+					this.children[1].style["display"]="none";
+				}
+
+			}
+		}
+	}
+
+}
+new SecondMenu("list").mouseover();
+</script>
+</html>

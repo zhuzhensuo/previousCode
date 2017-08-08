@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./css/basic.css">
+  <script src="./jquery.js"></script>
+  <style>
+  .good2{width:700px; height:250px;}
+  .all2 li{height:100%;position:absolute;display:none;}
+  .index2{right:0px;bottom:0px;color:gray;}
+  .index2 li{float:left;width:20px;}
+  </style>
+  <script>
+  $(function()
+  {
+	var w=$(".good2").width();
+	var h=$(".good2").height();
+	var liArr=$(".all2 li");
+	for (var i=0;i<liArr.length;i++ )
+	{
+		liArr.eq(i).css("width",w).css("height",h);	
+	}
+	var index=0,interval;
+	function fade()
+	{
+		$(".all2 li:first").css("display","block");
+		$(".index2 li").eq(index).css("background","white").siblings("li").css("background","");
+		interval=setInterval(function()
+		{
+			$(".index2 li").eq(index).css("background","white").siblings("li").css("background","");
+			$(".all2 li").eq(index).fadeIn(500).siblings("li").css("display","none");
+			index+=1;
+			if (index==liArr.length)
+			{
+				index=0;
+			}
+		},3000);
+	}
+	$(".index2 li").hover(function()
+	{
+		clearInterval(interval);
+		 index=$(".index2 li").index(this);
+		$(".index2 li").eq(index).css("background","white").siblings("li").css("background","");
+		//alert(index);
+		var arr=$(".all2 li").eq(index).fadeIn(500).siblings("li").css("display","none");
+	},function()
+	{
+		fade();
+	});
+	fade();
+
+  });
+  </script>
+ </head>
+
+ <body>
+  <div class="good2 bc pr mt10 oh" style="background:black;">
+	<ul class="all2 pa">
+		<li><img src="./images/img02.jpg" ></li>
+		<li><img src="./images/img01.jpg" ></li>
+		<li><img src="./images/img03.jpg" ></li>
+		<li><img src="./images/img04.jpg" ></li>
+		<li><img src="./images/bannner_pic.jpg"></li>
+		<li><img src="./images/img03.jpg" ></li>
+	</ul>
+	<ul class="index2 pa fr tc" id="index">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+ </div>
+ <div id="" class="pa" style="height:150px; width:150px; background:#333;">
+	<div id="move" style="height:40px;background:orange; margin-top:5px; cursor:move"></div>
+ </div>
+ </body>
+ <script>
+	(function()
+	{
+		var id=document.getElementById("move");
+		var oParent=id.offsetParent;
+		id.onclick=oParent.onclick=function(event)
+		{
+			var e=event||window.event;
+			e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+		}
+		id.onmousedown=function(event)
+		{
+			var e=event||window.event;
+			
+			var xp=e.clientX-oParent.offsetLeft;
+			var yp=e.clientY-oParent.offsetTop;
+			this.onmousemove=function(event)
+			{
+				var e=event||window.event;
+				var x=e.clientX;
+				var y=e.clientY;
+				//oParent.style.cssText="left:"+(x-xp)+"px; top:"+(y-yp)+"px;";
+				oParent.style["left"]=(x-xp)+"px";
+				oParent.offsetLeft<0 && (oParent.style["left"]=0+"px");
+				oParent.style["top"]=(y-yp)+"px";
+				oParent.offsetTop<0 && (oParent.style["top"]=0+"px");
+			}
+			this.onmouseup=function()
+			{
+				document.body.focus();
+				this.onmousemove=null;
+			}
+		}
+		
+		document.documentElement.onclick=function()
+		{
+			var timer,timer2;
+			clearTimeout(timer);
+			clearTimeout(timer2);
+			shake();
+		}
+		function shake()
+		{
+			id.style["backgroundColor"]=="orange" ? id.style["backgroundColor"]="gray" : id.style["backgroundColor"]="orange";
+			timer=setTimeout(arguments.callee,50);
+		    timer2=setTimeout(function()
+			{
+				clearTimeout(timer);
+				clearTimeout(timer2);
+				css(id,"backgroundColor","orange");
+			},250);
+		}
+		function css(obj,attr,value)
+		{
+			obj.style[attr]=value;
+		}
+		//alert(id.style["background"]);
+	})();
+ </script>
+</html>

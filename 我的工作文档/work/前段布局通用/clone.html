@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="basic.css"/>
+  <style>
+		*{margin:0;padding:0;}
+		html{overflow:hidden;}
+		#wrap{height:300px; width:770px; border:1px solid red;left:50%; position:relative;margin-left:-385px;margin-top:100px;}
+		#wrap .wrap{width:100%;height:100%; position:relative; overflow:hidden;}
+		#wrap .wrap ul{position:absolute;left:0;top:0; height:100%;}
+		#wrap .wrap ul li{float:left; height:100%;width:770px;}
+		.leftBtn,.rightBtn{ position:absolute;z-index:999; background:purple;height:40px; width:100px;top:350px;cursor:pointer;line-height:40px; text-align:center;color:white;}
+		.rightBtn{right:0; }
+  </style>
+ </head>
+
+ <body>
+		<div id="wrap">
+			<div class="leftBtn">左边</div>
+			<div class="wrap">
+				<ul>
+					<li><img src="images/one.jpg" /></li>
+					<li><img src="images/two.jpg" /></li>
+					<li><img src="images/three.jpg" /></li>
+					<li><img src="images/four.jpg" /></li>
+				</ul>
+			</div>
+			<div class="rightBtn">右边</div>
+		</div>
+ </body>
+ <script src="jq1.9.js"></script>
+ <script>
+		var li=$(".wrap li");
+		var ul=$(".wrap ul");
+		
+		var cloneFirst=function(){
+			var first=li.eq(0).clone(true);
+			first.addClass("first");
+			ul.append(first);
+		}
+		var cloneLast=function(){
+			var last=li.eq(li.length-1).clone(true);
+			last.addClass("last");
+			last.insertBefore(li.eq(0));
+		}
+		cloneFirst();
+		cloneLast();
+		li=$(".wrap li");
+		//alert(li.length);
+		ul.css({"width":li.length*li.outerWidth(),left:-li.outerWidth()});
+	
+		
+		var index=1;
+		var left=$(".leftBtn");
+		var right=$(".rightBtn");
+		
+		left.click(function(){
+			index++;
+			if(index>5){
+					index=1;
+					ul.css({left:-li.outerWidth()});
+					index++;
+					//return;
+			}
+			ul.stop().animate({left:-index*li.outerWidth()});
+		});
+
+		
+ </script>
+</html>

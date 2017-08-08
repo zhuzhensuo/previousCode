@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <style>
+		*{margin:0;padding:0;}
+		#div{height:500px; width:500px; border:1px solid #ccc; font-size:50px;line-height:500px; position:absolute;margin:-250px 0 0 -250px;left:50%;top:50%;
+		overflow:hidden;cursor:move;}
+		#div p{float:left;width:100%;height:100%;background:gray;}
+		#div div{position:absolute;left:0;top:0;width:100%;height:100%;}
+		#div div span{float:left; display:inline;height:20px;width:20px;_font-size:0;}
+  </style>
+ </head>
+
+ <body>
+	<div id="div"><img src="image/mn.jpg"/><div></div></div>
+ </body>
+ <script>
+	(function(){
+	var $=function(id){
+		return typeof id=="string" ? document.getElementById(id) : id;
+	}
+		var frag=document.createDocumentFragment();
+		for (var i=0;i<25*25 ;i++ ){
+
+			var span=document.createElement("span");
+
+			frag.appendChild(span);
+
+		}
+		var div=$("div").getElementsByTagName("div")[0];
+		div.appendChild(frag);
+
+
+		var oSpan=document.getElementsByTagName("span"),x=0,y=0;
+		for (var i=0;i<oSpan.length;i++ ){
+
+			(function(_i){
+				oSpan[_i].onmouseover=function(){
+					this.style["visibility"]="hidden";
+				}
+			})(i);
+			if(i%25==0 && i!=0){
+				y++;
+				x=0;
+
+			}
+
+			if(i%25!=0){
+				x++;
+			}
+			oSpan[i].style["background"]="url(image/mn2.jpg) no-repeat "+(-x*20)+"px "+(-y*20)+"px";
+		}
+
+
+	})();
+ </script>
+</html>

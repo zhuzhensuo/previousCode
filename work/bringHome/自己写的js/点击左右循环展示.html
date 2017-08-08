@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="gb2312">
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <script src="js/basic.js"></script>
+  <style>
+	#main{width:400px;}
+	#main .leftBtn,.rightBtn{height:25px;width:50px;background:white;}
+  </style>
+ </head>
+
+ <body>
+	<div id="main" class="bc border clearfix">
+		<div class="leftBtn border cp">left</div>
+			<div>
+				<div class="display">11111111111</div>
+				<div class="display dn">22222222222</div>
+				<div class="display dn">33333333333</div>
+				<div class="display dn">44444444444</div>
+			</div>
+		<div class="rightBtn border cp">right</div>
+	</div>
+ </body>
+ <script>
+ 	/*
+		这个类是点击左右切换div的功能，有5个参数：
+		1：最外层div的id；
+		2：左箭头；
+		3：右箭头；
+		4：要切换的div的className；
+		5：是否要自动切换,true是自动，false为不自动；
+	*/
+	function Display(id,left,right,dis,auto)
+	{
+		this.id=zzs.$(id);
+		this.left=zzs.$$$(left,id)[0];
+		this.right=zzs.$$$(right,id)[0];
+		this.dis=zzs.$$$(dis,id);
+		this.index=0;
+		this.auto=auto;
+		this.timer=null;
+		var _this=this;
+		
+		_this.goRight=function()
+		{
+			_this.index++;
+			if (_this.index>_this.dis.length-1)
+			{
+				_this.index=0;
+			}
+			for (var i=0;i<_this.dis.length ;i++ )
+			{
+				_this.dis[i].style.display="none";
+			}
+			_this.dis[_this.index].style.display="block"
+		}
+		_this.goLeft=function()
+		{
+			_this.index--;
+			if (_this.index<0)
+			{
+				_this.index=_this.dis.length-1;
+			}
+			for (var i=0;i<_this.dis.length ;i++ )
+			{
+				_this.dis[i].style.display="none";
+			}
+			_this.dis[_this.index].style.display="block"
+		}
+		_this.right.onclick=_this.goRight;
+		_this.left.onclick=_this.goLeft;
+
+		_this.goAuto=function()
+		{
+			_this.timer=setInterval(_this.goRight,3000);
+		}
+		if (this.auto==true)
+		{
+			_this.goAuto();
+		}
+		_this.right.onmouseover=_this.left.onmouseover=function(){clearInterval(_this.timer)}
+		_this.right.onmouseout=_this.left.onmouseout=_this.goAuto;
+	}
+	
+	new Display("main","leftBtn","rightBtn","display",true);
+ </script>
+</html>

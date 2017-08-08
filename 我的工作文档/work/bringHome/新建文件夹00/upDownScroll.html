@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <style>
+	.display{width:720px;height:250px;}
+	.display ul li{width:720px; height:250px; position:absolute;}
+	#color{width:100px; height:100px;}
+	.hope{width:720px; height:250px;}
+  </style>
+  <script src="jquery.js"></script>
+  <script>
+	$(function()
+	{
+		function Animate(id)
+		{
+			this.id=$("#"+id);
+			this.li=this.id.find("li");
+			this.index=0;
+			this.timer=null;
+			this.time=4000;
+			this.ul=null;
+			this.out=null;
+			this.temp=0;
+		}
+		Animate.prototype=
+		{
+			move:function()
+			{
+				this.li.eq(this.index).css({"top":-(this.li.height())}).stop(true,false).animate({top:0},200).end().eq(this.index-1).css({"top":"0"}).animate({top:this.li.height()},200).siblings("li").css({"left":"0px","top":-(this.li.height())});
+			},
+			interval:function()
+			{
+				var self=this;
+				self.timer=null;
+				self.timer=setInterval(function()
+				{
+					self.index+=1;
+					self.temp=self.index;
+					if (self.index>=self.li.length)
+					{
+						self.index=0;
+					}
+					self.move();
+					self.amount();
+					self.hover();
+				},self.time);
+			},
+			amount:function()
+			{
+				this.ul=$("<div></div>");
+				this.ul.appendTo(this.id);
+				this.ul.css({"position":"absolute","right":"10px","bottom":"10px"});
+				var arr=[];
+				for (var i=0;i<this.li.length ;i++ )
+				{
+					arr.push("_"+i);
+					arr[i]=$("<li></li>");
+					this.ul.append(arr[i]);
+				}
+				this.ul.find("li").css({"cursor":"pointer","float":"left","width":"50px","height":"20px","listStyle":"none","marginLeft":"10px","borderRadius":"8px"}).eq(this.index).css({"background":"white"}).siblings("li").css({"background":"orange"});
+			},
+			hover:function()
+			{
+				var that=this;
+				that.ul.find("li").click(function()
+				{	
+					var tmp=that.ul.find("li").index(this);
+					if(tmp>that.temp)
+					{
+					that.temp=tmp;
+					that.index=tmp;
+					that.ul.find("li").css({"float":"left","width":"50px","height":"20px","listStyle":"none","marginLeft":"10px","borderRadius":"8px"}).eq(that.index).css({"background":"white"}).siblings("li").css({"background":"orange"});
+					that.move();
+					}else if(tmp<that.temp)
+					{
+						that.temp=tmp;
+						that.index=tmp;
+						that.ul.find("li").css({"float":"left","width":"50px","height":"20px","listStyle":"none","marginLeft":"10px","borderRadius":"8px"}).eq(that.index).css({"background":"white"}).siblings("li").css({"background":"orange"});
+						that.moveFromDown();
+					}
+				});
+				that.ul.find("li").mouseover(function()
+				{
+					clearInterval(that.timer);
+				});
+				that.ul.find("li").mouseout(function()
+				{
+					that.interval();
+				});
+			},
+			moveFromDown:function()
+			{
+				this.li.eq(this.index).css({"top":this.li.height()}).stop(true,false).animate({top:0},200).end().eq(this.index+1).css({"top":"0"}).animate({top:-(this.li.height())},200).siblings("li").css({"left":"0px","top":(this.li.height())});
+			}
+		}
+
+		var obj=new Animate("display");
+			obj.move();
+			obj.interval();
+			obj.amount();
+			obj.hover();
+
+		function opt()
+		{
+			var arr=["-请选择-","安徽","江苏","广东"];
+			var arr2=[["--请选择--"],["合肥","六安","亳州","芜湖"],["南京","苏州"],["广州","深圳","XXX"]];
+			for (var i=0;i<arr.length ;i++ )
+			{
+				$(".one").append($("<option value="+arr[i]+">"+arr[i]+"</option>"));
+			}
+			$(".two").append($("<option>-请选择-</option>"));
+			$(".one").change(function()
+			{
+				for(var index in arr)
+				{
+					if (arr[index]==$(".one").val())
+					{
+						$(".two").find("option").remove();
+						for (var i=0;i<arr2[index].length ;i++ )
+						{
+							$(".two").append($("<option>"+arr2[index][i]+"</option>"));
+						}
+					}
+				}
+				
+			});
+		}
+		opt();
+
+			//alert($(".color").css("backgroundColor"));
+			/*
+			function color()
+			{
+			if ($(".color").css("background-color")=="red")
+			{
+				$(".color").css("background-color","white")
+			}else
+			{
+				$(".color").css("background-color","red");
+			}
+			}
+			*/
+			
+		
+		(function()
+		{
+			var arr=[];
+			var src="img04";
+			for (var i=0;i<4 ;i++ )
+			{
+				arr.push("_"+i);
+				arr[i]=$("<div></div>");
+				arr[i].appendTo($(".hope"));
+				arr[i].css({"width":"0px","height":"0px","position":"absolute","opacity":"0"}).animate({width:$(".hope").width()/2,height:$(".hope").height()/2,"opacity":"1"});
+			}
+			arr[0].css({"top":"0px","left":"0px","background":"url(images/"+src+".jpg) no-repeat 0px 0px"});
+			arr[1].css({"bottom":"0px","left":"0px","background":"url(images/"+src+".jpg) no-repeat 0px "+(-($(".hope").height()/2))+"px"});
+			arr[2].css({"top":"0px","right":"0px","background":"url(images/"+src+".jpg) no-repeat right 0px"});
+			arr[3].css({"bottom":"0px","right":"0px","background":"url(images/"+src+".jpg) no-repeat right "+(-($(".hope").height()/2))+"px"});
+			
+			setTimeout(function()
+			{
+				for (var i=0;i<arr.length ;i++ )
+				{
+					arr[i].animate({width:"0",height:"0","opacity":"0"});
+				}
+			},2000);
+		})();
+		
+
+	
+	});
+  </script>
+  <script>
+	window.onload=function()
+	{
+		var timer;
+		function color()
+		{
+			var obj=document.getElementById("color");
+			var red="background:gray";
+			var white="background:white";
+			if (obj.currentStyle)
+			{
+				if (obj.style.background=="white")
+				{
+					obj.style.background="gray";
+				}else
+				{
+					obj.style.background="white";
+				}
+			}else
+			{
+				if (obj.getAttribute("style")==red)
+				{
+					obj.setAttribute("style",white);
+				}else
+				{
+					obj.setAttribute("style",red);
+				}
+			}
+			obj.onmouseover=function()
+			{
+				clearInterval(timer);
+				obj.style.background="gray";
+			}
+			obj.onmouseout=function()
+			{
+				go();
+			}
+		}
+	//	color("color");
+		function go(){
+		timer=setInterval(color,100);
+		}
+		go();
+	}
+  </script>
+	
+ </head>
+
+ <body>
+	<div class="display oh bc pr" id="display">
+		<ul class="">
+			<li><img src="images/img01.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img03.jpg"></li>
+			<li><img src="images/img01.jpg"></li>
+			<li><img src="images/img02.jpg"></li>
+			<li><img src="images/img03.jpg"></li>
+		</ul>
+	</div>
+	<select class="one">
+	</select>
+	<select class="two">
+	</select>
+	<div id="color" style="background:white"></div>
+	<div class="hope bc pr">
+		
+	</div>
+ </body>
+ 
+</html>

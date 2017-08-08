@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="gb2312">
+  <script type="text/javascript" src="js/basic.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/basic.css"/>
+  <style>
+	#main{width:500px;}
+	.option{height:30px;}
+	.option ul li{height:25px; line-height:25px;float:left;display:inline;margin-left:10px;}
+	.option li.one{background:#bbb;color:white;}
+	.active{background:#bbb;color:white;}
+	#main .son{height:250px;}
+
+	#div{width:600px;height:400px;background:yellow;}
+	#div .div{float:left; display:inline;width:50px; height:400px; opacity:0.7;filter:alpha(opacity=70)}
+	#div .first{width:350px;}
+  </style>
+ </head>
+
+ <body>
+	<div id="main" class="border bc clearfix cp">
+		<div class="option">
+			<ul>
+				<li class="active">选项1</li>
+				<li class="">选项2</li>
+				<li class="">选项3</li>
+				<li class="">选项4</li>
+			</ul>
+		</div>
+		<div>
+			<div class="son first">11111111</div>
+			<div class="son dn">2222222222</div>
+			<div class="son dn">3333333333</div>
+			<div class="son dn">444444444444</div>
+		</div>
+	</div>
+
+	<div class="fb tc mt10 mb10">百叶窗</div>
+	<div id="div" class="bc mt50 oh" style="">
+		<div class="div first" style="background:black;"></div>
+		<div class="div" style="background:#cc0000;"></div>
+		<div class="div" style="background:blue;"></div>
+		<div class="div" style="background:green;"></div>
+		<div class="div" style="background:purple;"></div>
+		<div class="div" style="background:yellow;"></div>
+	</div>
+ </body>
+ <script>
+ 	/*
+		这个类是实现选项卡的功能，有4个参数：
+		1：最外层div的id；
+		2：要点击的选项的ul的className；
+		3：下面被切换的div的className;
+		4：最后一个参数是一个对象，其type属性是事件类型：如onclick 或 onmouseover;
+	*/
+
+	function Option(id,father,son,o)
+	{
+		this.id=zzs.$(id);
+		this.father=zzs.$$$(father,id)[0].getElementsByTagName("li");
+		this.son=zzs.$$$(son,id);
+		var _this=this;
+		for (var i=0;i<_this.father.length ;i++ )
+		{
+			_this.father[i].index=i;
+			_this.father[i][o.type]=function()
+			{
+				for (var j=0;j<_this.father.length ;j++ )
+				{
+					_this.son[j].style.display="none";
+					_this.father[j].className="";
+				}
+				_this.son[this.index].style.display="block";
+				_this.father[this.index].className="active";
+			}
+		}
+	}
+
+	new Option("main","option","son",{type:"onclick"});
+
+
+	/*
+	function Option(id,o)
+	{
+		this.id=document.getElementById(id);
+		this.father=this.id.getElementsByTagName("ul")[0].getElementsByTagName("li");
+		this.son=this.id.getElementsByTagName("div")[1].children;
+		var _this=this;
+		for (var i=0;i<_this.father.length ;i++ )
+		{
+			_this.father[i].index=i;
+			_this.father[i][o.type]=function()
+			{
+				for (var j=0;j<_this.father.length ;j++ )
+				{
+					_this.son[j].style.display="none";
+					_this.father[j].className="";
+				}
+				_this.son[this.index].style.display="block";
+				_this.father[this.index].className="active";
+			}
+		}
+	}
+
+	new Option("main",{type:"onclick"});
+	*/
+	(function(){
+		var div=zzs.$$$("div","div"),w1=div[1].offsetWidth,w=div[0].offsetWidth,_index=0;
+		zzs.each(div,function(index,div){
+			this.onmouseover=function(){
+				_index=index;
+				clearInterval(go.timer);
+				zzs.each(div,function(){
+					clearInterval(this.timer);
+					this.timer=zzs.doMove(this,{width:w1});
+				});
+				clearInterval(this.timer);
+				this.timer=zzs.doMove(this,{width:w});
+			}
+		});
+		zzs.each(div,function(){
+			this.onmouseout=function(){
+				go.timer=setInterval(go,3000);
+			}
+		});
+		var go=function(){
+			_index++;
+			_index>=div.length && (_index=0);
+			zzs.each(div,function(){
+				clearInterval(this.timer);
+				this.timer=zzs.doMove(this,{width:w1});
+			});
+			clearInterval(div[_index].timer);
+			div[_index].timer=zzs.doMove(div[_index],{width:w});
+		}
+		go.timer=setInterval(go,3000);
+	})();
+ </script>
+</html>

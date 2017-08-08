@@ -1,0 +1,256 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="" charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/basic.css">
+  <style>
+  .moving{height:200px;width:200px;z-index:999;}
+   .move{height:200px;width:200px;background:pink;z-index:999;}
+   .ok li{float:left;}
+   .select{background:#449AB4;width:220px;height:39px;padding:0px 0px 0px 10px;}
+   .select li{float:left; padding:10px 0px 10px 0px}
+   .select li:hover{background:#4BA6C2;}
+   .select li a{text-decoration:none;color:white; padding:5px 10px 11px 10px; position:relative;}
+   .select li a:hover{background:white; color:black;}
+   .son{background:white;width:500px;padding:15px 30px 15px 30px; top:30px; left:-50px; display:none;}
+   .son li{float:left; height:50px; width:50px; background:#333; margin:10px 15px 10px 15px;}
+   select option{text-align:center;}
+   select{border:none;}
+  </style>
+  <script src="jquery.js"></script>
+  <script src="js/jquery.move.js"></script>
+  <script>
+  
+  $(function()
+  {
+	 $(".move").move();
+	 $(".moving").move(
+	 {
+		cursor:"pointer"//移动时手的形状，默认为move
+	 });
+	 //使用此插件可能会出现bug，不过只要单击一下左键或右键即可
+	 $(".moving").hover(function()
+	 {
+		div=$(".div");
+		div.css({"display":"block","height":$(this).width()*0.5,"width":$(this).width()*0.5,"background":"white","opacity":0.5});
+		div.appendTo($(this));
+		$(this).mousemove(function(e)
+		{
+			var x=e.clientX;
+			var y=e.clientY;
+			var left=(x-$(this).offset().left)-(div.width()/2);
+
+			var top=(y-$(this).offset().top)-(div.width()/2);
+			
+			if (left<0)
+			{
+				left=0;
+			}if (top<0)
+			{
+				top=0;
+			}
+			if (left>$(this).width()-(div.width()))
+			{
+				left=$(this).width()-(div.width());
+			}
+			if (top>$(this).height()-(div.height()))
+			{
+				top=$(this).height()-(div.height());
+			}
+			var topTmp=parseFloat((578-$(".big").height())/($(this).height()-div.height()));
+			var leftTmp=parseFloat((490-$(".big").width())/($(this).width()-div.width()));
+			$(".big").css({"background":"url(images/rightdoor.png) no-repeat "+(-(leftTmp*left))+"px "+(-topTmp*top)+"px"});
+			div.css({"position":"absolute","left":left,"top":top,"cursor":"move"});
+		});
+	 },function()
+	 {
+		div.css("display","none");
+		$(".big").css("background","none");
+	 });
+  });
+  </script>
+ </head>
+
+ <body bgcolor="#E1E1E1">
+  <div class="bc pb50" style="width:500px; background:#fff;" id="star">
+	<div class="mt20">星座排行标题：<input type="text" id="title" value="十二星座最苦逼排行榜">
+	</div>
+	<div class="pt50"></div>
+	冠军：<select></select>　　亚军：<select></select>　　季军：<select></select>
+	<br style="height:30px;">
+	<br style="height:30px;">
+	第4名：<select></select>　　第5名：<select></select>　　第6名：<select></select>
+	<br>
+	<br style="height:30px;">
+	第7名：<select></select>　　第8名：<select></select>　　第9名：<select></select>
+	<br>
+	<br style="height:30px;">
+	第10名：<select></select>　　第11名：<select></select>　　第12名：<select></select>
+	<br>
+	<br style="height:30px;">
+	<input type="button"  class="bc db" id="btn" value="一键生成" style="height:50px; width:150px;">
+	<div id="content" class=''></div>
+  </div>
+  <div class="moving">
+	<img src="images/cool.jpg">
+  </div>
+
+  <div class="big" style="height:300px;width:300px;"></div>
+  <div class="move pr">move</div>
+  <div class="div" style="display:none;"></div>
+
+  <ul class="select bc">
+		<li><a href="###" onmouseover="come(this,'block')" onmouseout="come(this,'none')">我的主页
+			<ul class="son pa">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</a></li>
+		<li><a href="###" onmouseover="come(this,'block')" onmouseout="come(this,'none')">应用
+			<ul class="son pa">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</a></li>
+		<li><a href="###" onmouseover="come(this,'block')" onmouseout="come(this,'none')">装扮
+			<ul class="son pa">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</a></li>
+  </ul>
+  
+ </body>
+ <script>
+	$(function()
+	{
+		var id=document.getElementById("star");
+		var title=document.getElementById("title");
+		var btn=document.getElementById("btn");
+		var c=document.getElementById("content");
+		var select=id.getElementsByTagName("select");
+		//alert(select.length);
+		var arr=["随机选择","白羊座","巨蟹座","摩羯座","天蝎座","处女座","双子座","双鱼座","射手座","金牛座","天枰座","天马座","狮子座"];
+		for (var i=0;i<select.length ;i++ )
+		{
+			for (var j=0;j<arr.length ;j++ )
+			{
+				var opt=document.createElement("option");
+				opt.innerHTML=arr[j];
+				select[i].appendChild(opt);
+			}
+		}
+		$("select").change(function()
+		{
+			//alert($("select").val());
+			for (var i=0;i<arr.length ;i++ )
+			{
+				if ($("select").val()==arr[i])
+				{
+					arr.splice(i,1);
+				}
+			}
+			
+		});
+		btn.onclick=function()
+		{
+			this.blur();
+			//alert($("select").eq(0).val());
+			var val=title.value;
+			var num=[],num3=[],value=[],index=[];
+			for (var i=0;i<select.length ;i++ )
+			{
+				if ($("select").eq(i).val()=="随机选择")
+				{
+					num[num.length]=i;
+				}else
+				{
+					num3[num3.length]=i;
+				}
+			}
+			for (var i=0;i<num3.length ;i++ )
+			{
+				value[i]=$("select").eq(num3[i]).val();
+			}
+			for (var i=0;i<arr.length ;i++ )
+			{
+				for (var j=0;j<value.length ;j++ )
+				{
+					if (arr[i]==value[j])
+					{
+						index.push(i);
+					}
+				}
+			}
+			var num4=random(arr.length-1,1,arr.length-1)
+			var num2=random(num.length,1,num.length);
+			for (var i=0;i<num2.length ;i++ )
+			{
+				for (var j=0;j<index.length ;j++ )
+				{
+					if (num2[i]==index[j])
+					{
+						num2.splice(i,1);
+					}
+				}
+			}
+			alert(num2);
+			for (var i=0;i<num.length ;i++ )
+			{
+				$("select").eq(num[i]).val(arr[num2[i]]);
+			}
+			var array=[],arr2=["冠军","亚军","季军","第4名","第5名","第6名","第7名","第8名","第9名","第10名","第11名","第12名"];
+			c.innerHTML="【"+val+"】";
+			for (var i=0;i<select.length ;i++ )
+			{
+				array[i]=$("select").eq(i).val();
+				c.innerHTML+=arr2[i]+"："+array[i]+"　";
+			}
+		}
+		function random(max,min,length)
+		{
+			var arr=[];
+			var has=false;
+			while(true)
+			{
+				if (arr.length==length)
+				{
+					break;
+				}
+				var ran=Math.floor(Math.random()*(max-min+1)+min);
+				for (var index in arr )
+				{
+					if (ran==arr[index])
+					{
+						has=true;
+					}
+				}
+				if (has==false)
+				{
+					arr.push(ran);
+				}
+				has=false;
+			}
+			return arr;
+		}
+		random(10,1,10);
+});
+	
+ </script>
+</html>
